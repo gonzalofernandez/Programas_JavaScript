@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Gestión de cuentas de usuario</title>
+        <link type="text/css" rel="stylesheet" href="css/styles.css">
+        <script type="text/javascript" src="js/back-end.js"></script>
+        <script type="text/javascript" src="js/front-end.js"></script>
+        <!--<script charset="utf-8" src="js/bundle.js"></script>-->
+    </head>
+    <body onload="inicializar()">
+        <div>
+            <header>
+                <h1>Sistema 'GALLUS'</h1>
+            </header>
+            <div>
+                <fieldset class="colocado" id="saldoCuentas">
+                <legend>Saldo medio de las cuentas del sistema</legend>
+                    <table>
+                        <tr>
+                            <td><input type="button" id="boton_obtener_saldo" onclick="obtenerSaldoMedio()"
+                                value="Ver saldo medio"></td>
+                            <td id="saldo_medio"></td></tr>
+                    </table>
+                </fieldset>
+                <fieldset class="colocado" id="seleccion">
+                <legend>Servidor</legend>
+                    <select id="servidores">
+                        <option value="Amnexis" >Amnexis</option>
+                        <option value="Asterix">Asterix</option>
+                        <option value="Asuracenturix">Asuracenturix</option>
+                        <option value="Obelix">Obelix</option>
+                        <option value="Panoramix">Panoramix</option>
+                    </select>
+                    <input type="button" id="boton_acceder" onclick="seleccionarServidor()" value="Acceder">
+                </fieldset>
+                <br>
+                <fieldset class="colocado" id="datos">
+                    <legend>Datos del servidor</legend>
+                        <table id="datos_servidor">
+                            <tr><th>Nombre:</th><td id="nomser"></td></tr>
+                            <tr><th>Dirección IP:</th><td id="nomdir"></td></tr>
+                            <tr><th>Sistema Operativo:</th><td id="nomsis"></td></tr>
+                        </table>
+                </fieldset>
+                <br><br>
+                <fieldset class="colocado2" id="informes">
+                    <legend>Cuentas en el servidor</legend>
+                    <table id="datos_cuentas">
+                        <thead><tr>
+                            <th>Nombre cuenta</th>
+                            <th>Nombre usuario</th>
+                            <th>Fecha alta</th>
+                            <th>Saldo</th>
+                            <th>Tipo cuenta</th>
+                            <th>Seleccione para borrar</th>
+                        </tr></thead>
+                        <tbody id="tbody"></tbody>
+                    </table>
+                    <div id="botones_gestion">
+                        <select id="tipo_filtro" class="botones_filtrar">
+                            <option value="todas">Todas</option>
+                            <option value="newbie">Newbie</option>
+                            <option value="user">User</option>
+                            <option value="premium">Premium</option>
+                        </select>
+                        <input type="button" class="botones_filtrar" onclick="filtrarCuentas()" value="Filtrar por tipo de cuenta">
+                        <input type="button" id="boton_borrar_cuenta" onclick="borrarCuentas()" value="Borrar cuenta">
+                    </div>
+                </fieldset>
+                <br>
+                <fieldset class="colocado2" id="nueva">
+                    <legend>Datos de cuenta nueva</legend>
+                    <table id="datos_nueva">
+                        <tr>
+                            <th>Nombre de cuenta</th>
+                            <th>Nombre de usuario</th>
+                            <th>Saldo</th>
+                            <th>Fecha</th>
+                            <th>Tipo de cuenta</th>
+                        </tr>
+                        <tr>
+                            <td><input id="nombre_cuenta" placeholder="nombre"></td>
+                            <td><input id="nombre_usuario" placeholder="nombre apellido"></td>
+                            <td><input id="saldo" placeholder="€"></td>
+                            <td><input id="fecha" placeholder="DD/MM/YY"></td>
+                            <td>
+                                <select id="tipo_cuenta">
+                                    <option value="newbie">Newbie</option>
+                                    <option value="user">User</option>
+                                    <option value="premium">Premium</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="button" id="boton_crear_cuenta" onclick="crearCuenta()" value="Crear cuenta">
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </div>
+        </div>
+    </body>
+</html>
