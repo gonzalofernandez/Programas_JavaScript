@@ -135,7 +135,8 @@ function borrarCuentas() {
         }
     });
     miApp.eliminarCuentas(servidorElegido, cuentasChecked);
-    fila.remove();
+    resetearTabla();
+    miApp.recuperarCuentas(servidorElegido).forEach(insertarFila);
 }
 
 function filtrarCuentas() {

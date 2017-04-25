@@ -194,6 +194,8 @@ var miApp = (function () {
                 return seleccion === value.nombre;
             })[0];
         };
+        /*
+        //NO FUNCIONA PARA MAS DE UNA CUENTA
         //Metodo para eliminar cuentas
         Sistema.prototype.eliminarCuentas = function (servidorElegido, cuentasChecked) {
             var cuentasDelServidor = recuperarCuentas(servidorElegido);
@@ -204,7 +206,7 @@ var miApp = (function () {
                     }
                 }, cuentasDelServidor);
             }, cuentasDelServidor);
-        };
+        };*/
         //Metodo para filtar cuentas
         Sistema.prototype.seleccionarCuentas = function (servidorElegido, filtro) {
             var cuentas = [];
