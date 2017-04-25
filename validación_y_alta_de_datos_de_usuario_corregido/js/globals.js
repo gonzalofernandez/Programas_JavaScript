@@ -1,5 +1,6 @@
 var ERRORCREDENCIALES = new Error("Credenciales inválidas"),
-    MESES = new String("jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec"),
+    MESES = "jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec",
+    VALIDACIONDATE = new RegExp(/^\d{2}([a-z]{3}|\d{2})(\d{2}|\d{4})$/),
     MILISEGUNDOSPORANYO = 31536000000,
     MODULO = 26,
     PALABRA_COMPARADA = "secret",
@@ -164,17 +165,51 @@ function validarLetraDeControl(nif) {
     return validacion;
 }*/
 
-function validarComponentesFecha(dia, mes, anyo) {
-    var fechaNacimiento,
-        validacion;
-    if (MESES.split(",").indexOf(mes) === -1) {
-        validacion = false;
+function crearFechaNacimiento(dia, mes, anyo) {
+    var fechaNac;
+    if (mes.length === 3) {
+        fechaNac = new Date(anyo, MESES.split(",").indexOf(mes), dia);
     } else {
-        anyo = `${(anyo > 30) ? "19" : "20"}${anyo}`;
-        fechaNacimiento = new Date(anyo, MESES.split(",").indexOf(mes), dia);
+
+    }
+    return fechaNac;
+}
+
+function completarAnyo(anyo) {
+    return (anyo > 30) ? "19" : "20" + anyo;
+}
+
+function validarComponentesFecha(dia, mes, anyo) {
+    var fechaNacimiento, validacion, numDia, numMes, datosCorrectos;
+    if ((anyo.length !== 4 && mes.length !== 3) || anyo.length === 4) {
+        if (anyo.length === 4) {
+            numDia = dia;
+            numMes = mes;
+        } else {
+            numDia = mes;
+            numMes = dia;
+            anyo = completarAnyo(anyo);
+        }
+        datosCorrectos = ((numMes <= 12 && numMes >= 1) && (numDia <= 31 && numDia >= 1)) ? true : false;
+        fechaNacimiento = crearFechaNacimiento(numDia, numMes, anyo);
+    } else {
+        datosCorrectos = (MESES.split(",").indexOf(mes) === -1) ? false : true;
+        anyo = completarAnyo(anyo);
+        fechaNacimiento = crearFechaNacimiento(dia, mes, anyo);
+            /*anyo = `${(anyo > 30)
+                ? "19"
+                : "20"}${anyo}`;*/
+            /*fechaNacimiento = new Date(anyo, MESES.split(",").indexOf(mes), dia);
+            validacion = (+dia === fechaNacimiento.getDate() &&
+                    +MESES.split(",").indexOf(mes) === fechaNacimiento.getMonth() &&
+                    +anyo === fechaNacimiento.getFullYear()) ? true : false;*/
+    }
+    if (datosCorrectos) {
         validacion = (+dia === fechaNacimiento.getDate() &&
-                +MESES.split(",").indexOf(mes) === fechaNacimiento.getMonth() &&
-                +anyo === fechaNacimiento.getFullYear()) ? true : false;
+                    +MESES.split(",").indexOf(mes) === fechaNacimiento.getMonth() &&
+                    +anyo === fechaNacimiento.getFullYear()) ? true : false;
+    } else {
+        validacion = false;
     }
     return validacion;
 }
@@ -187,7 +222,7 @@ function validarPassword(password) {
 function validarName(name) {
     var nombreYApellido = name.split(" ");
     return (nombreYApellido.length > 2 || nombreYApellido[0].length +
-            nombreYApellido[1].length > 25) ? false: true;
+            nombreYApellido[1].length > 25) ? false : true;
 }
 
 function validarGender(gender) {
@@ -207,17 +242,26 @@ function validarNif(nif) {
 }
 
 function validarDate(date) {
-    var validacionDate = new RegExp(/^\d{2}[a-z]{3}\d{2}$/),
-        validacion,
+    var validacion,
         diaNacimiento,
         mesNacimiento,
         anyoNacimiento;
-    if (!validacionDate.test(date)) {
+    if (!VALIDACIONDATE.test(date)) {
         validacion = false;
     } else {
-        diaNacimiento = date.substr(0, 2);
-        mesNacimiento = date.substr(2, 3);
-        anyoNacimiento = date.substr(5, 2);
+        if (date.length === 7) {
+            diaNacimiento = date.substr(0, 2);
+            mesNacimiento = date.substr(2, 3);
+            anyoNacimiento = date.substr(5, 2);
+        } else if (date.length === 8) {
+            diaNacimiento = date.substr(0, 2);
+            mesNacimiento = date.substr(2, 2);
+            anyoNacimiento = date.substr(4, 4);
+        } else {
+            mesNacimiento = date.substr(0, 2);
+            diaNacimiento = date.substr(2, 2);
+            anyoNacimiento = date.substr(4, 2);
+        }
         validacion = validarComponentesFecha(diaNacimiento, mesNacimiento, anyoNacimiento);
     }
     return validacion;
@@ -245,15 +289,20 @@ function reconocerParametro(argumento) {
     return funcion;
 }
 
+/*var reconoceParametro = {
+    "nif" : validarNif,
+
+};*/
+
 function determinarSaludo(fecha) {
     var saludo,
         horasActuales = fecha.getHours();
     if (horasActuales >= 0 && horasActuales <= 12) {
-        saludo = "días";
+        saludo = "Buenos días";
     } else if (horasActuales >= 13 && horasActuales <= 19) {
-        saludo = "tardes";
+        saludo = "Buenas tardes";
     } else {
-        saludo = "noches";
+        saludo = "Buenas noches";
     }
     return saludo;
 }
@@ -277,7 +326,8 @@ function determinarEdad(fechaNacimiento, fechaActual) {
         diaNacimiento = fechaNacimiento.substring(0, 2);
         mesNacimiento = fechaNacimiento.substring(2, 4);
         anyoNacimiento = fechaNacimiento.substring(4, 6);
-        anyoNacimiento = `${(anyoNacimiento > 30) ? "19" : "20"}${anyoNacimiento}`;
+        /*anyoNacimiento = `${(anyoNacimiento > 30) ? "19" : "20"}${anyoNacimiento}`;
+        anyoNacimiento = `${completaAño(anyoNacimiento)}$`*/
         fechaNacimiento = new Date(anyoNacimiento, mesNacimiento, diaNacimiento);
         edad = Math.floor((fechaActual - fechaNacimiento) / MILISEGUNDOSPORANYO);
     }

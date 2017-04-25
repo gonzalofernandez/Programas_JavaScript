@@ -55,7 +55,7 @@ function validateUserData(cadenaConsulta) {
             personaEncontrada = localizarDatosUsuario(nif, password, USUARIOS);
             if (personaEncontrada.length === 1) {
                 personaEncontrada = personaEncontrada[0].split(",");
-                salida = "Buenos " + determinarSaludo(fecha) + " " +
+                salida = determinarSaludo(fecha) + " " +
                     determinarTratamiento(personaEncontrada[4]) + " " +
                     determinarApellido(personaEncontrada[0]) + "." +
                     " Su edad es " + determinarEdad(personaEncontrada[3], fecha) + " años";

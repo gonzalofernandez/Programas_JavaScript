@@ -1,0 +1,30 @@
+body {
+    text-align: center;
+    color: firebrick;
+}
+header h1 {
+    width: 100%;
+}
+.colocado {
+    margin: auto;
+    width: 30%;
+}
+.colocado2 {
+    margin: auto;
+    width: 70%;
+}
+legend {
+    color: forestgreen;
+}
+th, td {
+    width: 16.6%;
+}
+#botones_gestion {
+    margin-top: 1em;
+}
+.botones_filtrar {
+    float: left;
+}
+#boton_borrar_cuenta {
+    float: right;
+}
