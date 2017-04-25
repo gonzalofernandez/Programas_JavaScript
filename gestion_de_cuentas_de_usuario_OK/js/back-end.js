@@ -119,22 +119,21 @@ var miApp = (function () {
                     contarNumeroCuentasSistema.apply(this);
             };
             //Asignar puntos en el caso de que no se hayan introducido en el formulario
-            /*function comprobarPuntos(cuenta) {
-                if (cuenta[5] === "") {
-                    switch (cuenta[4]) {
+            function comprobarPuntos(cuenta) {
+                if (cuenta.puntos === "") {
+                    switch (cuenta.tipo_de_cuenta) {
                     case "newbie":
-                        cuenta[5] = "10";
+                        cuenta.puntos = "10";
                         break;
                     case "user":
-                        cuenta[5] = "50";
+                        cuenta.puntos = "50";
                         break;
                     default:
-                        cuenta[5] = "100";
+                        cuenta.puntos = "100";
                     }
-                } else {
-                    cuenta[5] = cuenta[5];
                 }
-            }*/
+                return cuenta.puntos;
+            }
             //Metodo para añadir cuentas
             this.ingresarCuentas = function (nuevaCuenta, servidorElegido) {
                 var cuenta, cuentaAgregada;
@@ -142,14 +141,16 @@ var miApp = (function () {
                         comprobarNombreCuentaRepetido.apply(this, [nuevaCuenta.nombre_de_cuenta]) ||
                         !validarNombreUsuario(nuevaCuenta.nombre_de_usuario) ||
                         isNaN(nuevaCuenta.saldo_cuenta) ||
+                        isNaN(nuevaCuenta.puntos) ||
                         !validarFecha(nuevaCuenta.fecha_ingreso)) {
                     cuentaAgregada = false;
                 } else {
-                    //comprobarPuntos(nuevaCuenta);
+                    nuevaCuenta.puntos = comprobarPuntos(nuevaCuenta);
                     cuenta = new Cuenta(nuevaCuenta.nombre_de_cuenta,
                                     nuevaCuenta.nombre_de_usuario,
                                     nuevaCuenta.fecha_ingreso,
                                     nuevaCuenta.saldo_cuenta,
+                                    nuevaCuenta.puntos,
                                     nuevaCuenta.tipo_de_cuenta);
                     servidorElegido.cuentas.push(cuenta);
                     cuentaAgregada = true;

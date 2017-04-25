@@ -16,6 +16,7 @@ var miApp = miApp || {},
     tipoCuenta,
     tipoFiltro,
     saldoMedio,
+    puntosCuenta,
     inicioTabla = "<tr><td>",
     orejeras = "</td><td>",
     finalTabla = "</td></tr>",
@@ -32,6 +33,7 @@ function inicializar() {
     nombreUsuario = seleccionarElementoHTML("nombre_usuario");
     fechaIngreso = seleccionarElementoHTML("fecha");
     saldo = seleccionarElementoHTML("saldo");
+    puntosCuenta = seleccionarElementoHTML("puntos_cuenta");
     tipoCuenta = seleccionarElementoHTML("tipo_cuenta");
     nomSer = seleccionarElementoHTML("nomser");
     nomSis = seleccionarElementoHTML("nomsis");
@@ -59,7 +61,8 @@ function insertarFila(cuenta) {
                                   cuenta.nombreUsuario + orejeras +
                                   cuenta.fechaIngreso + orejeras +
                                   cuenta.saldo + orejeras +
-                                  cuenta.tipoCuenta + finalTabla);
+                                  cuenta.tipoCuenta + orejeras +
+                                  cuenta.puntos + finalTabla);
     pintarCheckBox(filasTabla.lastElementChild);
 }
 //Borrar datos del servidor
@@ -98,11 +101,13 @@ function crearCuenta() {
         idNombreUsuario = nombreUsuario.value,
         idFechaIngreso = fechaIngreso.value,
         idSaldo = saldo.value,
+        idPuntos = puntosCuenta.value,
         idTipoCuenta = tipoCuenta.value,
         cuentaNueva = {nombre_de_cuenta: idNombreCuenta,
                        nombre_de_usuario: idNombreUsuario,
                        fecha_ingreso: idFechaIngreso,
                        saldo_cuenta: idSaldo,
+                       puntos: idPuntos,
                        tipo_de_cuenta: idTipoCuenta};
     if (filaDatosCuenta.children.length > 1) {
         filaDatosCuenta.lastElementChild.remove();
