@@ -20,7 +20,7 @@ var miApp = miApp || {},
     inicioTabla = "<tr><td>",
     orejeras = "</td><td>",
     finalTabla = "</td></tr>",
-    COLUMNA_CHECK = 5,
+    COLUMNA_CHECK = 6,
     COLUMNA_NOMBRE_CUENTA = 0;
 function seleccionarElementoHTML(elemento) {
     return document.getElementById(elemento);
