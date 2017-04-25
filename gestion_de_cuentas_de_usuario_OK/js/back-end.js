@@ -76,11 +76,12 @@ var miApp = (function () {
             });
         }());
         //Constructor del objeto Cuenta
-        function Cuenta(nombreCuenta, nombreUsuario, fechaIngreso, saldo, tipoCuenta) {
+        function Cuenta(nombreCuenta, nombreUsuario, fechaIngreso, saldo, puntos, tipoCuenta) {
             this.nombreCuenta = nombreCuenta;
             this.nombreUsuario = nombreUsuario;
             this.fechaIngreso = fechaIngreso;
             this.saldo = saldo;
+            this.puntos = puntos;
             this.tipoCuenta = tipoCuenta;
         }
 
@@ -117,6 +118,23 @@ var miApp = (function () {
                 return calcularSaldoTotalSistema.apply(this) /
                     contarNumeroCuentasSistema.apply(this);
             };
+            //Asignar puntos en el caso de que no se hayan introducido en el formulario
+            /*function comprobarPuntos(cuenta) {
+                if (cuenta[5] === "") {
+                    switch (cuenta[4]) {
+                    case "newbie":
+                        cuenta[5] = "10";
+                        break;
+                    case "user":
+                        cuenta[5] = "50";
+                        break;
+                    default:
+                        cuenta[5] = "100";
+                    }
+                } else {
+                    cuenta[5] = cuenta[5];
+                }
+            }*/
             //Metodo para añadir cuentas
             this.ingresarCuentas = function (nuevaCuenta, servidorElegido) {
                 var cuenta, cuentaAgregada;
@@ -127,6 +145,7 @@ var miApp = (function () {
                         !validarFecha(nuevaCuenta.fecha_ingreso)) {
                     cuentaAgregada = false;
                 } else {
+                    //comprobarPuntos(nuevaCuenta);
                     cuenta = new Cuenta(nuevaCuenta.nombre_de_cuenta,
                                     nuevaCuenta.nombre_de_usuario,
                                     nuevaCuenta.fecha_ingreso,
