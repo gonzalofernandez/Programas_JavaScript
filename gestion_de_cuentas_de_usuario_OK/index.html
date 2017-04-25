@@ -15,7 +15,7 @@
                 <h1>Sistema 'GALLUS'</h1>
             </header>
             <div>
-                <fieldset class="colocado" id="saldoCuentas">
+                <fieldset class="caja_pequenya" id="saldoCuentas">
                 <legend>Saldo medio de las cuentas del sistema</legend>
                     <table>
                         <tr>
@@ -24,7 +24,7 @@
                             <td id="saldo_medio"></td></tr>
                     </table>
                 </fieldset>
-                <fieldset class="colocado" id="seleccion">
+                <fieldset class="caja_pequenya" id="seleccion">
                 <legend>Servidor</legend>
                     <select id="servidores">
                         <option value="Amnexis" >Amnexis</option>
@@ -37,7 +37,7 @@
                     <input type="button" id="boton_acceder" onclick="seleccionarServidor()" value="Acceder">
                 </fieldset>
                 <br>
-                <fieldset class="colocado" id="datos">
+                <fieldset class="caja_pequenya" id="datos">
                     <legend>Datos del servidor</legend>
                         <table id="datos_servidor">
                             <tr><th>Nombre:</th><td id="nomser"></td></tr>
@@ -46,7 +46,7 @@
                         </table>
                 </fieldset>
                 <br><br>
-                <fieldset class="colocado2" id="informes">
+                <fieldset class="caja_grande" id="informes">
                     <legend>Cuentas en el servidor</legend>
                     <table id="datos_cuentas">
                         <thead><tr>
@@ -68,11 +68,11 @@
                             <option value="premium">Premium</option>
                         </select>
                         <input type="button" class="botones_filtrar" onclick="filtrarCuentas()" value="Filtrar por tipo de cuenta">
-                        <input type="button" id="boton_borrar_cuenta" onclick="borrarCuentas()" value="Borrar cuenta">
+                        <input type="button" id="boton_borrar_cuenta" onclick="borrarCuentas()" value="Borrar cuentas">
                     </div>
                 </fieldset>
                 <br>
-                <fieldset class="colocado2" id="nueva">
+                <fieldset class="caja_grande" id="nueva">
                     <legend>Datos de cuenta nueva</legend>
                     <table id="datos_nueva">
                         <thead>
@@ -103,7 +103,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td>
+                                <td colspan="6">
                                     <input type="button" id="boton_crear_cuenta" onclick="crearCuenta()" value="Crear cuenta">
                                 </td>
                             </tr>

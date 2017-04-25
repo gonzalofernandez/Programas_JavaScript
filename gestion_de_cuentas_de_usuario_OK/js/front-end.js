@@ -21,7 +21,8 @@ var miApp = miApp || {},
     orejeras = "</td><td>",
     finalTabla = "</td></tr>",
     COLUMNA_CHECK = 6,
-    COLUMNA_NOMBRE_CUENTA = 0;
+    COLUMNA_NOMBRE_CUENTA = 0,
+    NOMBRE_CUENTA = 0;
 function seleccionarElementoHTML(elemento) {
     return document.getElementById(elemento);
 }
@@ -123,15 +124,18 @@ function crearCuenta() {
 }
 
 function borrarCuentas() {
-    var servidorElegido = miApp.elegirServidor(servidor.value),
+    var fila,
+        cuentasChecked = [],
+        servidorElegido = miApp.elegirServidor(servidor.value),
         filasCuentas = Array.from(filasTabla.children);
     filasCuentas.forEach(function (fila) {
         var celdasFila = Array.from(fila.children);
         if (celdasFila[COLUMNA_CHECK].checked) {
-            miApp.eliminarCuentas(servidorElegido, celdasFila[COLUMNA_NOMBRE_CUENTA].textContent);
-            fila.remove();
+            cuentasChecked.push(celdasFila[NOMBRE_CUENTA].textContent);
         }
     });
+    miApp.eliminarCuentas(servidorElegido, cuentasChecked);
+    fila.remove();
 }
 
 function filtrarCuentas() {

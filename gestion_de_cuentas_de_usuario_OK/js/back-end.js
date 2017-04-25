@@ -55,8 +55,7 @@ var miApp = (function () {
         //Validar nombre usuario
         function validarNombreUsuario(nomUsu) {
             var nombreYApellido = nomUsu.split(" ");
-            return (nombreYApellido.length === 2 && nombreYApellido[0].length +
-                    nombreYApellido[1].length <= 25) ? true : false;
+            return nombreYApellido.length === 2;
         }
 
 
@@ -196,12 +195,15 @@ var miApp = (function () {
             })[0];
         };
         //Metodo para eliminar cuentas
-        Sistema.prototype.eliminarCuentas = function (servidorElegido, nombreCuenta) {
-            return recuperarCuentas(servidorElegido).find(function (elemento, indice, cuentas) {
-                if (this === elemento.nombreCuenta) {
-                    cuentas.splice(indice, 1);
-                }
-            }, nombreCuenta);
+        Sistema.prototype.eliminarCuentas = function (servidorElegido, cuentasChecked) {
+            var cuentasDelServidor = recuperarCuentas(servidorElegido);
+            cuentasChecked.forEach(function (nomCuenta) {
+                this.find(function (cuenta, indice) {
+                    if (nomCuenta === cuenta.nombreCuenta) {
+                        this.slice(indice, 1);
+                    }
+                }, cuentasDelServidor);
+            }, cuentasDelServidor);
         };
         //Metodo para filtar cuentas
         Sistema.prototype.seleccionarCuentas = function (servidorElegido, filtro) {
