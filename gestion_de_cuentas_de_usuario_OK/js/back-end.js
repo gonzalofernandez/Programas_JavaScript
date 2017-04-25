@@ -200,7 +200,7 @@ var miApp = (function () {
             cuentasChecked.forEach(function (nomCuenta) {
                 this.find(function (cuenta, indice) {
                     if (nomCuenta === cuenta.nombreCuenta) {
-                        this.slice(indice, 1);
+                        this.splice(indice, 1);
                     }
                 }, cuentasDelServidor);
             }, cuentasDelServidor);
