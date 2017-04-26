@@ -1,129 +1,205 @@
 "use strict";
-//Constructor del objeto Servidor
-function Servidor(nombre, direccionIp, sistemaOperativo) {
-    this.nombre = nombre;
-    this.direccionIp = direccionIp;
-    this.sistemaOperativo = sistemaOperativo;
-    this.cuentas = [];
-}
-//Constructor del objeto Cuenta
-function Cuenta(nombreCuenta, nombreUsuario, fechaIngreso, saldo, tipoCuenta) {
-    this.nombreCuenta = nombreCuenta;
-    this.nombreUsuario = nombreUsuario;
-    this.fechaIngreso = fechaIngreso;
-    this.saldo = saldo;
-    this.tipoCuenta = tipoCuenta;
-}
-//Creacion de los cuatro objetos Servidor y del array que los contiene
-var servidorAmnexis = new Servidor("Amnexis", "192.168.0.10", "Linux"),
-    servidorAsterix = new Servidor("Asterix", "192.168.0.20", "WindowsServer2012"),
-    servidorAsuracenturix = new Servidor("Asuracenturix", "192.168.0.30", "Linux"),
-    servidorObelix = new Servidor("Obelix", "192.168.0.40", "WindowsServer2012"),
-    servidorPanoramix = new Servidor("Panoramix", "192.168.0.50", "Linux"),
-    servidores = [servidorAmnexis, servidorAsterix, servidorAsuracenturix,
-                  servidorObelix, servidorPanoramix];
-//Metodos para seleccionar el servidor activo
-function filtrarServidor(value) {
-    return this === value.nombre;
-}
-function elegirServidor(seleccion) {
-    var servidor = servidores.filter(filtrarServidor, seleccion);
-    return servidor;
-}
-//Metodo para comprobar si nombreUsuario esta repetido
-function comprobarDatos(nombreUsuario) {
-    return servidores.some(function (servidor) {
-        return servidor.cuentas.some(function (cuenta) {
-            return this === cuenta.nombreUsuario;
-        }, nombreUsuario);
-    });
-}
-//Metodo para añadir cuentas por parte de un servidor
-function ingresarCuentas(nuevaCuenta, idServidor) {
-    var cuenta;
-    if (!comprobarNombreCuenta(nuevaCuenta[0]) || !comprobarNombreUsuario(nuevaCuenta[1]) ||
-            isNaN(nuevaCuenta[3]) || comprobarDatos(nuevaCuenta[1])) {
-        escribirMensajeError(nuevaCuenta[1]);
-    } else {
-        cuenta = new Cuenta(nuevaCuenta[0], nuevaCuenta[1], nuevaCuenta[2],
-                            nuevaCuenta[3], nuevaCuenta[4]);
-        elegirServidor(idServidor)[0].cuentas.push(cuenta);
-        insertarFila(cuenta);
-    }
-}
-//Metodo que muestra las cuentas de un servidor
-function recuperarCuentas(servidor) {
-    return servidor[0].cuentas;
-}
+var miApp = (function () {
+    //DATOS DEL SISTEMA
+        var NOMBRE_SISTEMA_PRINCIPAL = "Gallus",
+            LISTA_SERVIDORES = ["Amnexis,192.168.0.10,Linux",
+                               "Asterix,192.168.0.20,WindowsServer2012",
+                               "Asuracenturix,192.168.0.30,Linux",
+                               "Obelix,192.168.0.40,WindowsServer2012",
+                               "Panoramix,192.168.0.50,Linux"],
+            SERVIDORES,
+            CUENTAS_INICIALES = 0,
+            SALDO_INICIAL = 0,
+            SISTEMA_PRINCIPAL,
+            VALIDACION_FECHA = new RegExp(/^\d{2}\/\d{2}\/\d{2}$/),
+            VALIDACION_NOMBRE = new RegExp(/[a-z]*\.*-*_*/),
+            TODAS_LAS_CUENTAS = "todas";
 
-function encontrarCuenta(element, index, cuentas) {
-    if (this === element.nombreCuenta) {
-        cuentas.splice(index, 1);
-    }
-}
-//Metodo para eliminar las cuentas de un servidor
-function eliminarCuenta(idServidor, nombreCuenta) {
-    var cuentas = recuperarCuentas(elegirServidor(idServidor));
-    cuentas.find(encontrarCuenta, nombreCuenta);
-}
-//Metodo para calcular el saldo medio de todas las cuentas del sistema
-function calcularSaldoTotalSistema() {
-    return servidores.reduce(function (valorAnterior, servidor) {
-        return servidor.cuentas.reduce(function (valorAnterior, cuenta) {
-            return valorAnterior + +cuenta.saldo;
-        }, valorAnterior);
-    }, 0);
-}
+        //VALIDACION DE DATOS
+        //Validar componentes de la fecha
+        function validarComponentesFecha(dia, mes, anyo) {
+            var fechaIntroducida, validacion, datosCorrectos, numeroMes;
+            anyo = ((anyo > 30) ? "19" : "20") + anyo;
+            datosCorrectos = ((mes <= 12 && mes >= 1) && (dia <= 31 && dia >= 1)) ? true : false;
+            if (datosCorrectos) {
+                numeroMes = mes - 1;
+                fechaIntroducida = new Date(anyo, numeroMes, dia);
+                validacion = (+dia === fechaIntroducida.getDate() &&
+                            +numeroMes === fechaIntroducida.getMonth() &&
+                            +anyo === fechaIntroducida.getFullYear()) ? true : false;
+            } else {
+                validacion = false;
+            }
+            return validacion;
+        }
+        //Validar fecha
+        function validarFecha(fecha) {
+            var validacion, diaIntroducido, mesIntroducido, anyoIntroducido;
+            if (!VALIDACION_FECHA.test(fecha)) {
+                validacion = false;
+            } else {
+                diaIntroducido = fecha.substr(0, 2);
+                mesIntroducido = fecha.substr(3, 2);
+                anyoIntroducido = fecha.substr(6, 2);
+                validacion = validarComponentesFecha(diaIntroducido, mesIntroducido, anyoIntroducido);
+            }
+            return validacion;
+        }
+        //Validar nombre cuenta
+        function validarNombreCuenta(nomCuenta) {
+            var nombreYApellido = nomCuenta.split(" ");
+            return (nombreYApellido.length === 1 && VALIDACION_NOMBRE.test(nomCuenta)) ?
+                    true : false;
+        }
+        //Validar nombre usuario
+        function validarNombreUsuario(nomUsu) {
+            var nombreYApellido = nomUsu.split(" ");
+            return (nombreYApellido.length === 2 && nombreYApellido[0].length +
+                    nombreYApellido[1].length <= 25) ? true : false;
+        }
 
-function contarNumeroCuentasSistema() {
-    var numeroCuentas = 0;
-    servidores.forEach(function (servidor) {
-        numeroCuentas = numeroCuentas + servidor.cuentas.length;
-        return numeroCuentas;
-    });
-    return numeroCuentas;
-}
-//Metodos del objeto Servidor
-Servidor.prototype.ingresarCuentas = ingresarCuentas;
-Servidor.prototype.recuperarCuentas = recuperarCuentas;
-Servidor.prototype.eliminarCuentas = eliminarCuenta;
-//Validar nombre
-function comprobarNombreCuenta(nomCuenta) {
-    var validacionNombre = new RegExp(/[a-z]*\.*-*_*/);
-    var validacion;
-    var nombreYApellido = nomCuenta.split(" ");
-    if (nombreYApellido.length > 2 || validacionNombre.test(nomCuenta)) {
-        validacion = false;
-    } else {
-        validacion = true;
-    }
-    return validacion;
-}
-//Validar nombre usuario
-function comprobarNombreUsuario(nomUsu) {
-    var validacion;
-    var nombreYApellido = nomUsu.split(" ");
-    if (nombreYApellido.length > 2 || nombreYApellido[0].length + nombreYApellido[1].length > 25) {
-        validacion = false;
-    } else {
-        validacion = true;
-    }
-    return validacion;
-}
-//Validar fecha
-function validarDate(fecha) {
-    var validacionDate = new RegExp(/^\d{2}\/\d{2}\/\d{2}$/);
-    var validacion;
-    var diaNacimiento;
-    var mesNacimiento;
-    var anyoNacimiento;
-    if (!validacionDate.test(fecha)) {
-        validacion = false;
-    } else {
-        diaNacimiento = fecha.substr(0, 2);
-        mesNacimiento = fecha.substr(3, 2);
-        anyoNacimiento = fecha.substr(6, 2);
-        validacion = validarComponentesFecha(diaNacimiento, mesNacimiento, anyoNacimiento);
-    }
-    return validacion;
-}
+
+        //LOGICA DEL SISTEMA
+        //Constructor del objeto Servidor
+        function Servidor(nombre, direccionIp, sistemaOperativo) {
+            this.nombre = nombre;
+            this.direccionIp = direccionIp;
+            this.sistemaOperativo = sistemaOperativo;
+            this.cuentas = [];
+        }
+        //Creacion de los objetos Servidor
+        SERVIDORES = (function () {
+            return LISTA_SERVIDORES.map(function (valor) {
+                var servidor = valor.split(",");
+                return new Servidor(servidor[0], servidor[1], servidor[2]);
+            });
+        }());
+        //Constructor del objeto Cuenta
+        function Cuenta(nombreCuenta, nombreUsuario, fechaIngreso, saldo, tipoCuenta) {
+            this.nombreCuenta = nombreCuenta;
+            this.nombreUsuario = nombreUsuario;
+            this.fechaIngreso = fechaIngreso;
+            this.saldo = saldo;
+            this.tipoCuenta = tipoCuenta;
+        }
+
+        //Constructor del objeto Sistema
+        function Sistema(nombreSistema, servidoresTotales, saldoInicial) {
+            this.nombreSistema = nombreSistema;
+            this.servidores = servidoresTotales;
+            this.saldoMedio = saldoInicial;
+            //METODOS PRIVADOS
+            //Metodo para comprobar si nombreCuenta esta repetido
+            function comprobarNombreCuentaRepetido(nombreCuenta) {
+                return this.servidores.some(function (servidor) {
+                    return servidor.cuentas.some(function (cuenta) {
+                        return nombreCuenta === cuenta.nombreCuenta;
+                    });
+                });
+            }
+            //Metodo para contar las cuentas del sistema
+            function contarNumeroCuentasSistema() {
+                return this.servidores.reduce(function (valorAnterior, servidor) {
+                    return valorAnterior + servidor.cuentas.length;
+                }, CUENTAS_INICIALES);
+            }
+            //Metodo para calcular el saldo total de todas las cuentas del sistema
+            function calcularSaldoTotalSistema() {
+                return this.servidores.reduce(function (valorAnterior, servidor) {
+                    return servidor.cuentas.reduce(function (valorAnterior, cuenta) {
+                        return valorAnterior + (+cuenta.saldo);
+                    }, valorAnterior);
+                }, SALDO_INICIAL);
+            }
+            //Metodo para obtener el saldo medio de las cuentas
+            this.obtenerSaldoMedio = function () {
+                return calcularSaldoTotalSistema.apply(this) /
+                    contarNumeroCuentasSistema.apply(this);
+            };
+            //Metodo para añadir cuentas
+            this.ingresarCuentas = function (nuevaCuenta, servidorElegido) {
+                var cuenta, cuentaAgregada;
+                if (!validarNombreCuenta(nuevaCuenta.nombre_de_cuenta) ||
+                        comprobarNombreCuentaRepetido.apply(this, [nuevaCuenta.nombre_de_cuenta]) ||
+                        !validarNombreUsuario(nuevaCuenta.nombre_de_usuario) ||
+                        isNaN(nuevaCuenta.saldo_cuenta) ||
+                        !validarFecha(nuevaCuenta.fecha_ingreso)) {
+                    cuentaAgregada = false;
+                } else {
+                    cuenta = new Cuenta(nuevaCuenta.nombre_de_cuenta,
+                                    nuevaCuenta.nombre_de_usuario,
+                                    nuevaCuenta.fecha_ingreso,
+                                    nuevaCuenta.saldo_cuenta,
+                                    nuevaCuenta.tipo_de_cuenta);
+                    servidorElegido.cuentas.push(cuenta);
+                    cuentaAgregada = true;
+                }
+                return cuentaAgregada;
+            };
+        }
+        //Creacion del objeto Sistema
+        SISTEMA_PRINCIPAL = new Sistema(NOMBRE_SISTEMA_PRINCIPAL, SERVIDORES, SALDO_INICIAL);
+
+
+        //FUNCIONES ENVOLVENTES(WRAPPER)
+        function elegirServidor(seleccion) {
+            return SISTEMA_PRINCIPAL.elegirServidor(seleccion);
+        }
+        function ingresarCuentas(nuevaCuenta, servidorElegido) {
+            return SISTEMA_PRINCIPAL.ingresarCuentas(nuevaCuenta, servidorElegido);
+        }
+        function eliminarCuentas(servidorElegido, nombreCuenta) {
+            return SISTEMA_PRINCIPAL.eliminarCuentas(servidorElegido, nombreCuenta);
+        }
+        function recuperarCuentas(servidorElegido) {
+            return SISTEMA_PRINCIPAL.recuperarCuentas(servidorElegido);
+        }
+        function seleccionarCuentas(servidorElegido, filtro) {
+            return SISTEMA_PRINCIPAL.seleccionarCuentas(servidorElegido, filtro);
+        }
+        function obtenerSaldoMedio() {
+            return SISTEMA_PRINCIPAL.obtenerSaldoMedio();
+        }
+
+
+        //DEFINICION DE METODOS PUBLICOS SISTEMA
+        //Metodo para mostrar cuentas
+        Sistema.prototype.recuperarCuentas = function (servidorElegido) {
+            return servidorElegido.cuentas;
+        };
+        //Metodos para seleccionar el servidor activo
+        Sistema.prototype.elegirServidor = function (seleccion) {
+            // AÑADIR POSIBILIDAD DE NO ENCONTRAR SERV O MAS DE UNO
+            return this.servidores.filter(function (value) {
+                return seleccion === value.nombre;
+            })[0];
+        };
+        //Metodo para eliminar cuentas
+        Sistema.prototype.eliminarCuentas = function (servidorElegido, nombreCuenta) {
+            return recuperarCuentas(servidorElegido).find(function (elemento, indice, cuentas) {
+                if (this === elemento.nombreCuenta) {
+                    cuentas.splice(indice, 1);
+                }
+            }, nombreCuenta);
+        };
+        //Metodo para filtar cuentas
+        Sistema.prototype.seleccionarCuentas = function (servidorElegido, filtro) {
+            var cuentas = [];
+            servidorElegido.cuentas.forEach(function (cuenta) {
+                if (this === cuenta.tipoCuenta || this === TODAS_LAS_CUENTAS) {
+                    return cuentas.push(cuenta);
+                }
+            }, filtro);
+            return cuentas;
+        };
+
+
+        return {
+            elegirServidor: elegirServidor,
+            ingresarCuentas: ingresarCuentas,
+            eliminarCuentas: eliminarCuentas,
+            recuperarCuentas: recuperarCuentas,
+            seleccionarCuentas: seleccionarCuentas,
+            obtenerSaldoMedio: obtenerSaldoMedio
+        };
+    }());

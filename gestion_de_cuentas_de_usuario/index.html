@@ -7,7 +7,6 @@
         <link type="text/css" rel="stylesheet" href="css/styles.css">
         <script type="text/javascript" src="js/back-end.js"></script>
         <script type="text/javascript" src="js/front-end.js"></script>
-        <!--<script charset="utf-8" src="js/bundle.js"></script>-->
     </head>
     <body onload="inicializar()">
         <div>
@@ -56,7 +55,7 @@
                             <th>Tipo cuenta</th>
                             <th>Seleccione para borrar</th>
                         </tr></thead>
-                        <tbody id="tbody"></tbody>
+                        <tbody id="tbody_cuentas"></tbody>
                     </table>
                     <div id="botones_gestion">
                         <select id="tipo_filtro" class="botones_filtrar">
@@ -73,31 +72,37 @@
                 <fieldset class="colocado2" id="nueva">
                     <legend>Datos de cuenta nueva</legend>
                     <table id="datos_nueva">
-                        <tr>
-                            <th>Nombre de cuenta</th>
-                            <th>Nombre de usuario</th>
-                            <th>Saldo</th>
-                            <th>Fecha</th>
-                            <th>Tipo de cuenta</th>
-                        </tr>
-                        <tr>
-                            <td><input id="nombre_cuenta" placeholder="nombre"></td>
-                            <td><input id="nombre_usuario" placeholder="nombre apellido"></td>
-                            <td><input id="saldo" placeholder="€"></td>
-                            <td><input id="fecha" placeholder="DD/MM/YY"></td>
-                            <td>
-                                <select id="tipo_cuenta">
-                                    <option value="newbie">Newbie</option>
-                                    <option value="user">User</option>
-                                    <option value="premium">Premium</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="button" id="boton_crear_cuenta" onclick="crearCuenta()" value="Crear cuenta">
-                            </td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Nombre de cuenta</th>
+                                <th>Nombre de usuario</th>
+                                <th>Saldo</th>
+                                <th>Fecha</th>
+                                <th>Tipo de cuenta</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody_nueva">
+                            <tr>
+                                <td><input id="nombre_cuenta" placeholder="nombre"></td>
+                                <td><input id="nombre_usuario" placeholder="nombre apellido"></td>
+                                <td><input id="saldo" placeholder="€"></td>
+                                <td><input id="fecha" placeholder="DD/MM/YY"></td>
+                                <td>
+                                    <select id="tipo_cuenta">
+                                        <option value="newbie">Newbie</option>
+                                        <option value="user">User</option>
+                                        <option value="premium">Premium</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>
+                                    <input type="button" id="boton_crear_cuenta" onclick="crearCuenta()" value="Crear cuenta">
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </fieldset>
             </div>

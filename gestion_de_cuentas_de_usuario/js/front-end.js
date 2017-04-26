@@ -1,59 +1,80 @@
 //var module = require("./back-end.js");
 "use strict";
-var nomSer, nomSis, nomDir, filasTabla, servidor, nombreCuenta, nombreUsuario,
-    fechaIngreso, saldo, tipoCuenta, tipoFiltro, saldoMedio;
-function inicializar() {
-    filasTabla = document.getElementById("tbody");
-    servidor = document.getElementById("servidores");
-    nombreCuenta = document.getElementById("nombre_cuenta");
-    nombreUsuario = document.getElementById("nombre_usuario");
-    fechaIngreso = document.getElementById("fecha");
-    saldo = document.getElementById("saldo");
-    tipoCuenta = document.getElementById("tipo_cuenta");
-    nomSer = document.getElementById("nomser");
-    nomSis = document.getElementById("nomsis");
-    nomDir = document.getElementById("nomdir");
-    tipoFiltro = document.getElementById("tipo_filtro");
-    saldoMedio = document.getElementById("saldo_medio");
+var miApp = miApp || {},
+    MENSAJE_ERROR = "Los datos introducidos son incorrectos, por favor " +
+        "revíselos.",
+    nomSer,
+    nomSis,
+    nomDir,
+    filasTabla,
+    filaDatosCuenta,
+    servidor,
+    nombreCuenta,
+    nombreUsuario,
+    fechaIngreso,
+    saldo,
+    tipoCuenta,
+    tipoFiltro,
+    saldoMedio,
+    inicioTabla = "<tr><td>",
+    orejeras = "</td><td>",
+    finalTabla = "</td></tr>",
+    COLUMNA_CHECK = 5,
+    COLUMNA_NOMBRE_CUENTA = 0;
+function seleccionarElementoHTML(elemento) {
+    return document.getElementById(elemento);
 }
+function inicializar() {
+    filasTabla = seleccionarElementoHTML("tbody_cuentas");
+    filaDatosCuenta = seleccionarElementoHTML("tbody_nueva");
+    servidor = seleccionarElementoHTML("servidores");
+    nombreCuenta = seleccionarElementoHTML("nombre_cuenta");
+    nombreUsuario = seleccionarElementoHTML("nombre_usuario");
+    fechaIngreso = seleccionarElementoHTML("fecha");
+    saldo = seleccionarElementoHTML("saldo");
+    tipoCuenta = seleccionarElementoHTML("tipo_cuenta");
+    nomSer = seleccionarElementoHTML("nomser");
+    nomSis = seleccionarElementoHTML("nomsis");
+    nomDir = seleccionarElementoHTML("nomdir");
+    tipoFiltro = seleccionarElementoHTML("tipo_filtro");
+    saldoMedio = seleccionarElementoHTML("saldo_medio");
+}
+
+
+//FUNCIONES DE APOYO
+//Borrar cuentas
 function resetearTabla() {
     filasTabla.innerHTML = "";
 }
+//Dibujar checkbox
 function pintarCheckBox(celdaReferencia) {
     var checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     celdaReferencia.appendChild(checkbox);
 }
-function insertarFila(value) {
-    filasTabla.insertAdjacentHTML("beforeend", "<tr><td>" +
-                                  value.nombreCuenta + "</td><td>" +
-                                  value.nombreUsuario + "</td><td>" +
-                                  value.fechaIngreso + "</td><td>" +
-                                  value.saldo + "</td><td>" +
-                                  value.tipoCuenta + "</td></tr>");
+//Insertar fila
+function insertarFila(cuenta) {
+    filasTabla.insertAdjacentHTML("beforeend", inicioTabla +
+                                  cuenta.nombreCuenta + orejeras +
+                                  cuenta.nombreUsuario + orejeras +
+                                  cuenta.fechaIngreso + orejeras +
+                                  cuenta.saldo + orejeras +
+                                  cuenta.tipoCuenta + finalTabla);
     pintarCheckBox(filasTabla.lastElementChild);
 }
+//Borrar datos del servidor
 function borrarDatosServidor() {
     nomDir.innerHTML = "";
     nomSer.innerHTML = "";
     nomSis.innerHTML = "";
 }
-function insertarDatosServidor(value) {
-    nomSer.insertAdjacentHTML("afterbegin", value[0].nombre);
-    nomSis.insertAdjacentHTML("afterbegin", value[0].sistemaOperativo);
-    nomDir.insertAdjacentHTML("afterbegin", value[0].direccionIp);
+//Insertar datos del servidor
+function insertarDatosServidor(servidor) {
+    nomSer.insertAdjacentHTML("afterbegin", servidor.nombre);
+    nomSis.insertAdjacentHTML("afterbegin", servidor.sistemaOperativo);
+    nomDir.insertAdjacentHTML("afterbegin", servidor.direccionIp);
 }
-function seleccionarServidor() {
-    var servidorElegido = elegirServidor(servidor.value);
-    borrarDatosServidor(nomDir, nomSer, nomDir);
-    insertarDatosServidor(servidorElegido);
-    resetearTabla();
-    recuperarCuentas(servidorElegido).forEach(insertarFila);
-}
-function escribirMensajeError(nombreUsuarioErroneo) {
-    window.alert("nombreUsuario " + nombreUsuarioErroneo + " esta repetida");
-}
-
+//Borrar datos de una cuenta creada
 function borrarDatosCuentaNueva() {
     nombreCuenta.innerHTML = "";
     nombreUsuario.innerHTML = "";
@@ -61,52 +82,59 @@ function borrarDatosCuentaNueva() {
     fechaIngreso.innerHTML = "";
 }
 
+
+//BOTONES
+function seleccionarServidor() {
+    var servidorElegido = miApp.elegirServidor(servidor.value);
+    borrarDatosServidor(nomDir, nomSer, nomDir);
+    insertarDatosServidor(servidorElegido);
+    resetearTabla();
+    miApp.recuperarCuentas(servidorElegido).forEach(insertarFila);
+}
+
 function crearCuenta() {
-    var idServidor = servidor.value,
+    var servidorElegido = miApp.elegirServidor(servidor.value),
         idNombreCuenta = nombreCuenta.value,
         idNombreUsuario = nombreUsuario.value,
         idFechaIngreso = fechaIngreso.value,
         idSaldo = saldo.value,
         idTipoCuenta = tipoCuenta.value,
-        cuentaNueva = [idNombreCuenta, idNombreUsuario, idFechaIngreso, idSaldo,
-                       idTipoCuenta];
-    ingresarCuentas(cuentaNueva, idServidor);
-    borrarDatosCuentaNueva();
-}
-
-function comprobarChecked(fila) {
-    var celdasFila = Array.from(fila.children);
-    if (celdasFila[5].checked) {
-        eliminarCuenta(servidor.value, celdasFila[0].textContent);
-        fila.remove();
+        cuentaNueva = {nombre_de_cuenta: idNombreCuenta,
+                       nombre_de_usuario: idNombreUsuario,
+                       fecha_ingreso: idFechaIngreso,
+                       saldo_cuenta: idSaldo,
+                       tipo_de_cuenta: idTipoCuenta};
+    if (filaDatosCuenta.children.length > 1) {
+        filaDatosCuenta.lastElementChild.remove();
+    }
+    if (miApp.ingresarCuentas(cuentaNueva, servidorElegido)) {
+        resetearTabla();
+        miApp.recuperarCuentas(servidorElegido).forEach(insertarFila);
+        borrarDatosCuentaNueva();
     } else {
-        celdasFila;
+        filaDatosCuenta.insertAdjacentHTML("beforeend", "<tr><td colspan=6><h2>" + MENSAJE_ERROR +
+                                      "</h2></td></tr>");
     }
 }
 
 function borrarCuentas() {
-    var filasCuentas = Array.from(filasTabla.children);
-    filasCuentas.forEach(comprobarChecked);
-}
-
-function comprobarTipo(fila) {
-    var celdasFila = Array.from(fila.children);
-    if (this.value !== celdasFila[4].textContent && this.value !== "todas") {
-        fila.remove();
-    } else {
-        fila;
-    }
+    var servidorElegido = miApp.elegirServidor(servidor.value),
+        filasCuentas = Array.from(filasTabla.children);
+    filasCuentas.forEach(function (fila) {
+        var celdasFila = Array.from(fila.children);
+        if (celdasFila[COLUMNA_CHECK].checked) {
+            miApp.eliminarCuentas(servidorElegido, celdasFila[COLUMNA_NOMBRE_CUENTA].textContent);
+            fila.remove();
+        }
+    });
 }
 
 function filtrarCuentas() {
-    var filasCuentas;
+    var servidorElegido = miApp.elegirServidor(servidor.value);
     resetearTabla();
-    recuperarCuentas(elegirServidor(servidor.value)).forEach(insertarFila);
-    filasCuentas = Array.from(filasTabla.children);
-    filasCuentas.forEach(comprobarTipo, tipoFiltro);
+    miApp.seleccionarCuentas(servidorElegido, tipoFiltro.value).forEach(insertarFila);
 }
 
 function obtenerSaldoMedio() {
-    var media = calcularSaldoTotalSistema() / contarNumeroCuentasSistema();
-    saldoMedio.innerHTML = media;
+    saldoMedio.innerHTML = miApp.obtenerSaldoMedio();
 }
