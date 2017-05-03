@@ -1,3 +1,4 @@
+"use strict";
 function buscarCoincidencia(cadenaEntrada, PALABRA_COMPARADA, numeroLetras) {
 	var posicionCadena = 0,
 		posicionPalabra = 0,
@@ -6,12 +7,12 @@ function buscarCoincidencia(cadenaEntrada, PALABRA_COMPARADA, numeroLetras) {
 		while (cadenaEntrada[posicionPalabra] && coincidencia !== PALABRA_COMPARADA) {
 			if (PALABRA_COMPARADA[posicionCadena] === cadenaEntrada[posicionPalabra]) {
 				coincidencia = coincidencia + cadenaEntrada[posicionPalabra];
-                posicionCadena++;
+                posicionCadena += 1;
 			} else {
                 coincidencia = "";
                 posicionCadena = 0;
             }
-            posicionPalabra++;
+            posicionPalabra += 1;
 		}
 	}
 	return coincidencia === PALABRA_COMPARADA;

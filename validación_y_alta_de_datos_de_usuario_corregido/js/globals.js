@@ -1,22 +1,24 @@
-var ERRORCREDENCIALES = new Error("Credenciales inválidas"),
-    MESES = "jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec",
-    VALIDACIONDATE = new RegExp(/^\d{2}([a-z]{3}|\d{2})(\d{2}|\d{4})$/),
-    MILISEGUNDOSPORANYO = 31536000000,
+"use strict";
+var ERROR_CREDENCIALES = new Error("Credenciales inválidas"),
+    MESES = String("jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec"),
+    VALIDACION_DATE = new RegExp(/^\d{2}[a-z]{3}\d{2}|\d{6,7}$/),
+    VALIDACION_PASSWORD = new RegExp(/^[A-Z]{6,10}$/),
+    VALIDACION_GENDER = new RegExp(/^M|F$/),
+    VALIDACION_NIF = new RegExp(/^\d{1,8}[A-Z]|([K-M]|[X-Z])\d{1,7}[A-Z]$/),
+    MILISEGUNDOS_POR_ANYO = 31536000000,
     MODULO = 26,
-    PALABRA_COMPARADA = "secret",
-    CLAVE = "javascript",
-    USUARIOS = "Pepe Pérez,12345678Z,lalajkf,030690,M;Luisa Sánchez," +
+    TRATAMIENTO_FEMENINO = "Sra.",
+    TRATAMIENTO_MASCULINO = "Sr.",
+    PALABRA_COMPARADA = new String("secret"),
+    CLAVE = new String("javascript"),
+    USUARIOS = new String("Pepe Pérez,12345678Z,lalajkf,030690,M;Luisa Sánchez," +
         "X1234567L,yemiiwzbdl,160848,F;Alberto López,K9999999J,kadlwu," +
-        "230707,M",
+        "230707,M"),
     ARGUMENTOS = new String("nif,password,name,gender,date"),
-    NAVEGADORES = new String("Chrome,Firefox,Edge"),
-    INFOSISTEMA = "Está utilizando el navegador " +
-        identificarNavegador(window.navigator.userAgent) +
-        " en un sistema operativo " + identificarSO(window.navigator.userAgent);
+    NAVEGADORES = new String("Chrome,Firefox,Edge");
 
 function localizarDatosUsuario(nif, password, USUARIOS) {
-    var registro,
-        listaUsuarios = USUARIOS.split(";");
+    var listaUsuarios = USUARIOS.split(";");
     /*{
          && vigenere("*" + password + "*", CLAVE).replace(/#/g, "") === USUARIOS[posicion].substr(USUARIOS[posicion].indexOf("password:") + 9, vigenere("*" + password + "*", CLAVE).replace(/#/g, "").length)) {
         coincidencia = true;
@@ -85,98 +87,12 @@ function validarLetraDeControl(nif) {
     return (letrasValidas.charAt(indice) === letra) ? true : false;
 }
 
-/*
-ESTA DEBERIA DE HABER SIDO LA FUNCION PERO NO HE
-CONSEGUIDO VALIDAR LOS NIF(K,L,M) COMO SE INDICA
-EN LA WIKIPEDIA
-
-function validarLetraDeControl(nif) {
-    var digitos,
-        validacion,
-        codigoControl = "T,R,W,A,G,M,Y,F,P,D,X,B,N,J,Z,S,Q,V,H,L,C,K,E".split(","),
-        tipoNie = "X,Y,Z".split(","),
-        tipoNif = "K,L,M".split(","),
-        letrasNie = new RegExp(/X|Y|Z/),
-        letrasNif = new RegExp(/K|L|M/),
-        posicion = 0,
-        letraDeControl = nif.charAt(nif.length - 1),
-        sumaPares = 0,
-        sumaImpares = 0,
-        sumaTotal = 0,
-        indice = 0,
-        numero = 0,
-        numeroTotal,
-        digito = "",
-        digitoControl = 0;
-    if (nif.charAt(0).search(/\d/) > -1) {
-        digitos = nif.slice(0, -1);
-        if (letraDeControl === codigoControl[digitos % 23]) {
-            validacion = true;
-        } else {
-            validacion = false;
-        }
-    } else {
-        if (nif.charAt(0).search(letrasNie) > -1) {
-            digitos = nif.slice(1, -1);
-            while (digitos.length < 7) {
-                digitos = "0" + digitos;
-            }
-            while (nif.charAt(0).search(tipoNie[posicion]) === -1) {
-                posicion += 1;
-            }
-            if (letraDeControl === codigoControl[(posicion + digitos) % 23]) {
-                validacion = true;
-            } else {
-                validacion = false;
-            }
-        } else {
-            ///////////////////////////////////////////////////////////////
-            if (nif.charAt(0).search(letrasNif) > -1) {
-                digitos = nif.slice(1, -1);
-                while (nif.charAt(0).search(tipoNif[posicion]) === -1) {
-                    posicion += 1;
-                }
-                digitos = posicion.toString() + digitos;
-                while (digitos[indice]) {
-                    digito = +digitos[indice];
-                    if ((indice + 1) % 2 === 0) {
-                        sumaPares = sumaPares + digito;
-                    } else {
-                        numero = digito * 2;
-                        if (numero > 9) {
-                            numeroTotal = (+numero.toString()[0]) + (+numero.toString()[1]);
-                        } else {
-                            numeroTotal = numero;
-                        }
-                        sumaImpares = sumaImpares + numeroTotal;
-                    }
-                    indice++;
-                }
-                sumaTotal = sumaImpares + sumaPares;
-                if ((+sumaTotal.toString()[1]) === 0) {
-                    digitoControl = 0;
-                } else {
-                    digitoControl = 10 - (+sumaTotal.toString()[1]);
-                }
-            }
-            ///////////////////////////////////////////////////////////////
-        }
-    }
-    return validacion;
-}*/
-
-function crearFechaNacimiento(dia, mes, anyo) {
-    var fechaNac;
-    if (mes.length === 3) {
-        fechaNac = new Date(anyo, MESES.split(",").indexOf(mes), dia);
-    } else {
-
-    }
-    return fechaNac;
+function crearFechaNacimiento(anyo, mes, dia) {
+    return new Date(anyo, mes, dia);
 }
 
 function completarAnyo(anyo) {
-    return (anyo > 30) ? "19" : "20" + anyo;
+    return (anyo > 30 ? "19" : "20") + anyo;
 }
 
 function validarComponentesFecha(dia, mes, anyo) {
@@ -191,11 +107,12 @@ function validarComponentesFecha(dia, mes, anyo) {
             anyo = completarAnyo(anyo);
         }
         datosCorrectos = ((numMes <= 12 && numMes >= 1) && (numDia <= 31 && numDia >= 1)) ? true : false;
-        fechaNacimiento = crearFechaNacimiento(numDia, numMes, anyo);
+        fechaNacimiento = crearFechaNacimiento(anyo, numMes, numDia);
     } else {
         datosCorrectos = (MESES.split(",").indexOf(mes) === -1) ? false : true;
         anyo = completarAnyo(anyo);
-        fechaNacimiento = crearFechaNacimiento(dia, mes, anyo);
+        mes = MESES.split(",").indexOf(mes, 0);
+        fechaNacimiento = crearFechaNacimiento(anyo, mes, dia);
             /*anyo = `${(anyo > 30)
                 ? "19"
                 : "20"}${anyo}`;*/
@@ -206,7 +123,7 @@ function validarComponentesFecha(dia, mes, anyo) {
     }
     if (datosCorrectos) {
         validacion = (+dia === fechaNacimiento.getDate() &&
-                    +MESES.split(",").indexOf(mes) === fechaNacimiento.getMonth() &&
+                    +mes === fechaNacimiento.getMonth() &&
                     +anyo === fechaNacimiento.getFullYear()) ? true : false;
     } else {
         validacion = false;
@@ -215,8 +132,7 @@ function validarComponentesFecha(dia, mes, anyo) {
 }
 
 function validarPassword(password) {
-    var validacionPassword = new RegExp(/^[A-Z]{6,10}$/);
-    return validacionPassword.test(password);
+    return VALIDACION_PASSWORD.test(password);
 }
 
 function validarName(name) {
@@ -226,14 +142,12 @@ function validarName(name) {
 }
 
 function validarGender(gender) {
-    var validacionGender = new RegExp(/^M|F$/);
-    return validacionGender.test(gender);
+    return VALIDACION_GENDER.test(gender);
 }
 
 function validarNif(nif) {
-    var validacion,
-        validacionNif = new RegExp(/^\d{1,8}[A-Z]|([K-M]|[X-Z])\d{1,7}[A-Z]$/);
-    if (!validacionNif.test(nif)) {
+    var validacion;
+    if (!VALIDACION_NIF.test(nif)) {
         validacion = false;
     } else {
         validacion = validarLetraDeControl(nif);
@@ -246,7 +160,7 @@ function validarDate(date) {
         diaNacimiento,
         mesNacimiento,
         anyoNacimiento;
-    if (!VALIDACIONDATE.test(date)) {
+    if (!VALIDACION_DATE.test(date)) {
         validacion = false;
     } else {
         if (date.length === 7) {
@@ -308,7 +222,7 @@ function determinarSaludo(fecha) {
 }
 
 function determinarTratamiento(genero) {
-    return (genero === "F") ? "Sra." : "Sr.";
+    return (genero === "F") ? TRATAMIENTO_FEMENINO : TRATAMIENTO_MASCULINO;
 }
 
 function determinarApellido(persona) {
@@ -328,20 +242,22 @@ function determinarEdad(fechaNacimiento, fechaActual) {
         anyoNacimiento = fechaNacimiento.substring(4, 6);
         /*anyoNacimiento = `${(anyoNacimiento > 30) ? "19" : "20"}${anyoNacimiento}`;
         anyoNacimiento = `${completaAño(anyoNacimiento)}$`*/
+        anyoNacimiento = (anyoNacimiento > 30 ? "19" : "20") + anyoNacimiento;
         fechaNacimiento = new Date(anyoNacimiento, mesNacimiento, diaNacimiento);
-        edad = Math.floor((fechaActual - fechaNacimiento) / MILISEGUNDOSPORANYO);
+        edad = Math.floor((fechaActual - fechaNacimiento) / MILISEGUNDOS_POR_ANYO);
     }
     return edad;
 }
 
 function calcularEdadUsuario(date, fecha) {
     var diaNacimiento = date.substring(0, 2),
-        mesNacimiento = date.substring(2, 5),
-        anyoNacimiento = date.substring(5, 7),
-        fechaNacimiento;
-    anyoNacimiento = `${(anyoNacimiento > 30) ? "19" : "20"}${anyoNacimiento}`;
-    fechaNacimiento = new Date(anyoNacimiento, MESES.split(",").indexOf(mesNacimiento), diaNacimiento);
-    return Math.floor((fecha - fechaNacimiento) / MILISEGUNDOSPORANYO);
+        mesNacimiento = date.substring(2, 4),
+        anyoNacimiento = date.substring(4, 8),
+        fechaNacimiento = new Date(anyoNacimiento, mesNacimiento, diaNacimiento);
+    //anyoNacimiento = `${(anyoNacimiento > 30) ? "19" : "20"}${anyoNacimiento}`;
+    //anyoNacimiento = (anyoNacimiento > 30 ? "19" : "20") + anyoNacimiento;
+    //fechaNacimiento = new Date(anyoNacimiento, MESES.split(",").indexOf(mesNacimiento), diaNacimiento);
+    return Math.floor((fecha - fechaNacimiento) / MILISEGUNDOS_POR_ANYO);
 }
 
 function quitarElementosVacios(array) {

@@ -1,3 +1,4 @@
+"use strict";
 function validateUserData(cadenaConsulta) {
     var nif, password, name, gender, date, salida,
         error = false,
@@ -50,7 +51,9 @@ function validateUserData(cadenaConsulta) {
         salida = "Error: Argumento ".concat(argumentoErroneo).concat(" inválido");
     } else {
         if (!nif && !password && !name && !gender && !date) {
-            salida = INFOSISTEMA;
+            salida = "Está utilizando el navegador " +
+                identificarNavegador(window.navigator.userAgent) +
+                " en un sistema operativo " + identificarSO(window.navigator.userAgent);
         } else {
             personaEncontrada = localizarDatosUsuario(nif, password, USUARIOS);
             if (personaEncontrada.length === 1) {
@@ -65,7 +68,7 @@ function validateUserData(cadenaConsulta) {
                         determinarTratamiento(gender) + " " + name.split(" ")[1] +
                         "." + " Su edad es " + calcularEdadUsuario(date, fecha) +  " años";
                 } else {
-                    salida = ERRORCREDENCIALES;
+                    salida = ERROR_CREDENCIALES;
                 }
             }
         }
