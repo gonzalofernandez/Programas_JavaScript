@@ -1,22 +1,10 @@
 "use strict";
-function buscarCoincidencia(cadenaEntrada, PALABRA_COMPARADA, numeroLetras) {
-	var posicionCadena = 0,
-		posicionPalabra = 0,
-		coincidencia = "";
-	while (PALABRA_COMPARADA[posicionCadena] && posicionPalabra !== numeroLetras) {
-		while (cadenaEntrada[posicionPalabra] && coincidencia !== PALABRA_COMPARADA) {
-			if (PALABRA_COMPARADA[posicionCadena] === cadenaEntrada[posicionPalabra]) {
-				coincidencia = coincidencia + cadenaEntrada[posicionPalabra];
-                posicionCadena += 1;
-			} else {
-                coincidencia = "";
-                posicionCadena = 0;
-            }
-            posicionPalabra += 1;
-		}
-	}
-	return coincidencia === PALABRA_COMPARADA;
-}
+var MODULO = 26,
+    MSG_ERROR = "Codificación inválida",
+    SIMBOLO_CIFRAR = "*",
+    SIMBOLO_DESCIFRAR = "#",
+    ORDEN_CIFRAR = "cifrar",
+    ORDEN_DESCIFRAR = "descifrar";
 
 function contarCaracteres(caracteres) {
     var numeroCaracteres = 0;
@@ -33,14 +21,6 @@ function comprobarLetra(letra) {
     case "A":
     case "á":
     case "Á":
-    case "ã":
-    case "Ã":
-    case "à":
-    case "À":
-    case "ä":
-    case "Ä":
-    case "â":
-    case "Â":
         numLetra = 0;
         break;
     case "b":
@@ -49,8 +29,6 @@ function comprobarLetra(letra) {
         break;
     case "c":
     case "C":
-    case "ç":
-    case "Ç":
         numLetra = 2;
         break;
     case "d":
@@ -61,14 +39,6 @@ function comprobarLetra(letra) {
     case "E":
     case "é":
     case "É":
-    case "~e":
-    case "~E":
-    case "è":
-    case "È":
-    case "ë":
-    case "Ë":
-    case "ê":
-    case "Ê":
         numLetra = 4;
         break;
     case "f":
@@ -87,14 +57,6 @@ function comprobarLetra(letra) {
     case "I":
     case "í":
     case "Í":
-    case "~i":
-    case "~I":
-    case "ì":
-    case "Ì":
-    case "ï":
-    case "Ï":
-    case "î":
-    case "Î":
         numLetra = 8;
         break;
     case "j":
@@ -123,14 +85,6 @@ function comprobarLetra(letra) {
     case "O":
     case "ó":
     case "Ó":
-    case "õ":
-    case "Õ":
-    case "ò":
-    case "Ò":
-    case "ö":
-    case "Ö":
-    case "ô":
-    case "Ô":
         numLetra = 14;
         break;
     case "p":
@@ -157,14 +111,6 @@ function comprobarLetra(letra) {
     case "U":
     case "ú":
     case "Ú":
-    case "~u":
-    case "~U":
-    case "ù":
-    case "Ù":
-    case "ü":
-    case "Ü":
-    case "û":
-    case "Û":
         numLetra = 20;
         break;
     case "v":
@@ -280,104 +226,86 @@ function convertirNumeroEnLetra(numero) {
     return letra;
 }
 
-function cifrar(numCam, numCla, mod) {
-    var cifrado;
-    if ((numCam + numCla) >= mod) {
-        cifrado = (numCam + numCla) % mod;
-    } else {
-        cifrado = numCam + numCla;
-    }
-    return cifrado;
-}
-
-function descifrar(numCam, numCla, mod) {
-    var descifrado;
-    if ((numCam - numCla) >= 0) {
-        descifrado = (numCam - numCla) % mod;
-    } else {
-        descifrado = (numCam - numCla + mod) % mod;
-    }
-    return descifrado;
-}
-
 function cifrarYDescifrar(numCam, numCla, mod, orden) {
-    var salida;
-    if (orden === "cifrar") {
-        salida = cifrar(numCam, numCla, mod);
-    } else {
-        salida = descifrar(numCam, numCla, mod);
-    }
-    return salida;
+    return orden === "cifrar"
+        ? ((numCam + numCla) >= mod
+            ? (numCam + numCla) % mod
+            : numCam + numCla)
+        : ((numCam - numCla) >= 0
+            ? (numCam - numCla) % mod
+            : (numCam - numCla + mod) % mod);
 }
 
 function vigenere(cadena, clave) {
-    var msgError = "Codificación inválida",
-        j = 0,
-        i = 0,
+    var primerCaracter = cadena[0],
+        posicionCadena,
+        posicionClave = 0,
         salida,
-        numeroLetrasDeCadena,
-        numeroLetrasDeClave,
+        numeroLetrasDeCadena = contarCaracteres(cadena),
+        numeroLetrasDeClave = contarCaracteres(clave),
         cadenaCifrada = "",
         numeroCadena,
         numeroClave,
         numeroDeLetraCifrada,
         letraCifrada,
-        simboloCifrar = "*",
-        simboloDescifrar = "#",
-        simboloDescifrarAlternativo = "!",
         orden,
-        ordenCifrar = "cifrar",
-        ordenDescifrar = "descifrar",
         codigoSalida;
     if (!cadena) {
-        salida = msgError;
+        salida = MSG_ERROR;
     } else {
-        numeroLetrasDeCadena = contarCaracteres(cadena);
-        numeroLetrasDeClave = contarCaracteres(clave);
-        if ((cadena[0] === simboloCifrar && cadena[numeroLetrasDeCadena - 1] === simboloCifrar) ||
-                (cadena[0] === simboloDescifrar && cadena[numeroLetrasDeCadena - 1] === simboloDescifrar)) {
+        if (
+            (primerCaracter === SIMBOLO_CIFRAR &&
+                cadena[numeroLetrasDeCadena - 1] === SIMBOLO_CIFRAR) ||
+                (primerCaracter === SIMBOLO_DESCIFRAR &&
+                cadena[numeroLetrasDeCadena - 1] === SIMBOLO_DESCIFRAR)
+        ) {
             if (numeroLetrasDeCadena === 2) {
-                salida = msgError;
+                salida = MSG_ERROR;
             } else {
-                if (cadena[0] === simboloCifrar) {
-                    if (buscarCoincidencia(cadena, PALABRA_COMPARADA, numeroLetrasDeCadena)) {
-                        codigoSalida = simboloDescifrarAlternativo;
-                    } else {
-                        codigoSalida = simboloDescifrar;
-                    }
-                    orden = ordenCifrar;
+                if (primerCaracter === SIMBOLO_CIFRAR) {
+                    codigoSalida = SIMBOLO_DESCIFRAR;
+                    orden = ORDEN_CIFRAR;
                 } else {
-                    codigoSalida = simboloCifrar;
-                    orden = ordenDescifrar;
+                    codigoSalida = SIMBOLO_CIFRAR;
+                    orden = ORDEN_DESCIFRAR;
                 }
-                for (i = 1; i <= numeroLetrasDeCadena - 2; i += 1) {
-                    numeroCadena = comprobarLetra(cadena[i]);
-                    numeroClave = comprobarLetra(clave[j]);
+                for (posicionCadena = 1;
+                        posicionCadena <= numeroLetrasDeCadena - 2;
+                        posicionCadena += 1) {
+                    numeroCadena = comprobarLetra(cadena[posicionCadena]);
+                    numeroClave = comprobarLetra(clave[posicionClave]);
                     if (numeroClave === -1) {
-                        salida = msgError;
+                        salida = MSG_ERROR;
                     } else {
                         if (numeroCadena === -1) {
-                            cadenaCifrada = cadenaCifrada + cadena[i];
+                            cadenaCifrada = cadenaCifrada + cadena[posicionCadena];
                         } else {
-                            numeroDeLetraCifrada = cifrarYDescifrar(numeroCadena, numeroClave, MODULO, orden);
-                            letraCifrada = convertirNumeroEnLetra(numeroDeLetraCifrada);
+                            numeroDeLetraCifrada = cifrarYDescifrar(
+                                numeroCadena,
+                                numeroClave,
+                                MODULO,
+                                orden
+                            );
+                            letraCifrada = convertirNumeroEnLetra(
+                                numeroDeLetraCifrada
+                            );
                             cadenaCifrada = cadenaCifrada + letraCifrada;
                         }
                     }
-                    if (salida === msgError) {
-                        i = numeroLetrasDeCadena;
+                    if (salida === MSG_ERROR) {
+                        posicionCadena = numeroLetrasDeCadena;
                     } else {
                         salida = codigoSalida + cadenaCifrada + codigoSalida;
-                        if (j === numeroLetrasDeClave - 1) {
-                            j = 0;
+                        if (posicionClave === numeroLetrasDeClave - 1) {
+                            posicionClave = 0;
                         } else {
-                            j += 1;
+                            posicionClave += 1;
                         }
                     }
                 }
             }
         } else {
-            salida = msgError;
+            salida = MSG_ERROR;
         }
     }
     return salida;

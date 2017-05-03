@@ -23,7 +23,10 @@ describe("Testeando la función \"validateuserdata\" con estilo BDD", function (
         validateUserData("").should.be.equal("Está utilizando el navegador " + identificarNavegador(window.navigator.userAgent) + " en un sistema operativo " + identificarSO(window.navigator.userAgent));
     });
     it("Debería devolver un mensaje del sistema si la entrada solo tiene la interrogación", function () {
-        validateUserData("?").should.be.equal("Está utilizando el navegador " + identificarNavegador(window.navigator.userAgent) + " en un sistema operativo " + identificarSO(window.navigator.userAgent));
+        validateUserData("").should.be.equal("Está utilizando el navegador " + identificarNavegador(window.navigator.userAgent) + " en un sistema operativo " + identificarSO(window.navigator.userAgent));
+    });
+    it("Debería devolver un mensaje indicando credenciales inválidas si introducimos dos interrogaciones", function () {
+        validateUserData("??").should.be.equal("Error: Credenciales inválidas");
     });
     it("Debería devolver error del argumento si algún argumento es erroneo", function () {
         validateUserData("?nif=zzz").should.be.equal("Error: Argumento nif inválido");
