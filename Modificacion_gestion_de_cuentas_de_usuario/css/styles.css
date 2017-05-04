@@ -5,11 +5,11 @@ body {
 header h1 {
     width: 100%;
 }
-.colocado {
+.caja_pequenya {
     margin: auto;
     width: 30%;
 }
-.colocado2 {
+.caja_grande {
     margin: auto;
     width: 70%;
 }
