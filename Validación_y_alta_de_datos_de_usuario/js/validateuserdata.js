@@ -50,23 +50,28 @@ function validateUserData(cadenaConsulta) {
         }
     }
     if (!cadenaConsulta) {
-        salida = `Está utilizando el navegador ${identificarNavegador(window.navigator.userAgent)} en un sistema operativo ${identificarSO(window.navigator.userAgent)}`;
+        salida = `Está utilizando el navegador ` +
+        `${identificarNavegador(window.navigator.userAgent)}` +
+        ` en un sistema operativo ` +
+        `${identificarSO(window.navigator.userAgent)}`;
     } else if (argumentoErroneo) {
         //TO_DO
-        //no funcionan los tests que utilizan la salida error
-        //throw new Error(`Argumento ${argumentoErroneo} inválido`);
         salida = `Error: Argumento ${argumentoErroneo} inválido`;
     } else {
         personaEncontrada = localizarDatosUsuario(nif, password, USUARIOS);
         if (personaEncontrada.length === 1) {
             personaEncontrada = personaEncontrada[0].split(",");
-            salida = `Buenos ${determinarSaludo(fecha)} ${determinarTratamiento(personaEncontrada[4])} ${determinarApellido(personaEncontrada[0])}. Su edad es ${determinarEdad(personaEncontrada[3], fecha)} años`;
+            salida = `Buenos ${determinarSaludo(fecha)} ` +
+                `${determinarTratamiento(personaEncontrada[4])} ` +
+                `${determinarApellido(personaEncontrada[0])}. ` +
+                `Su edad es ${determinarEdad(personaEncontrada[3], fecha)} ` +
+                `años`;
         } else if (personaEncontrada.length === 0 && name && gender && date) {
-            salida = `No hemos podido localizar sus datos ${determinarTratamiento(gender)} ${name.split(" ")[1]}. Su edad es ${determinarEdad(date, fecha)} años`;
+            salida = `No hemos podido localizar sus datos ` +
+                `${determinarTratamiento(gender)} ${name.split(" ")[1]}. ` +
+                `Su edad es ${determinarEdad(date, fecha)} años`;
         } else {
             //TO_DO
-            //no funcionan los tests que utilizan la salida error
-            //throw ERROR_CREDENCIALES;
             salida = ERROR_CREDENCIALES;
         }
     }

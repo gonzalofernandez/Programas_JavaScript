@@ -1,6 +1,6 @@
 //TO_DO
+//Preguntar por el switch de asignarTramos
 //Modificar logica del sistema para que los servidores y cuentas implementen metodos
-//Al terminar poner los string de salida con backquotes
 "use strict";
 var miApp = (function () {
     //DATOS DEL SISTEMA
@@ -96,11 +96,31 @@ var miApp = (function () {
                 case "user":
                     cuenta.puntos = "50";
                     break;
-                default:
+                case "premium":
                     cuenta.puntos = "100";
+                    break;
                 }
             }
             return cuenta.puntos;
+        }
+        //Asignar cuentas a tramos
+        function asignarTramos(sistema, tramos, filas) {
+            sistema.servidores.forEach(function (servidor) {
+                servidor.cuentas.forEach(function (cuenta) {
+                    switch (true) {
+                    case cuenta.puntos >= tramos.tramoA.limiteInferior:
+                        filas.Tramo_3 += 1;
+                        break;
+                    case cuenta.puntos >= tramos.tramoB.limiteInferior:
+                        filas.Tramo_2 += 1;
+                        break;
+                    case cuenta.puntos <= tramos.tramoC.limiteSuperior:
+                        filas.Tramo_1 += 1;
+                        break;
+                    }
+                });
+            });
+            return filas;
         }
 
 
@@ -242,10 +262,11 @@ var miApp = (function () {
             }
             return cuentaAgregada;
         };
-        //TO_DO
         //Método para obtener estadísticas del sistema
         Sistema.prototype.obtenerEstadisticas = function () {
-            var tramos,
+            var estadisticas, puntosMinimos, puntosMaximos, modulo, tramos,
+                longitudTramo, tramoA, tramoB, tramoC, NUMERO_TRAMOS = 3,
+                filas = {Tramo_1: 0, Tramo_2: 0, Tramo_3: 0},
                 puntosEnCuentas = [];
             this.servidores.map(function (servidor) {
                 servidor.cuentas.map(function (cuenta) {
@@ -258,7 +279,15 @@ var miApp = (function () {
             puntosMinimos = puntosEnCuentas[0];
             puntosMaximos = puntosEnCuentas[puntosEnCuentas.length - 1];
             modulo = puntosMaximos - puntosMinimos;
-            return tramos;
+            longitudTramo = modulo / NUMERO_TRAMOS;
+            tramoA = {limiteSuperior: puntosMaximos,
+                      limiteInferior: puntosMaximos - longitudTramo};
+            tramoB = {limiteSuperior: tramoA.limiteInferior - 1,
+                      limiteInferior: tramoA.limiteInferior - longitudTramo};
+            tramoC = {limiteSuperior: tramoB.limiteInferior - 1,
+                      limiteInferior: puntosMinimos};
+            tramos = {tramoA: tramoA, tramoB: tramoB, tramoC: tramoC};
+            return asignarTramos(this, tramos, filas);
         };
 
 

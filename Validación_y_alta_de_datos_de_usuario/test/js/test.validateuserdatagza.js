@@ -11,8 +11,8 @@ var MORNING_END = 12,
     PART_OF_DAY = "días|tardes|noches".split("|");
 // Helpers
 function partOfDay() {
-    var currentHour = (new Date()).getHours();
-    var index = (currentHour <= MORNING_END)
+    var currentHour = (new Date()).getHours(),
+        index = (currentHour <= MORNING_END)
             ? 0
             : (currentHour > EVENING_END) + 1;
     return PART_OF_DAY[index];
@@ -26,7 +26,7 @@ describe("Testeando la función \"validateuserdata\" con estilo BDD", function (
         validateUserData("").should.be.equal("Está utilizando el navegador " + identificarNavegador(window.navigator.userAgent) + " en un sistema operativo " + identificarSO(window.navigator.userAgent));
     });
     it("Debería devolver un mensaje indicando credenciales inválidas si introducimos dos interrogaciones", function () {
-        validateUserData("??").should.be.equal("Error: Credenciales inválidas");
+        validateUserData("??").should.be.equals("Error: Credenciales inválidas");
     });
     it("Debería devolver error del argumento si algún argumento es erroneo", function () {
         validateUserData("?nif=zzz").should.be.equal("Error: Argumento nif inválido");

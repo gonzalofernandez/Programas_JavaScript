@@ -1,7 +1,5 @@
 //TO_DO
-//Terminar funcion obtenerEstadisticas
-//Preguntar por el uso correcto de filtrarCuentas y ordenarCuentas en el front
-//Hacer que el front pinte todo el index en base a los requisitos
+//Hacer que el front pinte todo el index en base a los requisitos utilizando DOM
 //NODE var module = require("./back-end.js");
 "use strict";
 var miApp = miApp || {},
@@ -18,8 +16,8 @@ var miApp = miApp || {},
     nomSer, nomSis, nomDir, filasTabla, filaDatosCuenta, servidor, nombreCuenta,
     nombreUsuario, fechaIngreso, saldo, tipoCuenta, tipoFiltro, saldoMedio,
     puntosCuenta, botonBorrarCuentas, botonFiltrarCuentas, botonCrearCuenta,
-    botonesGestion, botonOrdenAscendente, botonOrdenDescendente, botonObtenerEstadisticas,
-    filasEstadistica;
+    botonesGestion, botonOrdenAscendente, botonOrdenDescendente,
+    botonObtenerEstadisticas, filasEstadistica;
 
 function $(elemento) {
     return document.getElementById(elemento);
@@ -79,7 +77,7 @@ function inicializar() {
 function resetearTabla() {
     filasTabla.innerHTML = "";
 }
-//Dibujar checkbox
+//Pintar checkbox
 function pintarCheckBox(celdaReferencia) {
     var checkbox = document.createElement("input");
     checkbox.type = "checkbox";
@@ -155,6 +153,19 @@ function ordenarCuentas(sentido) {
     });
     return filasParaInsertar;
 }
+//Asigna el valor correspondiente al tramo
+function asignarValor(indice, tramos) {
+    var valor;
+    if (indice === "Tramo_1") {
+        valor = tramos.Tramo_1;
+    } else if (indice === "Tramo_2") {
+        valor = tramos.Tramo_2;
+    } else {
+        valor = tramos.Tramo_3;
+    }
+    return valor;
+}
+
 
 //BOTONES
 function seleccionarServidor() {
@@ -194,8 +205,10 @@ function crearCuenta() {
         miApp.recuperarCuentas(servidorElegido).forEach(insertarFila);
         borrarDatosCuentaNueva();
     } else {
-        filaDatosCuenta.insertAdjacentHTML("beforeend", "<tr><td colspan=6><h2>" + MENSAJE_ERROR +
-                                      "</h2></td></tr>");
+        filaDatosCuenta.insertAdjacentHTML("beforeend",
+                                           `<tr><td colspan=6><h2>` +
+                                           `${MENSAJE_ERROR}</h2>` +
+                                           `${finalTabla}`);
     }
 }
 
@@ -236,16 +249,15 @@ function ordenarDesc() {
     resetearTabla();
     filasParaInsertar.forEach(insertarFila);
 }
-//TO_DO
+
 function obtenerEstadisticas() {
-    var tramos = miApp.obtenerEstadisticas();
-    /*return tramos.forEach(function (tramo) {
-        filasEstadistica.insertAdjacentHTML("afterbegin", inicioTabla +
-                                  cuenta.nombreCuenta + orejeras +
-                                  cuenta.nombreUsuario + orejeras +
-                                  cuenta.fechaIngreso + orejeras +
-                                  cuenta.saldo + orejeras +
-                                  cuenta.tipoCuenta + orejeras +
-                                  cuenta.puntos + finalTabla);
-    });*/
+    var tramos = miApp.obtenerEstadisticas(),
+        nombreTramos = Object.keys(tramos);
+    filasEstadistica.innerHTML = "";
+    nombreTramos.forEach(function (elemento) {
+        filasEstadistica.insertAdjacentHTML("beforeend", `${inicioTabla}` +
+                                            `${elemento}: ` +
+                                            `${asignarValor(elemento, tramos)}` +
+                                            ` cuentas${orejeras}${finalTabla}`);
+    });
 }

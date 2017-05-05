@@ -1,18 +1,16 @@
 "use strict";
 //TO_DO
-//Preguntar por el uso correcto del objeto String
-//No funcionan los tests que utilizan la salida error
-var //ERROR_CREDENCIALES = new Error("Error: Credenciales inválidas"),
-    ERROR_CREDENCIALES = String("Error: Credenciales inválidas"),
+//Introducir el objeto error y en globals y validate... y modificar archivo de tests para sepa que el programa lanza un objeto error
+var ERROR_CREDENCIALES = "Error: Credenciales inválidas",
     MESES = String("jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec"),
-    TRATAMIENTO_FEMENINO = String("Sra."),
-    TRATAMIENTO_MASCULINO = String("Sr."),
+    TRATAMIENTO_FEMENINO = "Sra.",
+    TRATAMIENTO_MASCULINO = "Sr.",
     VALIDACION_PASSWORD = new RegExp(/^[A-Z]{6,10}$/),
     VALIDACION_GENDER = new RegExp(/^M|F$/),
     VALIDACION_NIF = new RegExp(/^\d{1,8}[A-Z]|([K-M]|[X-Z])\d{1,7}[A-Z]$/),
     VALIDACION_DATE = new RegExp(/^\d{2}[a-z]{3}\d{2}$/),
     MILISEGUNDOS_POR_ANYO = 31536000000,
-    CLAVE = String("javascript"),
+    CLAVE = "javascript",
     USUARIOS = String("Pepe Pérez,12345678Z,lalajkf,030690,M;Luisa Sánchez," +
         "X1234567L,yemiiwzbdl,160848,F;Alberto López,K9999999J,kadlwu," +
         "230707,M"),
