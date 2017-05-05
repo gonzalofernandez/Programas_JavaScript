@@ -36,7 +36,7 @@ function validateUserData(cadenaConsulta) {
                 break;
             }
             if (validacion) {
-                posicionParametro += 1;
+                posicionParametro = incrementarPosicion(posicionParametro);
                 posicionArgumento = 0;
             } else {
                 error = true;
@@ -44,9 +44,9 @@ function validateUserData(cadenaConsulta) {
             }
         } else if (posicionArgumento === 4) {
             posicionArgumento = 0;
-            posicionParametro += 1;
+            posicionParametro = incrementarPosicion(posicionParametro);
         } else {
-            posicionArgumento += 1;
+            posicionArgumento = incrementarPosicion(posicionParametro);
         }
     }
     if (!cadenaConsulta) {
@@ -55,8 +55,7 @@ function validateUserData(cadenaConsulta) {
         ` en un sistema operativo ` +
         `${identificarSO(window.navigator.userAgent)}`;
     } else if (argumentoErroneo) {
-        //TO_DO
-        salida = `Error: Argumento ${argumentoErroneo} inválido`;
+        throw new Error(`Argumento ${argumentoErroneo} inválido`);
     } else {
         personaEncontrada = localizarDatosUsuario(nif, password, USUARIOS);
         if (personaEncontrada.length === 1) {
@@ -71,8 +70,7 @@ function validateUserData(cadenaConsulta) {
                 `${determinarTratamiento(gender)} ${name.split(" ")[1]}. ` +
                 `Su edad es ${determinarEdad(date, fecha)} años`;
         } else {
-            //TO_DO
-            salida = ERROR_CREDENCIALES;
+            throw new Error(ERROR_CREDENCIALES);
         }
     }
     return salida;

@@ -1,7 +1,5 @@
 "use strict";
-//TO_DO
-//Introducir el objeto error y en globals y validate... y modificar archivo de tests para sepa que el programa lanza un objeto error
-var ERROR_CREDENCIALES = "Error: Credenciales inválidas",
+var ERROR_CREDENCIALES = "Credenciales inválidas",
     MESES = String("jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec"),
     TRATAMIENTO_FEMENINO = "Sra.",
     TRATAMIENTO_MASCULINO = "Sr.",
@@ -134,6 +132,10 @@ function quitarElementosVacios(array) {
 
 function obtenerValorDeParametro(cadena) {
     return cadena.substring(cadena.indexOf("=") + 1);
+}
+
+function incrementarPosicion(posicionElemento) {
+    return posicionElemento += 1;
 }
 
 
