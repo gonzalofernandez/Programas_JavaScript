@@ -17,7 +17,8 @@ var miApp = (function () {
             SISTEMA_PRINCIPAL,
             VALIDACION_FECHA = new RegExp(/^\d{2}\/\d{2}\/\d{2}$/),
             VALIDACION_NOMBRE = new RegExp(/[a-z]*\.*-*_*/),
-            TODAS_LAS_CUENTAS = "todas";
+            TODAS_LAS_CUENTAS = "todas",
+            VERDAD = true;
 
 
         //FUNCIONES DE AYUDA
@@ -107,7 +108,7 @@ var miApp = (function () {
         function asignarTramos(sistema, tramos, filas) {
             sistema.servidores.forEach(function (servidor) {
                 servidor.cuentas.forEach(function (cuenta) {
-                    switch (true) {
+                    switch (VERDAD) {
                     case cuenta.puntos >= tramos.tramoA.limiteInferior:
                         filas.Tramo_3 += 1;
                         break;
