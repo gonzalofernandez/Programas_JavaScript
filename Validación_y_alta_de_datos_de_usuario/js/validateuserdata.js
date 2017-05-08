@@ -36,17 +36,17 @@ function validateUserData(cadenaConsulta) {
                 break;
             }
             if (validacion) {
-                posicionParametro = incrementarPosicion(posicionParametro);
-                posicionArgumento = 0;
+                posicionParametro = incrementarNumero(posicionParametro);
+                posicionArgumento = resetearPosicion(posicionArgumento);
             } else {
                 error = true;
                 argumentoErroneo = listaArgumentos[posicionArgumento];
             }
         } else if (posicionArgumento === 4) {
-            posicionArgumento = 0;
-            posicionParametro = incrementarPosicion(posicionParametro);
+            posicionArgumento = resetearPosicion(posicionArgumento);
+            posicionParametro = incrementarNumero(posicionParametro);
         } else {
-            posicionArgumento = incrementarPosicion(posicionParametro);
+            posicionArgumento = incrementarNumero(posicionArgumento);
         }
     }
     if (!cadenaConsulta) {

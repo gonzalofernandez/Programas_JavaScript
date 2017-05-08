@@ -134,8 +134,12 @@ function obtenerValorDeParametro(cadena) {
     return cadena.substring(cadena.indexOf("=") + 1);
 }
 
-function incrementarPosicion(posicionElemento) {
-    return posicionElemento += 1;
+function incrementarNumero(posicion) {
+    return posicion += 1;
+}
+
+function resetearPosicion() {
+    return 0;
 }
 
 
