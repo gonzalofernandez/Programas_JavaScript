@@ -1,10 +1,7 @@
-//TO_DO
-//Hacer que el front pinte todo el index en base a los requisitos utilizando DOM
-//NODE var module = require("./back-end.js");
 "use strict";
 var miApp = miApp || {},
     MENSAJE_ERROR = "Los datos introducidos son incorrectos, por favor" +
-        " revíselos.",
+            " revíselos.",
     SENTIDO_ASC = "asc",
     SENTIDO_DESC = "desc",
     inicioTabla = "<tr><td>",
@@ -13,23 +10,42 @@ var miApp = miApp || {},
     COLUMNA_CHECK = 6,
     COLUMNA_NOMBRE_CUENTA = 0,
     NOMBRE_CUENTA = 0,
-    nomSer, nomSis, nomDir, filasTabla, filaDatosCuenta, servidor, nombreCuenta,
-    nombreUsuario, fechaIngreso, saldo, tipoCuenta, tipoFiltro, saldoMedio,
-    puntosCuenta, botonBorrarCuentas, botonFiltrarCuentas, botonCrearCuenta,
-    botonesGestion, botonOrdenAscendente, botonOrdenDescendente,
-    botonObtenerEstadisticas, filasEstadistica;
+    nomSer,
+    nomSis,
+    nomDir,
+    filasTabla,
+    filaDatosCuenta,
+    servidor,
+    nombreCuenta,
+    nombreUsuario,
+    fechaIngreso,
+    saldo,
+    tipoCuenta,
+    tipoFiltro,
+    saldoMedio,
+    puntosCuenta,
+    botonBorrarCuentas,
+    botonFiltrarCuentas,
+    botonCrearCuenta,
+    botonesGestion,
+    botonOrdenAscendente,
+    botonOrdenDescendente,
+    botonObtenerEstadisticas,
+    filasEstadistica;
 
 function $(elemento) {
     return document.getElementById(elemento);
 }
 //Habilita o deshabilita botones
-function controlarBotones(nomSer,
-                           botonFiltrarCuentas,
-                           botonBorrarCuentas,
-                           botonCrearCuenta,
-                           botonOrdenDescendente,
-                           botonOrdenAscendente) {
-    var valor = !nomSer.textContent ? true : false;
+function controlarBotones(
+    nomSer,
+    botonFiltrarCuentas,
+    botonBorrarCuentas,
+    botonCrearCuenta,
+    botonOrdenDescendente,
+    botonOrdenAscendente
+) {
+    var valor = !!(!nomSer.textContent);
     botonFiltrarCuentas.disabled = valor;
     botonBorrarCuentas.disabled = valor;
     botonCrearCuenta.disabled = valor;
@@ -63,12 +79,14 @@ function inicializar() {
     //Escribe el nombre del sistema en la parte superior
     $("letrero").insertAdjacentHTML("beforeend", miApp.obtenerNombreSistema());
     //Controla qué botones deben estar habilitados al principio
-    controlarBotones(nomSer,
-                     botonFiltrarCuentas,
-                     botonBorrarCuentas,
-                     botonCrearCuenta,
-                     botonOrdenDescendente,
-                     botonOrdenAscendente);
+    controlarBotones(
+        nomSer,
+        botonFiltrarCuentas,
+        botonBorrarCuentas,
+        botonCrearCuenta,
+        botonOrdenDescendente,
+        botonOrdenAscendente
+    );
 }
 
 
@@ -85,13 +103,15 @@ function pintarCheckBox(celdaReferencia) {
 }
 //Insertar fila
 function insertarFila(cuenta) {
-    filasTabla.insertAdjacentHTML("beforeend", inicioTabla +
-                                  cuenta.nombreCuenta + orejeras +
-                                  cuenta.nombreUsuario + orejeras +
-                                  cuenta.fechaIngreso + orejeras +
-                                  cuenta.saldo + orejeras +
-                                  cuenta.tipoCuenta + orejeras +
-                                  cuenta.puntos + finalTabla);
+    filasTabla.insertAdjacentHTML(
+        "beforeend",
+        inicioTabla + cuenta.nombreCuenta + orejeras +
+                cuenta.nombreUsuario + orejeras +
+                cuenta.fechaIngreso + orejeras +
+                cuenta.saldo + orejeras +
+                cuenta.tipoCuenta + orejeras +
+                cuenta.puntos + finalTabla
+    );
     pintarCheckBox(filasTabla.lastElementChild);
 }
 //Borrar datos del servidor
@@ -143,12 +163,14 @@ function ordenarCuentas(sentido) {
         return resultado;
     }, sentido);
     filasCompletas.forEach(function (fila) {
-        var datos = {nombreCuenta: fila[0].textContent,
-                     nombreUsuario: fila[1].textContent,
-                     fechaIngreso: fila[2].textContent,
-                     saldo: fila[3].textContent,
-                     tipoCuenta: fila[4].textContent,
-                     puntos: fila[5].textContent};
+        var datos = {
+            nombreCuenta: fila[0].textContent,
+            nombreUsuario: fila[1].textContent,
+            fechaIngreso: fila[2].textContent,
+            saldo: fila[3].textContent,
+            tipoCuenta: fila[4].textContent,
+            puntos: fila[5].textContent
+        };
         return filasParaInsertar.push(datos);
     });
     return filasParaInsertar;
@@ -175,12 +197,14 @@ function seleccionarServidor() {
     resetearTabla();
     miApp.recuperarCuentas(servidorElegido).forEach(insertarFila);
     //Habilita botones una vez elegido el servidor
-    controlarBotones(nomSer,
-                     botonFiltrarCuentas,
-                     botonBorrarCuentas,
-                     botonCrearCuenta,
-                     botonOrdenDescendente,
-                     botonOrdenAscendente);
+    controlarBotones(
+        nomSer,
+        botonFiltrarCuentas,
+        botonBorrarCuentas,
+        botonCrearCuenta,
+        botonOrdenDescendente,
+        botonOrdenAscendente
+    );
 }
 
 function crearCuenta() {
@@ -191,12 +215,14 @@ function crearCuenta() {
         idSaldo = saldo.value,
         idPuntos = puntosCuenta.value,
         idTipoCuenta = tipoCuenta.value,
-        cuentaNueva = {nombre_de_cuenta: idNombreCuenta,
-                       nombre_de_usuario: idNombreUsuario,
-                       fecha_ingreso: idFechaIngreso,
-                       saldo_cuenta: idSaldo,
-                       puntos: idPuntos,
-                       tipo_de_cuenta: idTipoCuenta};
+        cuentaNueva = {
+            nombre_de_cuenta: idNombreCuenta,
+            nombre_de_usuario: idNombreUsuario,
+            fecha_ingreso: idFechaIngreso,
+            saldo_cuenta: idSaldo,
+            puntos: idPuntos,
+            tipo_de_cuenta: idTipoCuenta
+        };
     if (filaDatosCuenta.children.length > 1) {
         filaDatosCuenta.lastElementChild.remove();
     }
@@ -205,16 +231,15 @@ function crearCuenta() {
         miApp.recuperarCuentas(servidorElegido).forEach(insertarFila);
         borrarDatosCuentaNueva();
     } else {
-        filaDatosCuenta.insertAdjacentHTML("beforeend",
-                                           `<tr><td colspan=6><h2>` +
-                                           `${MENSAJE_ERROR}</h2>` +
-                                           `${finalTabla}`);
+        filaDatosCuenta.insertAdjacentHTML(
+            "beforeend",
+            `<tr><td colspan=6><h2>${MENSAJE_ERROR}</h2>${finalTabla}`
+        );
     }
 }
 
 function borrarCuentas() {
-    var fila,
-        cuentasChecked = [],
+    var cuentasChecked = [],
         servidorElegido = miApp.elegirServidor(servidor.value),
         filasCuentas = Array.from(filasTabla.children);
     filasCuentas.forEach(function (fila) {
@@ -255,9 +280,10 @@ function obtenerEstadisticas() {
         nombreTramos = Object.keys(tramos);
     filasEstadistica.innerHTML = "";
     nombreTramos.forEach(function (elemento) {
-        filasEstadistica.insertAdjacentHTML("beforeend", `${inicioTabla}` +
-                                            `${elemento}: ` +
-                                            `${asignarValor(elemento, tramos)}` +
-                                            ` cuentas${orejeras}${finalTabla}`);
+        filasEstadistica.insertAdjacentHTML(
+            "beforeend",
+            `${inicioTabla}${elemento}: ${asignarValor(elemento, tramos)}` +
+                    ` cuentas${orejeras}${finalTabla}`
+        );
     });
 }
