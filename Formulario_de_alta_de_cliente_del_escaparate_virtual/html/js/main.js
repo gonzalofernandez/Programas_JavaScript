@@ -1,7 +1,5 @@
 //TO_DO
-//Expresiones regulares de la clave no chequean si hay uno de cada
-//Puedo usar Polyfill para type=date?
-//window.onload ?
+//Revisar expresiones regulares
 "use strict";
 var miApp = (function () {
         var VALIDACION_NOMBRE = new RegExp(/^(\w+ \w+)|(\w+)$/),

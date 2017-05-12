@@ -1,3 +1,4 @@
+<!--no incluir dominio en las direcciones-->
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -33,7 +34,7 @@
                 <div id="formulario" class="elemento_apagado">
                     <h2 id="formulario_titulo" class="mayusculas">Formulario de registro</h2>
                     <p id="formulario_cerrar">x</p><br><br>
-                    <form name="formulario" method="post">
+                    <form name="formulario" method="post" action="../../cgi-bin/index.php">
                         <fieldset>
                             <legend class="formulario_apartados">Datos obligatorios</legend><br>
                             <table>
@@ -43,7 +44,7 @@
                                             <label for="nombre_apellido">Nombre:</label>
                                         </td>
                                         <td>
-                                            <input type="text" id="nombre_apellido" class="" placeholder="Nombre y Apellido"/>
+                                            <input type="text" id="nombre_apellido" name="datos[nombre_apellido]" class="" placeholder="Nombre y Apellido"/>
                                             <span class="color_asterisco">*</span>
                                         </td>
                                     </tr>
@@ -52,7 +53,7 @@
                                             <label for="correo_electronico">Correo electrónico:</label>
                                         </td>
                                         <td>
-                                            <input type="email" id="correo_electronico" class="" placeholder="Correo-e"/>
+                                            <input type="email" id="correo_electronico" name="datos[correo_electronico]" class="" placeholder="Correo-e"/>
                                             <span class="color_asterisco">*</span>
                                         </td>
                                     </tr>
@@ -61,7 +62,7 @@
                                             <label for="clave">Clave:</label>
                                         </td>
                                         <td>
-                                            <input type="password" id="clave" class="" placeholder="Contraseña"/>
+                                            <input type="password" id="clave" name="datos[clave]" class="" placeholder="Contraseña"/>
                                             <span class="color_asterisco">*</span>
                                         </td>
                                     </tr>
@@ -70,7 +71,7 @@
                                             <label for="clave_confirmada">Confirmar contraseña:</label>
                                         </td>
                                         <td>
-                                            <input type="password" id="clave_confirmada" class="" placeholder="Repite la contraseña"/>
+                                            <input type="password" id="clave_confirmada" name="datos[clave_confirmada]" class="" placeholder="Repite la contraseña"/>
                                             <span class="color_asterisco">*</span>
                                         </td>
                                     </tr>
@@ -86,10 +87,10 @@
                                             <label for="genero">Sexo:</label>
                                         </td>
                                         <td>
-                                            <select id="genero">
+                                            <select id="genero" name="datos[genero]">
                                                 <option value="ninguno" label=" "></option>
-                                                <option value="masculino">Masculino</option>
-                                                <option value="femenino">Femenino</option>
+                                                <option value="Masculino">Masculino</option>
+                                                <option value="Femenino">Femenino</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -98,7 +99,7 @@
                                             <label for="fecha_nacimiento">Fecha nacimiento:</label>
                                         </td>
                                         <td>
-                                             <input type="text" id="fecha_nacimiento" placeholder="dd/mm/aa"/>
+                                             <input type="text" id="fecha_nacimiento" name="datos[fecha_nacimiento]" placeholder="dd/mm/aa"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -106,7 +107,7 @@
                                             <label for="direccion">Dirección:</label>
                                         </td>
                                         <td>
-                                            <input type="text" id="direccion"/>
+                                            <input type="text" id="direccion" name="datos[direccion]"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -114,11 +115,11 @@
                                             <label for="pais">País:</label>
                                         </td>
                                         <td>
-                                            <select id="pais">
-                                                <option value="" label=" "></option>
-                                                <option value="espanya">España</option>
-                                                <option value="francia">Francia</option>
-                                                <option value="portugal">Portugal</option>
+                                            <select id="pais" name="datos[pais]">
+                                                <option value="ninguno" label=" "></option>
+                                                <option value="Espanya">España</option>
+                                                <option value="Francia">Francia</option>
+                                                <option value="Portugal">Portugal</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -127,7 +128,7 @@
                                             <label for="numero_tarjeta">Tarjeta de crédito:</label>
                                         </td>
                                         <td>
-                                            <input type="number" id="numero_tarjeta"/>
+                                            <input type="number" id="numero_tarjeta" name="datos[numero_tarjeta]"/>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -142,7 +143,7 @@
                                             <label for="novedades">Notificación de novedades:</label>
                                         </td>
                                         <td>
-                                            <input type="checkbox" id="novedades"/>
+                                            <input type="checkbox" id="novedades" name="datos[novedades]"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -150,7 +151,7 @@
                                             <label for="revista">Recepción de la revista digital:</label>
                                         </td>
                                         <td>
-                                            <input type="checkbox" id="revista"/>
+                                            <input type="checkbox" id="revista" name="datos[revista]"/>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -158,8 +159,7 @@
                         </fieldset>
                         <br>
                         <div id="control_enviar" class="elemento_apagado">
-                            <!--formaction="mi mi archico en el dominio"-->
-                            <button id="boton_enviar_formulario" type="submit" formmethod="post">Confirmar y Enviar</button>
+                            <button id="boton_enviar_formulario" name="boton_enviar_formulario" type="submit">Confirmar y Enviar</button>
                         </div>
                         <br>Recuerde que los campos marcados con <span class="color_asterisco">*</span> son obligatorios para su correcto registro en el sistema, gracias.
                     </form>
