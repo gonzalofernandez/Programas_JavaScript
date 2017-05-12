@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <title>tienda de libros</title>
+        <meta charset="UTF-8">
+        <meta name="author" content="Gonzalo Fernández Pineda">
+        <meta name="keywords" content="tienda top libros book shop">
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">-->
+        <link rel="shortcut icon" type="image/x-icon" href="../favLibros.ico">
+        <link rel="stylesheet" type="text/css" href="../css/reset.css">
+        <link rel="stylesheet" type="text/css" href="../css/styles.css">
+        <link rel="stylesheet" type="text/css" href="../css/formularioStyles.css">
+        <script type="text/javascript" src="../js/main.js" defer></script>
+    </head>
+    <body>
+		<div id="contenedor">
+		    <header class="modulo">
+                <figure class="iconos"><img src="../img/imagenes/logoLibros.png" alt="logo de la tienda"></figure>
+                <div>
+                    <h1>Top Libros</h1>
+                </div>
+                <figure class="iconos"><img src="../img/imagenes/logoLibros.png" alt="logo de la tienda"></figure>
+			</header>
+			<nav class="modulo">
+				<div id="registro">
+				    <ul>
+				        <li><a class="links separado" href="error.html">Acceso</a></li>
+				        <li><a id="opcion_registro" class="links separado">Registro</a></li>
+				        <li><a class="links separado" href="error.html">Ayuda</a></li>
+				        <li><a class="links separado" href="error.html">FAQs</a></li>
+				    </ul>
+				</div>
+                <div id="formulario" class="elemento_apagado">
+                    <h2 id="formulario_titulo" class="mayusculas">Formulario de registro</h2>
+                    <p id="formulario_cerrar">x</p><br><br>
+                    <form name="formulario" method="post">
+                        <fieldset>
+                            <legend class="formulario_apartados">Datos obligatorios</legend><br>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <label for="nombre_apellido">Nombre:</label>
+                                        </td>
+                                        <td>
+                                            <input type="text" id="nombre_apellido" class="" placeholder="Nombre y Apellido"/>
+                                            <span class="color_asterisco">*</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="correo_electronico">Correo electrónico:</label>
+                                        </td>
+                                        <td>
+                                            <input type="email" id="correo_electronico" class="" placeholder="Correo-e"/>
+                                            <span class="color_asterisco">*</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="clave">Clave:</label>
+                                        </td>
+                                        <td>
+                                            <input type="password" id="clave" class="" placeholder="Contraseña"/>
+                                            <span class="color_asterisco">*</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="clave_confirmada">Confirmar contraseña:</label>
+                                        </td>
+                                        <td>
+                                            <input type="password" id="clave_confirmada" class="" placeholder="Repite la contraseña"/>
+                                            <span class="color_asterisco">*</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </fieldset><br>
+                        <fieldset>
+                            <legend class="formulario_apartados">Información adicional</legend><br>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <label for="genero">Sexo:</label>
+                                        </td>
+                                        <td>
+                                            <select id="genero">
+                                                <option value="ninguno" label=" "></option>
+                                                <option value="masculino">Masculino</option>
+                                                <option value="femenino">Femenino</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="fecha_nacimiento">Fecha nacimiento:</label>
+                                        </td>
+                                        <td>
+                                             <input type="text" id="fecha_nacimiento" placeholder="dd/mm/aa"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="direccion">Dirección:</label>
+                                        </td>
+                                        <td>
+                                            <input type="text" id="direccion"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="pais">País:</label>
+                                        </td>
+                                        <td>
+                                            <select id="pais">
+                                                <option value="" label=" "></option>
+                                                <option value="espanya">España</option>
+                                                <option value="francia">Francia</option>
+                                                <option value="portugal">Portugal</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr id="fila_campo_tarjeta" class="elemento_apagado">
+                                        <td>
+                                            <label for="numero_tarjeta">Tarjeta de crédito:</label>
+                                        </td>
+                                        <td>
+                                            <input type="number" id="numero_tarjeta"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </fieldset><br>
+                        <fieldset>
+                            <legend class="formulario_apartados">Recibe nuestras novedades</legend><br>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <label for="novedades">Notificación de novedades:</label>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" id="novedades"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="revista">Recepción de la revista digital:</label>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" id="revista"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </fieldset>
+                        <br>
+                        <div id="control_enviar" class="elemento_apagado">
+                            <!--formaction="mi mi archico en el dominio"-->
+                            <button id="boton_enviar_formulario" type="submit" formmethod="post">Confirmar y Enviar</button>
+                        </div>
+                        <br>Recuerde que los campos marcados con <span class="color_asterisco">*</span> son obligatorios para su correcto registro en el sistema, gracias.
+                    </form>
+                </div>
+                <div id="idiomas">
+					<a href="index.html"><img class="bandera" src="../img/banderas/espban.png" alt="bandera esp"></a>
+					<a href="english_index.html"><img class="bandera" src="../img/banderas/ingban.png" alt="bandera ing"></a>
+                </div>
+				<div id="sesion">
+					<p class=" mayuscula">usuario</p>
+                    <a id="carro" href="error.html"></a>
+				</div>
+			</nav>
+			<div id="boton_menu">
+			     <p class="mayuscula bot_men">menu</p>
+            </div>
+			<nav class="modulo" id="opciones">
+				<ul>
+					<li><a class="links mayusculas" href="error.html">novedades</a></li>
+					<li><a class="links mayusculas" href="error.html">más vendidos</a></li>
+					<li><a class="links mayusculas" href="error.html">libros de texto</a></li>
+                    <li><a class="links mayusculas" href="error.html">idiomas</a></li>
+                    <li><a class="links mayusculas" href="error.html">infantil</a></li>
+                    <li><a class="links mayusculas" href="error.html">juvenil</a></li>
+                    <li><a class="links mayusculas" href="error.html">cocina</a></li>
+                    <li><a class="links mayusculas" href="error.html">romántica</a></li>
+                    <li><a class="links mayusculas" href="error.html">novela negra</a></li>
+                    <li><a class="links mayusculas" href="error.html">humanidades</a></li>
+				</ul>
+                <div id=busqueda>
+                    <a id="buscar" href="error.html"></a>
+                    <label for="campo_busqueda" id="busq">buscar</label>
+                    <input type="text" id="campo_busqueda" size="50" placeholder="Buscar..."/><br><br>
+                    Buscar por categoria:
+                    <select id="categoria">
+                        <option value="nov">Novedades</option>
+                        <option value="mas">Más vendidos</option>
+                        <option value="tex">Libros de texto</option>
+                        <option value="idi">Idiomas</option>
+                        <option value="inf">Infantil</option>
+                        <option value="juv">Juvenil</option>
+                        <option value="coc">Cocina</option>
+                        <option value="rom">Romántica</option>
+                        <option value="nov">Novela negra</option>
+                        <option value="hum">Humanidades</option>
+                    </select>
+                    Buscar por año de publicación:
+                    <select id="publicado">
+                        <option value="2014">2014</option>
+                        <option value="2015">2015</option>
+                        <option value="2016">2016</option>
+                        <option value="2017">2017</option>
+                    </select>
+                    <input type="button" id="busq_avanz" value="Buscar">
+                </div>
+			</nav>
+            <main class="modulo">
+                <figure id="imagen">
+                    <img class="redondeando" src="../img/imagenes/fotoinicio.jpg" alt="imagen inicial">
+                </figure>
+                <div id="gancho">
+                    <p class="mayuscula">desde 11.95 €</p>
+                </div>
+                <div id="libros">
+                    <ul>
+                        <li class="libro">
+                            <a href="producto.html"><img class="libros" src="../img/libros/libro1.png" alt="portada de libro1"></a>
+                            <p>El secreto de Vesalio</p>
+                            <p>Diciembre 2016</p>
+                            <p>21.95€</p>
+                        </li>
+                        <li class="libro">
+                            <a href="error.html"><img class="libros" src="../img/libros/libro2.png" alt="portada de libro2"></a>
+                            <p>El amante japones</p>
+                            <p>Noviembre 2016</p>
+                            <p>19.95€</p>
+                        </li>
+                        <li class="libro">
+                            <a href="error.html"><img class="libros" src="../img/libros/libro3.png" alt="portada de libro3"></a>
+                            <p>Yo fui la espía que amó al Comandante</p>
+                            <p>Noviembre 2016</p>
+                            <p>22.95€</p>
+                        </li>
+                        <li class="libro">
+                            <a href="error.html"><img class="libros" src="../img/libros/libro4.png" alt="portada de libro4"></a>
+                            <p>El dios del desierto</p>
+                            <p>Enero 2017</p>
+                            <p>16.95€</p>
+                        </li>
+                        <li class="libro">
+                            <a href="error.html"><img class="libros" src="../img/libros/libro5.png" alt="portada de libro5"></a>
+                            <p>El murciélago</p>
+                            <p>Enero 2017</p>
+                            <p>15.95€</p>
+                        </li>
+                        <li class="libro">
+                            <a href="error.html"><img class="libros" src="../img/libros/libro6.png" alt="portada de libro6"></a>
+                            <p>Hiroshima</p>
+                            <p>Noviembre 2016</p>
+                            <p>20.95€</p>
+                        </li>
+                        <li class="libro">
+                            <a href="error.html"><img class="libros" src="../img/libros/libro7.png" alt="portada de libro7"></a>
+                            <p>A flor de piel</p>
+                            <p>Diciembre 2016</p>
+                            <p>21.95€</p>
+                        </li>
+                    </ul>
+                </div>
+            </main>
+            <footer class="modulo">
+                <section id="contacto">
+                    <h2 class="subapartado mayuscula">contacto</h2>
+                    <address>
+                        <p>999-999-999</p>
+                        <p>toplibros@toplibros.es</p>
+                        <p class="mayuscula">calle Laguna nº12 Madrid 28000</p>
+                    </address>
+                </section>
+                <section id="social">
+                    <h2 class="subapartado mayuscula">síguenos</h2>
+                    <div>
+                        <a href="error.html"><img class="redsocial" src="../img/iconos/twitter.png" alt="logo de twitter"></a>
+                    </div>
+                    <div>
+                        <a href="error.html"><img class="redsocial" src="../img/iconos/facebook.png" alt="logo de facebook"></a>
+                    </div>
+                    <div>
+                        <a href="error.html"><img class="redsocial" src="../img/iconos/google+.png" alt="logo de google+"></a>
+                    </div>
+                    <div>
+                        <a href="error.html"><img class="redsocial" src="../img/iconos/whatsapp.png" alt="logo de whatsapp"></a>
+                    </div>
+                </section>
+                <section id="geolocalizacion">
+                    <h2 class="subapartado mayuscula">dónde estamos</h2>
+                    <figure id="geo">
+                        <a href="error.html"><img src="../img/imagenes/geo.png" alt="imagen de mapa"></a>
+                    </figure>
+                </section>
+                <section id="legal">
+                    <h2 class="subapartado mayuscula">aviso legal</h2>
+                    <ul>
+                        <li>
+                            <a class="links" href="error.html">Privacidad del sitio</a>
+                        </li>
+                        <li>
+                            <a class="links" href="error.html">Condiciones de uso</a>
+                        </li>
+                        <li>
+                            <a class="links" href="error.html">Condiciones de venta</a>
+                        </li>
+                        <li>
+                            <a class="links" href="error.html">Información de derechos de uso de los contenidos del sitio web</a>
+                        </li>
+                    </ul>
+                </section>
+                <p class="mayusculas" id="copyright">2017 - interface design</p>
+			</footer>
+		</div>
+    </body>
+</html>

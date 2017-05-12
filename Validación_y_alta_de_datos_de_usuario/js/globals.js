@@ -14,7 +14,7 @@ var ERROR_CREDENCIALES = "Credenciales inválidas",
             "230707,M",
     NAVEGADORES = "Chrome,Firefox,Edge,Opera,Otro",
     SISTEMAS_OPERATIVOS = "Windows,Linux,Otro",
-    ARGUMENTOS = "nif,password,name,gender,date";
+    ARGUMENTOS = "nif,password,name,gender,date,extra";
 
 
 //FUNCIONES DE AYUDA PARA LAS FUNCIONES DE VALIDACIÓN
@@ -151,6 +151,23 @@ function resetearPosicion() {
     return 0;
 }
 
+function compararValorExtra(nif, password, name, gender, date, extra) {
+    var comparacion;
+    if (!extra) {
+        comparacion = false;
+    } else if (
+        extra === nif ||
+        extra === password ||
+        extra === name ||
+        extra === gender ||
+        extra === nif
+    ) {
+        comparacion = true;
+    } else {
+        comparacion = false;
+    }
+    return comparacion;
+}
 
 //FUNCIONES PARA DETERMINAR EL MENSAJE DE SALIDA
 function determinarSaludo(fecha) {

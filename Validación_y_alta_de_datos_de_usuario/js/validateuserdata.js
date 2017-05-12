@@ -1,7 +1,7 @@
 "use strict";
 function validateUserData(cadenaConsulta) {
     var nif, password, name, gender, date, salida, validacion, argumentoErroneo,
-        personaEncontrada,
+        personaEncontrada, extra,
         error = false,
         listaArgumentos = ARGUMENTOS.split(","),
         posicionArgumento = 0,
@@ -34,6 +34,10 @@ function validateUserData(cadenaConsulta) {
                 date = obtenerValorDeParametro(parametrosIntroducidos[posicionParametro]);
                 validacion = validarDate(date);
                 break;
+            case "extra":
+                extra = obtenerValorDeParametro(parametrosIntroducidos[posicionParametro]);
+                validacion = true;
+                break;
             }
             if (validacion) {
                 posicionParametro = incrementarNumero(posicionParametro);
@@ -42,7 +46,7 @@ function validateUserData(cadenaConsulta) {
                 error = true;
                 argumentoErroneo = listaArgumentos[posicionArgumento];
             }
-        } else if (posicionArgumento === 4) {
+        } else if (posicionArgumento === 5) {
             posicionArgumento = resetearPosicion(posicionArgumento);
             posicionParametro = incrementarNumero(posicionParametro);
         } else {
@@ -54,6 +58,15 @@ function validateUserData(cadenaConsulta) {
         `${identificarNavegador(window.navigator.userAgent)}` +
         ` en un sistema operativo ` +
         `${identificarSO(window.navigator.userAgent)}`;
+    } else if (compararValorExtra(
+            nif,
+            password,
+            name,
+            gender,
+            date,
+            extra
+    )) {
+        throw new Error(`Valor duplicado: ${extra}`);
     } else if (argumentoErroneo) {
         throw new Error(`Argumento ${argumentoErroneo} inválido`);
     } else {

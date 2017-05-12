@@ -31,7 +31,9 @@ var miApp = miApp || {},
     botonOrdenAscendente,
     botonOrdenDescendente,
     botonObtenerEstadisticas,
-    filasEstadistica;
+    filasEstadistica,
+    botonBuscarCuentas,
+    campoBuscarCuentas;
 
 function $(elemento) {
     return document.getElementById(elemento);
@@ -43,7 +45,8 @@ function controlarBotones(
     botonBorrarCuentas,
     botonCrearCuenta,
     botonOrdenDescendente,
-    botonOrdenAscendente
+    botonOrdenAscendente,
+    botonBuscarCuentas
 ) {
     var valor = !!(!nomSer.textContent);
     botonFiltrarCuentas.disabled = valor;
@@ -51,6 +54,7 @@ function controlarBotones(
     botonCrearCuenta.disabled = valor;
     botonOrdenDescendente.disabled = valor;
     botonOrdenAscendente.disabled = valor;
+    botonBuscarCuentas.disabled = valor;
 }
 //Asignaciones y operaciones al iniciar la aplicación
 function inicializar() {
@@ -76,6 +80,8 @@ function inicializar() {
     botonOrdenDescendente = $("boton_orden_descendente");
     botonObtenerEstadisticas = $("boton_obtener_estadisticas");
     filasEstadistica = $("zona_estadisticas");
+    botonBuscarCuentas = $("boton_buscar");
+    campoBuscarCuentas = $("campo_buscar");
     //Escribe el nombre del sistema en la parte superior
     $("letrero").insertAdjacentHTML("beforeend", miApp.obtenerNombreSistema());
     //Controla qué botones deben estar habilitados al principio
@@ -85,7 +91,8 @@ function inicializar() {
         botonBorrarCuentas,
         botonCrearCuenta,
         botonOrdenDescendente,
-        botonOrdenAscendente
+        botonOrdenAscendente,
+        botonBuscarCuentas
     );
 }
 
@@ -203,7 +210,8 @@ function seleccionarServidor() {
         botonBorrarCuentas,
         botonCrearCuenta,
         botonOrdenDescendente,
-        botonOrdenAscendente
+        botonOrdenAscendente,
+        botonBuscarCuentas
     );
 }
 
@@ -286,4 +294,9 @@ function obtenerEstadisticas() {
                     ` cuentas${orejeras}${finalTabla}`
         );
     });
+}
+
+function localizarCuentas() {
+    resetearTabla();
+    miApp.buscarCuentas(campoBuscarCuentas).forEach(insertarFila);
 }

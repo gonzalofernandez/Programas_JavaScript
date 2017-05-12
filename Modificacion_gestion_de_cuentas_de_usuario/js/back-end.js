@@ -180,7 +180,6 @@ var miApp = (function () {
     );
 
 
-
     //FUNCIONES ENVOLVENTES(WRAPPER)
     function elegirServidor(seleccion) {
         return SISTEMA_PRINCIPAL.elegirServidor(seleccion);
@@ -205,6 +204,9 @@ var miApp = (function () {
     }
     function obtenerEstadisticas() {
         return SISTEMA_PRINCIPAL.obtenerEstadisticas();
+    }
+    function buscarCuentas(campoBuscarCuentas) {
+        return SISTEMA_PRINCIPAL.buscarCuentas(campoBuscarCuentas);
     }
 
 
@@ -320,6 +322,18 @@ var miApp = (function () {
         tramos = {tramoA: tramoA, tramoB: tramoB, tramoC: tramoC};
         return asignarTramos(this, tramos, filas);
     };
+    //Método para buscar cuentas
+    Sistema.prototype.buscarCuentas = function (campoBuscarCuentas) {
+        var cuentas = [];
+        this.servidores.forEach(function (servidor) {
+            servidor.cuentas.forEach(function (cuenta) {
+                if (cuenta.nombreCuenta.indexOf(campoBuscarCuentas.value) > -1) {
+                    return cuentas.push(cuenta);
+                }
+            });
+        }, campoBuscarCuentas);
+        return cuentas;
+    };
 
 
     //INTERFAZ
@@ -331,6 +345,7 @@ var miApp = (function () {
         seleccionarCuentas: seleccionarCuentas,
         obtenerSaldoMedio: obtenerSaldoMedio,
         obtenerNombreSistema: obtenerNombreSistema,
-        obtenerEstadisticas: obtenerEstadisticas
+        obtenerEstadisticas: obtenerEstadisticas,
+        buscarCuentas: buscarCuentas
     };
 }());

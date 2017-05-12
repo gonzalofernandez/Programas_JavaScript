@@ -55,4 +55,12 @@ describe("Testeando la función \"validateuserdata\" con estilo BDD", function (
     it("Debería indicar mensaje de argumento inválido para género con letra distinta de M o F", function () {
         validateUserData.bind(validateUserData, "?gender=H").should.to.throw("Argumento gender inválido");
     });
+    //Nuevos tests argumento extra
+    it("Debería indicar mensaje de argumento extra inválido y el valor M", function () {
+        validateUserData.bind(validateUserData,
+                              "?nif=22222222J&extra=M&password=KDSLWQ&name=Enrique%20González&gender=M&date=03apr90").should.to.throw("Valor duplicado: M");
+    });
+    it("Debería indicar mensaje indicando que no se han podido encontrar los datos si introducimos el argumento extra vacio", function () {
+        validateUserData("?nif=22222222J&extra=&password=KDSLWQ&name=Enrique%20González&gender=M&date=03apr90").should.be.equal("No hemos podido localizar sus datos Sr. González. Su edad es 27 años");
+    });
 });

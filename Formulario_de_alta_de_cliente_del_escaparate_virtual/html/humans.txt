@@ -1,0 +1,3 @@
+#Este sitio web ha sido diseñado y programado por:
+#Gonzalo Fernández Pineda
+#durante el curso de Desarrollo de Aplicaciones Web en Octubre del 2016.

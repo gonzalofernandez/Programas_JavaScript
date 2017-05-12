@@ -7,7 +7,6 @@
         <link type="text/css" rel="stylesheet" href="css/styles.css">
         <script type="text/javascript" src="js/back-end.js"></script>
         <script type="text/javascript" src="js/front-end.js"></script>
-        <!--<script charset="utf-8" src="js/bundle.js"></script>-->
     </head>
     <body onload="inicializar()">
         <div>
@@ -90,7 +89,11 @@
                                <td>
                                     <input type="button" id="boton_orden_descendente" onclick="ordenarDesc()" value="Orden Descendente">
                                </td>
-                               <td colspan="3">
+                               <td>
+                                    <input type="text" id="campo_buscar" placeholder="Buscar...">
+                                    <input type="button" id="boton_buscar" onclick="localizarCuentas()" value="Buscar cuentas">
+                               </td>
+                               <td colspan="2">
                                     <input type="button" id="boton_borrar" onclick="borrarCuentas()" value="Borrar cuentas">
                                </td>
                            </tr>
