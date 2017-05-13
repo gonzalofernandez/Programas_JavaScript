@@ -1,11 +1,8 @@
-//TO_DO
-//El correo electronico acepta espacios en el lado local
-//La clave no obliga a poner uno de cada tipo
 var miApp = (function () {
     "use strict";
     var VALIDACION_NOMBRE = new RegExp(/^([a-zA-Zá-úÁ-Ú]+\s[a-zA-Zá-úÁ-Ú]+|[a-zA-Zá-úÁ-Ú]+)$/),
-        VALIDACION_CORREO_ELECTRONICO = new RegExp(/^[\w.!#$%&'*+\/=?\^@`{|}~\-]+@[\w\-\.]+\.[a-z]{2,6}$/),
-        VALIDACION_CLAVE = new RegExp(/(?=^.{8,}$)(?=.*\d)(?=.*\W+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/),
+        VALIDACION_CORREO_ELECTRONICO = new RegExp(/^[\w.!#$%&'*+\/=?\^@`{|}~\-]+@[\w\-.]+\.[a-z]{2,6}$/),
+        VALIDACION_CLAVE = new RegExp(/(?=^.{8,}$)(?=.*\d)(?=.*\W+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/m),
         VALIDACION_FECHA = new RegExp(/^\d{2}\/\d{2}\/\d{2}$/),
         VALIDACION_NUMERO_TARJETA = new RegExp(/^\d{4}-\d{4}-\d{4}-\d{4}$/),
         CLASE = "class",
@@ -20,7 +17,6 @@ var miApp = (function () {
         formulario,
         registro,
         botonCerrarFormulario,
-        botonEnviarFormulario,
         nombreYApellido,
         correoElectronico,
         clave,
@@ -39,29 +35,31 @@ var miApp = (function () {
         },
         definirAtributo = function (atributo, valor) {
             this.setAttribute(atributo, valor);
-        },
-        inicializar = (function () {
-            registro = $.call("opcion_registro");
-            formulario = $.call("formulario");
-            botonCerrarFormulario = $.call("formulario_cerrar");
-            botonEnviarFormulario = $.call("boton_enviar_formulario");
-            nombreYApellido = $.call("nombre_apellido");
-            correoElectronico = $.call("correo_electronico");
-            clave = $.call("clave");
-            confirmacionClave = $.call("clave_confirmada");
-            fechaNacimiento = $.call("fecha_nacimiento");
-            direccion = $.call("direccion");
-            pais = $.call("pais");
-            filaTarjeta = $.call("fila_campo_tarjeta");
-            numeroTarjeta = $.call("numero_tarjeta");
-            controlEnviar = $.call("control_enviar");
-        }());
+        };
+
+
+    //CARGA DE VARIABLES PARA LA APLICACION
+    (function () {
+        registro = $.call("opcion_registro");
+        formulario = $.call("formulario");
+        botonCerrarFormulario = $.call("formulario_cerrar");
+        nombreYApellido = $.call("nombre_apellido");
+        correoElectronico = $.call("correo_electronico");
+        clave = $.call("clave");
+        confirmacionClave = $.call("clave_confirmada");
+        fechaNacimiento = $.call("fecha_nacimiento");
+        direccion = $.call("direccion");
+        pais = $.call("pais");
+        filaTarjeta = $.call("fila_campo_tarjeta");
+        numeroTarjeta = $.call("numero_tarjeta");
+        controlEnviar = $.call("control_enviar");
+    }());
 
 
     //FUNCIONES DE VALIDACION
     function validarNombreYApellido(cadena) {
         return VALIDACION_NOMBRE.test(cadena)
-            && cadena.split(ESPACIO).length <= 2;
+                && cadena.split(ESPACIO).length <= 2;
     }
 
     function validarCorreoElectronico(cadena) {
@@ -70,7 +68,7 @@ var miApp = (function () {
 
     function validarClave(cadena) {
         return VALIDACION_CLAVE.test(cadena)
-            && cadena.split(ESPACIO).length === 1;
+                && cadena.split(ESPACIO).length === 1;
     }
 
     function validarConfirmacionClave(cadena) {
@@ -175,29 +173,35 @@ var miApp = (function () {
     function comprobarClases(e) {
         var elemento = e.currentTarget;
         definirAtributo.call(elemento, CLASE, !elemento.value
-                                                ? NO_DEFINIDO
-                                                : SI_DEFINIDO
-        );
+            ? NO_DEFINIDO
+            : SI_DEFINIDO);
         definirAtributo.call(
             filaTarjeta,
             CLASE,
-            direccion.getAttribute(CLASE) === SI_DEFINIDO
-                && pais.getAttribute(CLASE) === SI_DEFINIDO
+            (
+                direccion.getAttribute(CLASE) === SI_DEFINIDO
+                    && pais.getAttribute(CLASE) === SI_DEFINIDO
+            )
                 ? VACIO
                 : ELEMENTO_APAGADO
         );
     }
 
-    function comprobarObligatorios() {
-        definirAtributo.call(controlEnviar,
-                             CLASE,
-                             nombreYApellido.getAttribute(CLASE) === DATOS_OK
-                                 && correoElectronico.getAttribute(CLASE) === DATOS_OK
-                                 && clave.getAttribute(CLASE) === DATOS_OK
-                                 && confirmacionClave.getAttribute(CLASE) === DATOS_OK
-                                    ? VACIO
-                                    : ELEMENTO_APAGADO
-                            );
+    function comprobarValidaciones() {
+        definirAtributo.call(
+            controlEnviar,
+            CLASE,
+            (
+                nombreYApellido.getAttribute(CLASE) === DATOS_OK
+                    && correoElectronico.getAttribute(CLASE) === DATOS_OK
+                    && clave.getAttribute(CLASE) === DATOS_OK
+                    && confirmacionClave.getAttribute(CLASE) === DATOS_OK
+                    && fechaNacimiento.getAttribute(CLASE) !== DATOS_KO
+                    && numeroTarjeta.getAttribute(CLASE) !== DATOS_KO
+            )
+                ? VACIO
+                : ELEMENTO_APAGADO
+        );
     }
 
 
@@ -209,15 +213,17 @@ var miApp = (function () {
         cerrarFormulario
     );
     asociarEvento.call(nombreYApellido, "keyup", comprobarCampo);
-    asociarEvento.call(nombreYApellido, "change", comprobarObligatorios);
+    asociarEvento.call(nombreYApellido, "change", comprobarValidaciones);
     asociarEvento.call(correoElectronico, "keyup", comprobarCampo);
-    asociarEvento.call(correoElectronico, "change", comprobarObligatorios);
+    asociarEvento.call(correoElectronico, "change", comprobarValidaciones);
     asociarEvento.call(clave, "keyup", comprobarCampo);
-    asociarEvento.call(clave, "change", comprobarObligatorios);
+    asociarEvento.call(clave, "change", comprobarValidaciones);
     asociarEvento.call(confirmacionClave, "keyup", comprobarCampo);
-    asociarEvento.call(confirmacionClave, "change", comprobarObligatorios);
+    asociarEvento.call(confirmacionClave, "change", comprobarValidaciones);
     asociarEvento.call(fechaNacimiento, "keyup", comprobarCampo);
+    asociarEvento.call(fechaNacimiento, "change", comprobarValidaciones);
     asociarEvento.call(direccion, "keyup", comprobarClases);
     asociarEvento.call(pais, "change", comprobarClases);
     asociarEvento.call(numeroTarjeta, "keyup", comprobarCampo);
+    asociarEvento.call(numeroTarjeta, "change", comprobarValidaciones);
 }());
