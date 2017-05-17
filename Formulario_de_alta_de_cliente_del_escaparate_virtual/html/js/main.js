@@ -1,16 +1,15 @@
-//TO_DO
-//Averiguar por que no funciona el include ni require ni header
 var miApp = (function () {
     "use strict";
     var VALIDACION_NOMBRE = new RegExp(/^([a-zA-Zá-úÁ-Ú]+\s[a-zA-Zá-úÁ-Ú]+|[a-zA-Zá-úÁ-Ú]+)$/),
         VALIDACION_CORREO_ELECTRONICO = new RegExp(/^[\w.!#$%&'*+\/=?\^@`{|}~\-]+@[\w\-.]+\.[a-z]{2,6}$/),
         VALIDACION_CLAVE = new RegExp(/(?=^.{8,}$)(?=.*\d)(?=.*\W+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/m),
         VALIDACION_FECHA = new RegExp(/^\d{2}\/\d{2}\/\d{2}$/),
-        VALIDACION_DIRECCION = new RegExp(/^\w+?/),
+        VALIDACION_DIRECCION = new RegExp(/^\w+(\s\w+)*$/),
         VALIDACION_NUMERO_TARJETA = new RegExp(/^\d{4}-\d{4}-\d{4}-\d{4}$/),
         CLASE = "class",
         ESPACIO = " ",
         VACIO = "",
+        NINGUNO = "ninguno",
         SI_DEFINIDO = "si_definido",
         NO_DEFINIDO = "no_definido",
         DATOS_OK = "datos_ok",
@@ -62,17 +61,17 @@ var miApp = (function () {
                 case direccion:
                     agregarEventoAElemento(
                         elemento,
-                        eventos.change,
-                        callbacks.comprobarClases
-                    );
-                    agregarEventoAElemento(
-                        elemento,
                         eventos.keyup,
                         callbacks.comprobarCampo
                     );
                     agregarEventoAElemento(
                         elemento,
-                        eventos.keyup,
+                        eventos.change,
+                        callbacks.comprobarClases
+                    );
+                    agregarEventoAElemento(
+                        elemento,
+                        eventos.blur,
                         callbacks.comprobarValidaciones
                     );
                     break;
@@ -265,19 +264,13 @@ var miApp = (function () {
         }
     }
 
-    function comprobarClases(e) {
-        var elemento = e.currentTarget;
-        definirAtributo.call(
-            elemento, CLASE, !elemento.value
-                || elemento.value === "ninguno"
-            ? NO_DEFINIDO
-            : SI_DEFINIDO);
+    function comprobarClases() {
         definirAtributo.call(
             filaTarjeta,
             CLASE,
             (
-                obtenerValorDeAtributo(direccion) === SI_DEFINIDO
-                    && obtenerValorDeAtributo(pais) === SI_DEFINIDO
+                obtenerValorDeAtributo(direccion) === DATOS_OK
+                    && obtenerValorDeAtributo(pais) !== NINGUNO
             )
                 ? VACIO
                 : ELEMENTO_APAGADO
@@ -307,7 +300,7 @@ var miApp = (function () {
     asociarEventos.call(
         null,
         elementosConEventos,
-        {keyup: "keyup", change: "change", mousedown: "mousedown"},
+        {keyup: "keyup", change: "change", mousedown: "mousedown", blur: "blur"},
         {
             comprobarCampo,
             comprobarValidaciones,
