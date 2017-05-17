@@ -1,10 +1,12 @@
+//TO_DO
+//Espacios en blanco en la clave? Caso de prueba 6 Bh0 "ADF09
 var miApp = (function () {
     "use strict";
     var VALIDACION_NOMBRE = new RegExp(/^([a-zA-Zá-úÁ-Ú]+\s[a-zA-Zá-úÁ-Ú]+|[a-zA-Zá-úÁ-Ú]+)$/),
         VALIDACION_CORREO_ELECTRONICO = new RegExp(/^[\w.!#$%&'*+\/=?\^@`{|}~\-]+@[\w\-.]+\.[a-z]{2,6}$/),
         VALIDACION_CLAVE = new RegExp(/(?=^.{8,}$)(?=.*\d)(?=.*\W+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/m),
-        VALIDACION_FECHA = new RegExp(/^\d{2}\/\d{2}\/\d{2}$/),
-        VALIDACION_DIRECCION = new RegExp(/^\w+(\s\w+)*$/),
+        VALIDACION_FECHA = new RegExp(/^\d{2}\/\d{2}\/\d{4}$/),
+        VALIDACION_DIRECCION = new RegExp(/^\w+(\s\w+(,|\.)*)*$/),
         VALIDACION_NUMERO_TARJETA = new RegExp(/^\d{4}-\d{4}-\d{4}-\d{4}$/),
         CLASE = "class",
         ESPACIO = " ",
@@ -161,9 +163,6 @@ var miApp = (function () {
 
     function validarComponentesFecha(dia, mes, anyo) {
         var fechaIntroducida, validacion, datosCorrectos, numeroMes;
-        anyo = `${anyo > 30
-            ? "19"
-            : "20"}${anyo}`;
         datosCorrectos = !!(
             (mes <= 12 && mes >= 1) &&
             (dia <= 31 && dia >= 1)
@@ -189,7 +188,7 @@ var miApp = (function () {
         } else {
             diaIntroducido = cadena.substr(0, 2);
             mesIntroducido = cadena.substr(3, 2);
-            anyoIntroducido = cadena.substr(6, 2);
+            anyoIntroducido = cadena.substr(6, 4);
             validacion = validarComponentesFecha(
                 diaIntroducido,
                 mesIntroducido,
@@ -270,7 +269,7 @@ var miApp = (function () {
             CLASE,
             (
                 obtenerValorDeAtributo(direccion) === DATOS_OK
-                    && obtenerValorDeAtributo(pais) !== NINGUNO
+                    && pais.value !== NINGUNO
             )
                 ? VACIO
                 : ELEMENTO_APAGADO
