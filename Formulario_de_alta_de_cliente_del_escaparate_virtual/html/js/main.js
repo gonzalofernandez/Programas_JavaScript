@@ -1,9 +1,12 @@
+//TO_DO
+//Averiguar por que no funciona el include ni require ni header
 var miApp = (function () {
     "use strict";
     var VALIDACION_NOMBRE = new RegExp(/^([a-zA-Zá-úÁ-Ú]+\s[a-zA-Zá-úÁ-Ú]+|[a-zA-Zá-úÁ-Ú]+)$/),
         VALIDACION_CORREO_ELECTRONICO = new RegExp(/^[\w.!#$%&'*+\/=?\^@`{|}~\-]+@[\w\-.]+\.[a-z]{2,6}$/),
         VALIDACION_CLAVE = new RegExp(/(?=^.{8,}$)(?=.*\d)(?=.*\W+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/m),
         VALIDACION_FECHA = new RegExp(/^\d{2}\/\d{2}\/\d{2}$/),
+        VALIDACION_DIRECCION = new RegExp(/^\w+?/),
         VALIDACION_NUMERO_TARJETA = new RegExp(/^\d{4}-\d{4}-\d{4}-\d{4}$/),
         CLASE = "class",
         ESPACIO = " ",
@@ -14,6 +17,7 @@ var miApp = (function () {
         DATOS_KO = "datos_ko",
         ELEMENTO_APAGADO = "elemento_apagado",
         FORMULARIO_ABIERTO = "formulario_abierto",
+        FORMULARIO_CERRAR = "formulario_cerrar",
         formulario,
         registro,
         botonCerrarFormulario,
@@ -27,34 +31,113 @@ var miApp = (function () {
         filaTarjeta,
         numeroTarjeta,
         controlEnviar,
+        avisoCookies,
+        botonCerrarAvisoCookies,
         $ = function () {
             return document.getElementById(this);
         },
-        asociarEvento = function (tipo, evento) {
-            this.addEventListener(tipo, evento);
+        obtenerValorDeAtributo = function (elemento) {
+            return elemento.getAttribute(CLASE);
+        },
+        agregarEventoAElemento = function (elemento, evento, callback) {
+            return elemento.addEventListener(evento, callback);
+        },
+        asociarEventos = function (elementos, eventos, callbacks) {
+            elementos.map(function (elemento) {
+                switch (elemento) {
+                case registro:
+                    agregarEventoAElemento(
+                        elemento,
+                        eventos.mousedown,
+                        callbacks.abrirFormulario
+                    );
+                    break;
+                case botonCerrarFormulario:
+                    agregarEventoAElemento(
+                        elemento,
+                        eventos.mousedown,
+                        callbacks.apagarElemento
+                    );
+                    break;
+                case direccion:
+                    agregarEventoAElemento(
+                        elemento,
+                        eventos.change,
+                        callbacks.comprobarClases
+                    );
+                    agregarEventoAElemento(
+                        elemento,
+                        eventos.keyup,
+                        callbacks.comprobarCampo
+                    );
+                    agregarEventoAElemento(
+                        elemento,
+                        eventos.keyup,
+                        callbacks.comprobarValidaciones
+                    );
+                    break;
+                case pais:
+                    agregarEventoAElemento(
+                        elemento,
+                        eventos.change,
+                        callbacks.comprobarClases
+                    );
+                    break;
+                case botonCerrarAvisoCookies:
+                    agregarEventoAElemento(
+                        elemento,
+                        eventos.mousedown,
+                        callbacks.apagarElemento
+                    );
+                    break;
+                default:
+                    agregarEventoAElemento(
+                        elemento,
+                        eventos.keyup,
+                        callbacks.comprobarCampo
+                    );
+                    agregarEventoAElemento(
+                        elemento,
+                        eventos.change,
+                        callbacks.comprobarValidaciones
+                    );
+                }
+            });
         },
         definirAtributo = function (atributo, valor) {
             this.setAttribute(atributo, valor);
-        };
-
-
-    //CARGA DE VARIABLES PARA LA APLICACION
-    (function () {
-        registro = $.call("opcion_registro");
-        formulario = $.call("formulario");
-        botonCerrarFormulario = $.call("formulario_cerrar");
-        nombreYApellido = $.call("nombre_apellido");
-        correoElectronico = $.call("correo_electronico");
-        clave = $.call("clave");
-        confirmacionClave = $.call("clave_confirmada");
-        fechaNacimiento = $.call("fecha_nacimiento");
-        direccion = $.call("direccion");
-        pais = $.call("pais");
-        filaTarjeta = $.call("fila_campo_tarjeta");
-        numeroTarjeta = $.call("numero_tarjeta");
-        controlEnviar = $.call("control_enviar");
-    }());
-
+        },
+        elementosConEventos = (function () {
+            registro = $.call("opcion_registro");
+            formulario = $.call("formulario");
+            botonCerrarFormulario = $.call("formulario_cerrar");
+            nombreYApellido = $.call("nombre_apellido");
+            correoElectronico = $.call("correo_electronico");
+            clave = $.call("clave");
+            confirmacionClave = $.call("clave_confirmada");
+            fechaNacimiento = $.call("fecha_nacimiento");
+            direccion = $.call("direccion");
+            pais = $.call("pais");
+            filaTarjeta = $.call("fila_campo_tarjeta");
+            numeroTarjeta = $.call("numero_tarjeta");
+            controlEnviar = $.call("control_enviar");
+            avisoCookies = $.call("info_cookies");
+            botonCerrarAvisoCookies = $.call("boton_cerrar_aviso");
+            return [
+                nombreYApellido,
+                correoElectronico,
+                clave,
+                confirmacionClave,
+                fechaNacimiento,
+                numeroTarjeta,
+                registro,
+                pais,
+                direccion,
+                botonCerrarFormulario,
+                botonCerrarAvisoCookies,
+                avisoCookies
+            ];
+        }());
 
     //FUNCIONES DE VALIDACION
     function validarNombreYApellido(cadena) {
@@ -73,6 +156,10 @@ var miApp = (function () {
 
     function validarConfirmacionClave(cadena) {
         return cadena === clave.value;
+    }
+
+    function validarDireccion(cadena) {
+        return VALIDACION_DIRECCION.test(cadena);
     }
 
     function validarComponentesFecha(dia, mes, anyo) {
@@ -137,6 +224,9 @@ var miApp = (function () {
         case "fecha_nacimiento":
             validacion = validarFechaNacimiento(valor);
             break;
+        case "direccion":
+            validacion = validarDireccion(valor);
+            break;
         case "numero_tarjeta":
             validacion = validarNumeroTarjeta(valor);
             break;
@@ -150,8 +240,13 @@ var miApp = (function () {
         definirAtributo.call(formulario, CLASE, FORMULARIO_ABIERTO);
     }
 
-    function cerrarFormulario() {
-        definirAtributo.call(formulario, CLASE, ELEMENTO_APAGADO);
+    function apagarElemento(e) {
+        var elemento = e.currentTarget;
+        definirAtributo.call(
+            elemento.id === FORMULARIO_CERRAR ?  formulario : avisoCookies,
+            CLASE,
+            ELEMENTO_APAGADO
+        );
     }
 
     function comprobarCampo(e) {
@@ -172,15 +267,17 @@ var miApp = (function () {
 
     function comprobarClases(e) {
         var elemento = e.currentTarget;
-        definirAtributo.call(elemento, CLASE, !elemento.value
+        definirAtributo.call(
+            elemento, CLASE, !elemento.value
+                || elemento.value === "ninguno"
             ? NO_DEFINIDO
             : SI_DEFINIDO);
         definirAtributo.call(
             filaTarjeta,
             CLASE,
             (
-                direccion.getAttribute(CLASE) === SI_DEFINIDO
-                    && pais.getAttribute(CLASE) === SI_DEFINIDO
+                obtenerValorDeAtributo(direccion) === SI_DEFINIDO
+                    && obtenerValorDeAtributo(pais) === SI_DEFINIDO
             )
                 ? VACIO
                 : ELEMENTO_APAGADO
@@ -192,12 +289,13 @@ var miApp = (function () {
             controlEnviar,
             CLASE,
             (
-                nombreYApellido.getAttribute(CLASE) === DATOS_OK
-                    && correoElectronico.getAttribute(CLASE) === DATOS_OK
-                    && clave.getAttribute(CLASE) === DATOS_OK
-                    && confirmacionClave.getAttribute(CLASE) === DATOS_OK
-                    && fechaNacimiento.getAttribute(CLASE) !== DATOS_KO
-                    && numeroTarjeta.getAttribute(CLASE) !== DATOS_KO
+                obtenerValorDeAtributo(nombreYApellido) === DATOS_OK
+                    && obtenerValorDeAtributo(correoElectronico) === DATOS_OK
+                    && obtenerValorDeAtributo(clave) === DATOS_OK
+                    && obtenerValorDeAtributo(confirmacionClave) === DATOS_OK
+                    && obtenerValorDeAtributo(fechaNacimiento) !== DATOS_KO
+                    && obtenerValorDeAtributo(direccion) !== DATOS_KO
+                    && obtenerValorDeAtributo(numeroTarjeta) !== DATOS_KO
             )
                 ? VACIO
                 : ELEMENTO_APAGADO
@@ -206,24 +304,16 @@ var miApp = (function () {
 
 
     //ASIGNACION DE EVENTOS
-    asociarEvento.call(registro, "mousedown", abrirFormulario);
-    asociarEvento.call(
-        botonCerrarFormulario,
-        "mousedown",
-        cerrarFormulario
+    asociarEventos.call(
+        null,
+        elementosConEventos,
+        {keyup: "keyup", change: "change", mousedown: "mousedown"},
+        {
+            comprobarCampo,
+            comprobarValidaciones,
+            abrirFormulario,
+            apagarElemento,
+            comprobarClases
+        }
     );
-    asociarEvento.call(nombreYApellido, "keyup", comprobarCampo);
-    asociarEvento.call(nombreYApellido, "change", comprobarValidaciones);
-    asociarEvento.call(correoElectronico, "keyup", comprobarCampo);
-    asociarEvento.call(correoElectronico, "change", comprobarValidaciones);
-    asociarEvento.call(clave, "keyup", comprobarCampo);
-    asociarEvento.call(clave, "change", comprobarValidaciones);
-    asociarEvento.call(confirmacionClave, "keyup", comprobarCampo);
-    asociarEvento.call(confirmacionClave, "change", comprobarValidaciones);
-    asociarEvento.call(fechaNacimiento, "keyup", comprobarCampo);
-    asociarEvento.call(fechaNacimiento, "change", comprobarValidaciones);
-    asociarEvento.call(direccion, "keyup", comprobarClases);
-    asociarEvento.call(pais, "change", comprobarClases);
-    asociarEvento.call(numeroTarjeta, "keyup", comprobarCampo);
-    asociarEvento.call(numeroTarjeta, "change", comprobarValidaciones);
 }());

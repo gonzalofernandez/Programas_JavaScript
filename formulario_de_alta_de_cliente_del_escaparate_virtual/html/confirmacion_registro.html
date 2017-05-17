@@ -5,42 +5,46 @@
         <meta charset="UTF-8">
         <meta name="author" content="Gonzalo Fernández Pineda">
         <meta name="keywords" content="tienda top libros book shop">
-        <link rel="shortcut icon" type="image/x-icon" href="../favLibros.ico">
-        <link rel="stylesheet" type="text/css" href="../css/reset.css">
-        <link rel="stylesheet" type="text/css" href="../css/styles.css">
+        <link rel="shortcut icon" type="image/x-icon" href="favLibros.ico">
+        <link rel="stylesheet" type="text/css" href="../html/css/reset.css">
+        <link rel="stylesheet" type="text/css" href="../html/css/styles.css">
+        <link rel="stylesheet" type="text/css" href="../html/css/formularioStyles.css">
     </head>
     <body>
         <div id="contenedor">
             <header class="modulo">
-                <figure class="iconos"><img src="../img/imagenes/logoLibros.png" alt="logo de la tienda"></figure>
+                <figure class="iconos"><img src="../html/img/imagenes/logoLibros.png" alt="logo de la tienda"></figure>
                 <div>
                     <h1>Top Libros</h1>
                 </div>
-                <figure class="iconos"><img src="../img/imagenes/logoLibros.png" alt="logo de la tienda"></figure>
-			</header>
-			<nav class="modulo">
-				<div id="registro">
-				    <ul>
-				        <li><a class="links separado" href="error.html">Acceso</a></li>
-				        <li><a class="links separado" href="error.html">Registro</a></li>
-				        <li><a class="links separado" href="error.html">Ayuda</a></li>
-				        <li><a class="links separado" href="error.html">FAQs</a></li>
-				    </ul>
-				</div>
-                <div id="idiomas">
-					<a href="producto.html"><img class="bandera" src="../img/banderas/espban.png" alt="bandera esp"></a>
-					<a href="english_product.html"><img class="bandera" src="../img/banderas/ingban.png" alt="bandera ing"></a>
+                <figure class="iconos"><img src="../html/img/imagenes/logoLibros.png" alt="logo de la tienda"></figure>
+            </header>
+            <nav class="modulo">
+                <div id="registro">
+                    <ul>
+                        <li><a class="links separado" href="error.html">Acceso</a></li>
+                        <li><a id="opcion_registro" class="links separado">Registro</a></li>
+                        <li><a class="links separado" href="error.html">Ayuda</a></li>
+                        <li><a class="links separado" href="error.html">FAQs</a></li>
+                    </ul>
                 </div>
-				<div id="sesion">
-					<p class=" mayuscula">usuario</p>
+                <div id="idiomas">
+                    <a href="index.html"><img class="bandera" src="../html/img/banderas/espban.png" alt="bandera esp"></a>
+                    <a href="english_index.html"><img class="bandera" src="../html/img/banderas/ingban.png" alt="bandera ing"></a>
+                </div>
+                <div id="sesion">
+                    <p class=" mayuscula">usuario</p>
                     <a id="carro" href="error.html"></a>
-				</div>
-			</nav>
-			<nav class="modulo" id="opciones">
-				<ul>
-					<li><a class="links mayusculas" href="error.html">novedades</a></li>
-					<li><a class="links mayusculas" href="error.html">más vendidos</a></li>
-					<li><a class="links mayusculas" href="error.html">libros de texto</a></li>
+                </div>
+            </nav>
+            <div id="boton_menu">
+                <p class="mayuscula bot_men">menu</p>
+            </div>
+            <nav class="modulo" id="opciones">
+                <ul>
+                    <li><a class="links mayusculas" href="error.html">novedades</a></li>
+                    <li><a class="links mayusculas" href="error.html">más vendidos</a></li>
+                    <li><a class="links mayusculas" href="error.html">libros de texto</a></li>
                     <li><a class="links mayusculas" href="error.html">idiomas</a></li>
                     <li><a class="links mayusculas" href="error.html">infantil</a></li>
                     <li><a class="links mayusculas" href="error.html">juvenil</a></li>
@@ -48,13 +52,13 @@
                     <li><a class="links mayusculas" href="error.html">romántica</a></li>
                     <li><a class="links mayusculas" href="error.html">novela negra</a></li>
                     <li><a class="links mayusculas" href="error.html">humanidades</a></li>
-				</ul>
+                </ul>
                 <div id=busqueda>
                     <a id="buscar" href="error.html"></a>
                     <label for="campo_busqueda" id="busq">buscar</label>
-                    <input type="text" id="campo_busqueda" size="50" name="campo_busqueda" placeholder="Buscar..."/><br><br>
+                    <input type="text" id="campo_busqueda" size="50" placeholder="Buscar..."/><br><br>
                     Buscar por categoria:
-                    <select name="categoria">
+                    <select id="categoria">
                         <option value="nov">Novedades</option>
                         <option value="mas">Más vendidos</option>
                         <option value="tex">Libros de texto</option>
@@ -67,7 +71,7 @@
                         <option value="hum">Humanidades</option>
                     </select>
                     Buscar por año de publicación:
-                    <select name="publicado">
+                    <select id="publicado">
                         <option value="2014">2014</option>
                         <option value="2015">2015</option>
                         <option value="2016">2016</option>
@@ -75,24 +79,14 @@
                     </select>
                     <input type="button" id="busq_avanz" value="Buscar">
                 </div>
-			</nav>
+            </nav>
             <main class="modulo">
-                <figure id="imagenlibro">
-                    <img src="../img/imagenes/libro.png" alt="imagen de libro">
-                </figure>
-                <section id="datoslibro">
-                    <h6 class="mayuscula">datos del libro</h6>
-                    <table>
-                        <tr><th>titulo:</th><td>el secreto de vesalio</td></tr>
-                        <tr><th>autor:</th><td>jordi llobregat</td></tr>
-                        <tr><th>editorial:</th><td>circulo de lectores</td></tr>
-                        <tr><th>pvp:</th><td>21.95€</td></tr>
-                    </table>
-                    <button id="botonComprar" class="botonAccion mayuscula" type="button" onclick="">añadir a la cesta</button>
-                    <button id="botonVolver" class="botonAccion mayuscula" type="button" onclick="location='index.html'">volver al inicio</button>
-                </section>
+                <div id="mensaje">
+                    <p class="mayuscula">Sus datos han sido correctamente registrados</p>
+                    <p class="mayuscula"><a id="inicio" href="../html/index.html">volver a inicio</a></p>
+                </div>
             </main>
-			<footer class="modulo">
+            <footer class="modulo">
                 <section id="contacto">
                     <h2 class="subapartado mayuscula">contacto</h2>
                     <address>
@@ -104,22 +98,22 @@
                 <section id="social">
                     <h2 class="subapartado mayuscula">síguenos</h2>
                     <div>
-                        <a href="error.html"><img class="redsocial" src="../img/iconos/twitter.png" alt="logo de twitter"></a>
+                        <a href="error.html"><img class="redsocial" src="../html/img/iconos/twitter.png" alt="logo de twitter"></a>
                     </div>
                     <div>
-                        <a href="error.html"><img class="redsocial" src="../img/iconos/facebook.png" alt="logo de facebook"></a>
+                        <a href="error.html"><img class="redsocial" src="../html/img/iconos/facebook.png" alt="logo de facebook"></a>
                     </div>
                     <div>
-                        <a href="error.html"><img class="redsocial" src="../img/iconos/google+.png" alt="logo de google+"></a>
+                        <a href="error.html"><img class="redsocial" src="../html/img/iconos/google+.png" alt="logo de google+"></a>
                     </div>
                     <div>
-                        <a href="error.html"><img class="redsocial" src="../img/iconos/whatsapp.png" alt="logo de whatsapp"></a>
+                        <a href="error.html"><img class="redsocial" src="../html/img/iconos/whatsapp.png" alt="logo de whatsapp"></a>
                     </div>
                 </section>
                 <section id="geolocalizacion">
                     <h2 class="subapartado mayuscula">dónde estamos</h2>
                     <figure id="geo">
-                        <a href="error.html"><img src="../img/imagenes/geo.png" alt="imagen de mapa"></a>
+                        <a href="error.html"><img src="../html/img/imagenes/geo.png" alt="imagen de mapa"></a>
                     </figure>
                 </section>
                 <section id="legal">
@@ -140,7 +134,7 @@
                     </ul>
                 </section>
                 <p class="mayusculas" id="copyright">2017 - interface design</p>
-			</footer>
-		</div>
+            </footer>
+        </div>
     </body>
 </html>

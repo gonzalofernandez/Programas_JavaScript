@@ -537,3 +537,25 @@ td {
         font-size: 0.7em;
     }
 }
+
+#info_cookies {
+    color: white;
+    text-align: center;
+    line-height: 1.5em;
+    font-size: 1.2em;
+    border-bottom: 2px dotted white;
+    padding: 1em 0em;
+}
+
+#info_cookies p a {
+    color: white;
+    margin-left: 1em;
+    text-decoration: underline;
+}
+
+#boton_cerrar_aviso {
+    text-decoration: none !important;
+    padding: 0em 1em;
+    border: 1px solid white;
+    border-radius: 30%;
+}
