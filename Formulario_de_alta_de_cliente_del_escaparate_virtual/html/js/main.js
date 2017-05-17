@@ -10,8 +10,6 @@ var miApp = (function () {
         ESPACIO = " ",
         VACIO = "",
         NINGUNO = "ninguno",
-        SI_DEFINIDO = "si_definido",
-        NO_DEFINIDO = "no_definido",
         DATOS_OK = "datos_ok",
         DATOS_KO = "datos_ko",
         ELEMENTO_APAGADO = "elemento_apagado",
@@ -242,7 +240,9 @@ var miApp = (function () {
     function apagarElemento(e) {
         var elemento = e.currentTarget;
         definirAtributo.call(
-            elemento.id === FORMULARIO_CERRAR ?  formulario : avisoCookies,
+            elemento.id === FORMULARIO_CERRAR
+                ? formulario
+                : avisoCookies,
             CLASE,
             ELEMENTO_APAGADO
         );
