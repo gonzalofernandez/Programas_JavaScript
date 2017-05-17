@@ -1,6 +1,6 @@
 //TO_DO
 //Espacios en blanco en la clave? Caso de prueba 6 Bh0 "ADF09
-var miApp = (function () {
+var miApp = function () {
     "use strict";
     var VALIDACION_NOMBRE = new RegExp(/^([a-zA-Zá-úÁ-Ú]+\s[a-zA-Zá-úÁ-Ú]+|[a-zA-Zá-úÁ-Ú]+)$/),
         VALIDACION_CORREO_ELECTRONICO = new RegExp(/^[\w.!#$%&'*+\/=?\^@`{|}~\-]+@[\w\-.]+\.[a-z]{2,6}$/),
@@ -308,4 +308,5 @@ var miApp = (function () {
             comprobarClases
         }
     );
-}());
+};
+window.onload = miApp;
