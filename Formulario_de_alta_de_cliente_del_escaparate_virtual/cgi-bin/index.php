@@ -1,7 +1,6 @@
 <?php
 //TO_DO
-//Cómo ha de funcionar el servicio web?
-//Uso de include, require, header
+//Crear un MVC completo y asegurarnos que la cookie se queda en la sesion
 //DEFINICIÓN DE CONSTANTES
 define(NO_APARECE, "No se indica");
 define(SOLICITADA, "Solicitada");

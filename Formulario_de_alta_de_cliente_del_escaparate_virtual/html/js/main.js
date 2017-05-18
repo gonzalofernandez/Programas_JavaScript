@@ -1,5 +1,9 @@
-//TO_DO
-//Espacios en blanco en la clave? Caso de prueba 6 Bh0 "ADF09
+/*global
+    window
+*/
+/*jslint
+    es6, browser, multivar, this
+*/
 var miApp = function () {
     "use strict";
     var VALIDACION_NOMBRE = new RegExp(/^([a-zA-Zá-úÁ-Ú]+\s[a-zA-Zá-úÁ-Ú]+|[a-zA-Zá-úÁ-Ú]+)$/),
@@ -149,8 +153,7 @@ var miApp = function () {
     }
 
     function validarClave(cadena) {
-        return VALIDACION_CLAVE.test(cadena)
-                && cadena.split(ESPACIO).length === 1;
+        return VALIDACION_CLAVE.test(cadena);
     }
 
     function validarConfirmacionClave(cadena) {
@@ -226,6 +229,8 @@ var miApp = function () {
         case "numero_tarjeta":
             validacion = validarNumeroTarjeta(valor);
             break;
+        default:
+            validacion = false;
         }
         return validacion;
     }
