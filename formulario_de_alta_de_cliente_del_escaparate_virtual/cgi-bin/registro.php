@@ -63,6 +63,5 @@ if (empty($_POST)) {
     //Se crea la cookie y se almacena en el navegador cliente
     setcookie("Tienda_de_Libros", $nombreYApellido, time() + 3600);
     //Se redirige la petición a la página de respuesta
-    //header('Location: ../html/confirmacion_registro.html');
     include '../html/confirmacion_registro.html';
 }
