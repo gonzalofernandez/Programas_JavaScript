@@ -1,6 +1,5 @@
 <?php
-//TO_DO
-//Crear un MVC completo y asegurarnos que la cookie se queda en la sesion
+
 //DEFINICIÓN DE CONSTANTES
 define(NO_APARECE, "No se indica");
 define(SOLICITADA, "Solicitada");
