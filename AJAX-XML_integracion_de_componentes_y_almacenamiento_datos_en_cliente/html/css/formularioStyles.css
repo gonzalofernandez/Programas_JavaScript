@@ -1,0 +1,57 @@
+.datos_ok {
+    background-color: lightgreen;
+    color: green;
+}
+
+.datos_ko {
+    background-color: lightcoral;
+    color: brown;
+}
+
+.clave_media {
+    background-color: orange;
+    color: green;
+}
+
+.color_asterisco {
+    color: red;
+}
+
+.elemento_apagado {
+    display: none;
+}
+
+.formulario_abierto {
+    position: fixed;
+    top: 15%;
+    left: 24%;
+    z-index: 1;
+    background-color: black;
+    color: white;
+    border: 5px groove green;
+    text-align: center;
+}
+
+.formulario_apartados {
+    text-decoration: underline;
+}
+
+#formulario_titulo, #formulario_cerrar {
+    display: inline-block;
+}
+
+#formulario_titulo {
+    width: 97%;
+}
+
+#formulario_cerrar {
+    text-transform: capitalize;
+    text-align: right;
+    padding-left: 2px;
+    padding-right: 2px;
+    border: 1px solid white;
+}
+
+fieldset > table {
+    margin: auto;
+}

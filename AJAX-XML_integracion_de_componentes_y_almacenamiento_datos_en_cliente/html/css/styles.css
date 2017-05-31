@@ -1,0 +1,561 @@
+/*CSS de la web Tienda de Libros*/
+/* font converted using font-converter.net. thank you! */
+@font-face {
+  font-family: 'ModernPictograms';
+  src: url('../fonts/modernpics.eot'); /* IE9 Compat Modes */
+  src: url('../fonts/modernpics.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('../fonts/modernpics.woff2') format('woff2'), /* Modern Browsers */
+    url('./fonts/modernpics.woff') format('woff'), /* Modern Browsers */
+    url('../fonts/modernpics.svg') format('svg'); /* Legacy iOS */  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+    font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+#contenedor {
+    padding-left: 1em;
+    padding-right: 1em;
+    margin: auto;
+    width: 60em;
+    background-color: black;
+    cursor: default;
+}
+
+.mayuscula::first-letter {
+    text-transform: uppercase;
+}
+
+a::first-letter {
+    text-transform: uppercase;
+}
+
+.mayusculas {
+    text-transform: uppercase;
+}
+
+th::first-letter, td::first-letter, #libros::first-letter {
+    text-transform: uppercase;
+}
+
+#contenedor a {
+    text-decoration: none;
+}
+
+.modulo {
+    clear: both;
+}
+
+.iconos {
+    width: 30%;
+    float: left;
+}
+
+header div {
+    float: left;
+    display: table;
+    width: 40%;
+}
+
+header h1 {
+    font-size: 5em;
+    display: table-row;
+    color: green;
+    text-align: center;
+}
+
+header figure img {
+    width: 100%;
+}
+
+#registro {
+    list-style: none;
+    overflow: hidden;
+    padding-top: 0.5em;
+    float: left;
+}
+
+#registro li {
+    float: left;
+}
+
+#registro a {
+    color: white;
+}
+
+.separado {
+    padding: 0em 0.3em;
+    border-right: 0.1em solid white;
+}
+
+.links:hover {
+    color: black !important;
+    background: white;
+}
+
+#idiomas {
+    margin-left: 2.5em;
+    padding-top: 0.5em;
+    float: left;
+    text-align: center;
+}
+
+.bandera {
+    width: 5%;
+}
+
+#sesion {
+    float: right;
+}
+
+#sesion p {
+    display: inline-block;
+    color: white;
+}
+
+#carro::after {
+    font-size: 1.5em;
+    font-family: ModernPictograms;
+    color: white;
+    content: "i";
+}
+
+#opciones ul {
+    list-style: none;
+    overflow: hidden;
+    border-top: 0.1em solid white;
+    border-bottom: 0.1em solid white;
+}
+
+#opciones ul li {
+    padding-top: 0.7em;
+    padding-bottom: 0.7em;
+    width: 10%;
+    float: left;
+    text-align: center;
+    font-size: x-small;
+}
+
+#busqueda {
+    color: white;
+    text-align: center;
+    margin-bottom: 0.5em;
+}
+
+#opciones ul li .links {
+    display: block;
+    color: white;
+}
+
+#buscar::after {
+    font-family: ModernPictograms;
+    color: white;
+    content: "s";
+    font-size: 1.5em;
+}
+
+.redondeando {
+    border-radius: 50%; /* Borde redondeado */
+    box-shadow: 0px 0px 15px #000; /* Sombra */
+    padding:0;
+    border:0;
+    -moz-transition: all 1s;
+    -webkit-transition: all 1s;
+    -o-transition: all 1s;
+}
+.redondeando:hover {
+    box-shadow: 0; /* Con esto eliminamos la sombra */
+    border-radius: 0; /* Con esto eliminamos el borde redondeado */
+    -moz-transition: all 1s;
+    -webkit-transition: all 1s;
+    -o-transition: all 1s;
+    cursor:pointer;
+}
+
+#imagen {
+    text-align: center;
+}
+
+#imagen img {
+    width: 90%;
+    height: 25em;
+}
+
+#gancho p {
+    font-size: 5em;
+    color: forestgreen;
+    text-align: center;
+}
+
+#libros {
+    text-align: center;
+}
+
+.libro {
+    position: relative;
+    display: inline-block;
+    margin: 2%;
+    color: white;
+}
+
+.subapartado {
+    color: green;
+}
+
+#contacto {
+    float: left;
+    width: 50%;
+    color: green;
+    text-align: center;
+    line-height: 2em;
+}
+
+address, #copyright {
+    text-align: center;
+    color: white;
+    line-height: 2em;
+}
+
+#social {
+    float: left;
+    width: 50%;
+    color: white;
+    text-align: center;
+    line-height: 2em;
+}
+
+#social div {
+    display: inline;
+    float: left;
+    width: 25%;
+}
+
+#social img {
+    border-radius: 50%;
+    width: 80%;
+}
+
+#geolocalizacion {
+    clear: both;
+    text-align: center;
+    line-height: 2em;
+}
+
+#legal {
+    line-height: 2em;
+    clear: both;
+    width: 100%;
+    color: white;
+    text-align: center;
+}
+
+#legal a {
+    color: white;
+}
+
+#fotominions {
+    position: relative;
+}
+
+#fotominions img {
+    height: 40em;
+    width: 100%;
+}
+
+#mensaje {
+    text-align: center;
+    color: forestgreen;
+    font-size: 4em;
+}
+
+#inicio {
+    color: white;
+    text-decoration: underline !important;
+}
+
+#imagenlibro {
+    text-align: center;
+    float: left;
+    width: 50%;
+}
+
+#imagenlibro img {
+    width: 75%;
+}
+
+#datoslibro {
+    font-size: 2em;
+    line-height: 2.5em;
+    text-align: center;
+    float: left;
+    width: 50%;
+    color: forestgreen;
+}
+
+td {
+    color: green;
+}
+
+#datoslibro table {
+    margin: auto;
+}
+
+.botonAccion {
+    background: forestgreen;
+    color: black;
+    text-align: center;
+    padding-bottom: 0.4em;
+}
+
+#botonComprar::after {
+    font-family: ModernPictograms;
+    color: black;
+    content: " $";
+    font-size: 1.4em;
+}
+
+#botonVolver::after {
+    font-family: ModernPictograms;
+    color: black;
+    content: " R";
+    font-size: 1.4em;
+}
+
+.elementoMultimediaGrande {
+    float: left;
+    width: 35%;
+}
+
+#elementoMultimedia {
+    float: left;
+    width: 30%;
+}
+
+#multimedia {
+    text-align: center;
+}
+
+#imagenRetocada img {
+    width: 100%;
+    height: 15em;
+}
+
+#video {
+    color: white;
+    width: 100%;
+}
+
+.botones {
+    display: inline-block;
+    background-image: url("../img/controles/player_buttons.png");
+    border-radius: 50%;
+}
+
+.dimensionesBoton {
+    width: 30px;
+    height: 30px;
+}
+
+#reproducir {
+    background-position: -254px -60px;
+}
+
+#pausar {
+    background-position: -254px -107px;
+}
+
+#parar {
+    background-position: -254px -154px;
+}
+
+#silenciar {
+    background-position: -160px -154px;
+}
+
+#subirvolumen {
+    background-position: -160px -60px;
+}
+
+#bajarvolumen {
+    background-position: -160px -107px;
+}
+
+#sonido {
+    background-position: -160px -13px;
+}
+
+#avanzar {
+    background-position: -207px -13px;
+}
+
+#retroceder {
+    background-position: -207px -60px;
+}
+
+#reempezar {
+    background-position: -207px -154px;
+}
+
+#carrusel {
+    overflow: hidden;
+    margin: 1.5em auto;
+    width: 40%;
+}
+
+#carrusel ul {
+    display: flex;
+    width: 1000%;
+    animation: cambiarfoto 20s infinite normal;
+}
+
+#carrusel img {
+    width: 100%;
+    height: 11em;
+}
+
+@keyframes cambiarfoto {
+    9% {margin-left: 0%;}
+    10% {margin-left: -100%;}
+    19% {margin-left: -100%;}
+    20% {margin-left: -200%;}
+    29% {margin-left: -200%;}
+    30% {margin-left: -300%;}
+    39% {margin-left: -300%;}
+    40% {margin-left: -400%;}
+    49% {margin-left: -400%;}
+    50% {margin-left: -500%;}
+    59% {margin-left: -500%;}
+    60% {margin-left: -600%;}
+    69% {margin-left: -600%;}
+    70% {margin-left: -700%;}
+    79% {margin-left: -700%;}
+    80% {margin-left: -800%;}
+    89% {margin-left: -800%;}
+    90% {margin-left: -900%;}
+    99% {margin-left: -900%;}
+    100% {margin-left: -1000%;}
+}
+#busq {
+    display: none;
+}
+#boton_menu {
+    display: none;
+}
+@media (max-width: 30em) {
+    #contenedor {
+        width: 28em;
+    }
+    header div {
+        margin-left: 27%;
+    }
+    header h1 {
+        font-size: 4em;
+    }
+    .iconos {
+        display: none;
+    }
+    #idiomas {
+        width: 32%;
+        margin: auto;
+    }
+    #gancho {
+        font-size: 0.9em;
+    }
+    #opciones {
+        position: relative;
+    }
+    #opciones ul li {
+        width: 50%;
+        display: block;
+        float: none;
+        border-bottom: 1px solid white;
+    }
+    #boton_menu {
+        width: 100%;
+        display: block;
+    }
+    .bot_men {
+        clear: both;
+        display: block;
+        color: white;
+    }
+}
+@media (max-width: 20em) {
+    #contenedor {
+        width: 18em;
+    }
+    #registro, #idiomas, #sesion p {
+        font-size: 0.6em;
+        text-transform: uppercase;
+    }
+    #sesion a {
+        font-size: 0.5em;
+    }
+    #sesion {
+        float: left;
+    }
+    header div {
+        margin-left: 25%;
+    }
+    header h1 {
+        font-size: 3em;
+    }
+    #idiomas {
+        width: 22%;
+        margin: auto;
+    }
+    #boton_menu {
+        margin-right: auto;
+        width: 20%;
+    }
+    #imagen {
+        display: none;
+    }
+    #gancho {
+        width: 100%;
+        font-size: 0.5em;
+    }
+    #campo_busqueda, #buscar {
+        display: none;
+    }
+    #geo a img {
+        width: 80%;
+    }
+    address {
+        font-size: 0.7em;
+    }
+    #contacto, #social {
+        clear: both;
+        width: 100%;
+    }
+    #social {
+        margin-left: 4.5em;
+        width: 50%;
+    }
+    #legal {
+        font-size: 0.7em;
+    }
+}
+
+#info_cookies {
+    color: white;
+    text-align: center;
+    line-height: 1.5em;
+    font-size: 1.2em;
+    border-bottom: 2px dotted white;
+    padding: 1em 0em;
+}
+
+#info_cookies p a {
+    color: white;
+    margin-left: 1em;
+    text-decoration: underline;
+}
+
+#boton_cerrar_aviso {
+    text-decoration: none !important;
+    padding: 0em 1em;
+    border: 1px solid white;
+    border-radius: 30%;
+}
