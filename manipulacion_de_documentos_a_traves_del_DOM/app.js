@@ -90,7 +90,7 @@ var miApp = (function () {
                 this.addEventListener(evento, callback);
             },
             agregarEventosAElementos = function (evento, callbacks) {
-                this.map(function (elemento) {
+                this.map(function (elemento) {//forEach
                     switch (elemento.id) {
                     case "boton_crear_elemento":
                         agregarEvento.call(

@@ -8,7 +8,8 @@ var miApp = function () {
     "use strict";
     var VALIDACION_NOMBRE = new RegExp(/^([a-zA-Zá-úÁ-Ú]+\s[a-zA-Zá-úÁ-Ú]+|[a-zA-Zá-úÁ-Ú]+)$/),
         VALIDACION_CORREO_ELECTRONICO = new RegExp(/^[\w.!#$%&'*+\/=?\^@`{|}~\-]+@[\w\-.]+\.[a-z]{2,6}$/),
-        VALIDACION_CLAVE = new RegExp(/(?=^.{8,}$)(?=.*\d)(?=.*\W+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/m),
+        VALIDACION_CLAVE = new RegExp(/(?=^.{9,}$)(?=.*\d{2,})(?=.*\W{2,})(?![.\n])(?=.*[A-Z]{2,})(?=.*[a-z]{2,}).*$/m),
+        VALIDACION_ROBUSTEZ_CLAVE = new RegExp(/(?=^.{6,8}$)(?=.*\d)(?=.*\W)(?![.\n])(?=.*[A-Z]{2,})(?=.*[a-z]{2,}).*$/m),
         VALIDACION_FECHA = new RegExp(/^\d{2}\/\d{2}\/\d{4}$/),
         VALIDACION_DIRECCION = new RegExp(/^\w+(\s\w+(,|\.)*)*$/),
         VALIDACION_NUMERO_TARJETA = new RegExp(/^\d{4}-\d{4}-\d{4}-\d{4}$/),
@@ -17,6 +18,7 @@ var miApp = function () {
         VACIO = "",
         NINGUNO = "ninguno",
         DATOS_OK = "datos_ok",
+        CLAVE_MEDIA = "clave_media",
         DATOS_KO = "datos_ko",
         ELEMENTO_APAGADO = "elemento_apagado",
         FORMULARIO_ABIERTO = "formulario_abierto",
@@ -153,7 +155,8 @@ var miApp = function () {
     }
 
     function validarClave(cadena) {
-        return VALIDACION_CLAVE.test(cadena);
+        return VALIDACION_CLAVE.test(cadena)
+            || VALIDACION_ROBUSTEZ_CLAVE.test(cadena);
     }
 
     function validarConfirmacionClave(cadena) {
@@ -255,7 +258,17 @@ var miApp = function () {
     function comprobarCampo(e) {
         var campo = e.currentTarget,
             valor = campo.value;
-        if (valor) {
+        if (
+            valor
+            && campo === clave
+            && VALIDACION_ROBUSTEZ_CLAVE.test(valor)
+        ) {
+            definirAtributo.call(
+                campo,
+                CLASE,
+                CLAVE_MEDIA
+            );
+        } else if (valor) {
             definirAtributo.call(
                 campo,
                 CLASE,
@@ -288,7 +301,10 @@ var miApp = function () {
             (
                 obtenerValorDeAtributo(nombreYApellido) === DATOS_OK
                     && obtenerValorDeAtributo(correoElectronico) === DATOS_OK
-                    && obtenerValorDeAtributo(clave) === DATOS_OK
+                    && (
+                        obtenerValorDeAtributo(clave) === DATOS_OK
+                        || obtenerValorDeAtributo(clave) === CLAVE_MEDIA
+                       )
                     && obtenerValorDeAtributo(confirmacionClave) === DATOS_OK
                     && obtenerValorDeAtributo(fechaNacimiento) !== DATOS_KO
                     && obtenerValorDeAtributo(direccion) !== DATOS_KO

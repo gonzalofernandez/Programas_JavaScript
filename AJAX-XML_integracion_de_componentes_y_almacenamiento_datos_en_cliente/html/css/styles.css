@@ -559,3 +559,7 @@ td {
     border: 1px solid white;
     border-radius: 30%;
 }
+
+#resultado_busqueda {
+    display: none;
+}

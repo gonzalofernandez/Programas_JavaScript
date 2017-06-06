@@ -38,6 +38,8 @@ var miApp = function () {
         controlEnviar,
         avisoCookies,
         botonCerrarAvisoCookies,
+        campoBusqueda,
+        resultadoBusqueda,
         $ = function () {
             return document.getElementById(this);
         },
@@ -95,6 +97,9 @@ var miApp = function () {
                         callbacks.apagarElemento
                     );
                     break;
+                case campoBusqueda:
+                    agregarEventoAElemento(elemento, eventos.keyup, callbacks.buscar);
+                    break;
                 default:
                     agregarEventoAElemento(
                         elemento,
@@ -128,6 +133,8 @@ var miApp = function () {
             controlEnviar = $.call("control_enviar");
             avisoCookies = $.call("info_cookies");
             botonCerrarAvisoCookies = $.call("boton_cerrar_aviso");
+            campoBusqueda = $.call("campo_busqueda");
+            resultadoBusqueda = $.call("resultado_busqueda");
             return [
                 nombreYApellido,
                 correoElectronico,
@@ -140,7 +147,9 @@ var miApp = function () {
                 direccion,
                 botonCerrarFormulario,
                 botonCerrarAvisoCookies,
-                avisoCookies
+                avisoCookies,
+                campoBusqueda,
+                resultadoBusqueda
             ];
         }());
 
@@ -315,6 +324,32 @@ var miApp = function () {
         );
     }
 
+    function buscar() {
+        var textoBusqueda = campoBusqueda.value,
+            peticion;
+        if (textoBusqueda) {
+            peticion = new XMLHttpRequest();
+            // Preparar la funcion de respuesta
+            peticion.onreadystatechange = function () {
+                var contenido;
+                if (peticion.readyState < 4) {
+                    contenido = "<img id=\"cargando\" src=\"../img/imagenes/cargando.gif\"/>";
+                } else if (peticion.readyState === 4 && peticion.status === 200) {
+                    contenido = peticion.responseText;
+                } else {
+                    contenido = "Error";
+                }
+                resultadoBusqueda.style.display = "block";
+                resultadoBusqueda.innerHTML = contenido;
+            };
+            // Realizar peticion HTTP
+            peticion.open("GET", "//daw.hol.es/tiendaDeLibros/html/php/gestionBusqueda.php?key=" + textoBusqueda, true);
+            peticion.send(null);
+        } else {
+            resultadoBusqueda.textContent = "";
+        }
+    }
+
 
     //ASIGNACION DE EVENTOS
     asociarEventos.call(
@@ -326,7 +361,8 @@ var miApp = function () {
             comprobarValidaciones,
             abrirFormulario,
             apagarElemento,
-            comprobarClases
+            comprobarClases,
+            buscar
         }
     );
 };

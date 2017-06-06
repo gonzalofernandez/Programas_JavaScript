@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="css/formularioStyles.css">
     <script type="text/javascript" src="js/main.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
 <body>
@@ -169,6 +170,9 @@
                         <button id="boton_enviar_formulario" name="boton_enviar_formulario" type="submit">Confirmar y Enviar</button>
                     </div>
                     <br>Recuerde que los campos marcados con <span class="color_asterisco">*</span> son obligatorios para su correcto registro en el sistema, gracias.
+                    <div class="captcha">
+                        <div class="g-recaptcha" data-sitekey="6LeYWCQUAAAAADD81Fd_KzP67t7K5GRzIAwjUutu"></div>
+                    </div>
                 </form>
             </div>
             <div id="idiomas">
@@ -199,7 +203,9 @@
             <div id=busqueda>
                 <a id="buscar" href="error.html"></a>
                 <label for="campo_busqueda" id="busq">buscar</label>
-                <input type="text" id="campo_busqueda" size="50" placeholder="Buscar..." /><br><br> Buscar por categoria:
+                <input type="text" id="campo_busqueda" size="50" placeholder="Buscar..." />
+                <div id="resultado_busqueda"></div><br><br>
+                Buscar por categoria:
                 <select id="categoria">
                         <option value="nov">Novedades</option>
                         <option value="mas">Más vendidos</option>
@@ -302,7 +308,7 @@
             <section id="geolocalizacion">
                 <h2 class="subapartado mayuscula">dónde estamos</h2>
                 <figure id="geo">
-                    <a href="error.html"><img src="img/imagenes/geo.png" alt="imagen de mapa"></a>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3037.5564519293007!2d-3.7072956850082646!3d40.41867577936493!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd42287c2ee51175%3A0x4e73a8201ed34400!2sCalle+de+Preciados%2C+28013+Madrid!5e0!3m2!1ses!2ses!4v1496743201590" width="400" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
                 </figure>
             </section>
             <section id="legal">
