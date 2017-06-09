@@ -1,6 +1,3 @@
-/*global
-    window
-*/
 /*jslint
     es6, browser, multivar, this
 */
@@ -153,6 +150,8 @@ var miApp = function () {
             ];
         }());
 
+
+
     //FUNCIONES DE VALIDACION
     function validarNombreYApellido(cadena) {
         return VALIDACION_NOMBRE.test(cadena)
@@ -165,7 +164,7 @@ var miApp = function () {
 
     function validarClave(cadena) {
         return VALIDACION_CLAVE.test(cadena)
-            || VALIDACION_ROBUSTEZ_CLAVE.test(cadena);
+                || VALIDACION_ROBUSTEZ_CLAVE.test(cadena);
     }
 
     function validarConfirmacionClave(cadena) {
@@ -311,9 +310,9 @@ var miApp = function () {
                 obtenerValorDeAtributo(nombreYApellido) === DATOS_OK
                     && obtenerValorDeAtributo(correoElectronico) === DATOS_OK
                     && (
-                        obtenerValorDeAtributo(clave) === DATOS_OK
+                    obtenerValorDeAtributo(clave) === DATOS_OK
                         || obtenerValorDeAtributo(clave) === CLAVE_MEDIA
-                       )
+                )
                     && obtenerValorDeAtributo(confirmacionClave) === DATOS_OK
                     && obtenerValorDeAtributo(fechaNacimiento) !== DATOS_KO
                     && obtenerValorDeAtributo(direccion) !== DATOS_KO
@@ -333,21 +332,38 @@ var miApp = function () {
             peticion.onreadystatechange = function () {
                 var contenido;
                 if (peticion.readyState < 4) {
-                    contenido = "<img id=\"cargando\" src=\"../img/imagenes/cargando.gif\"/>";
+                    contenido = "<img src=\"./img/imagenes/iconoCargando.gif\">";
                 } else if (peticion.readyState === 4 && peticion.status === 200) {
                     contenido = peticion.responseText;
                 } else {
-                    contenido = "Error";
+                    contenido = "No encontramos resultados, introduzca otra búsqueda";
                 }
-                resultadoBusqueda.style.display = "block";
+                resultadoBusqueda.style.display = "inherit";
                 resultadoBusqueda.innerHTML = contenido;
             };
             // Realizar peticion HTTP
-            peticion.open("GET", "//daw.hol.es/tiendaDeLibros/html/php/gestionBusqueda.php?key=" + textoBusqueda, true);
-            peticion.send(null);
+            peticion.open(
+                "GET",
+                "//daw.hol.es/tiendaDeLibros/html/php/gestionBusqueda.php?key=" + textoBusqueda,
+                true
+            );
+            peticion.send();
         } else {
             resultadoBusqueda.textContent = "";
         }
+        /*$(".sinopsis").hover(
+            function () {
+                var elementoParrafo = $("<p>"),
+                    sinopsis = $(this).parent().parent().data("sinopsis"),
+                    texto = "Camina por " + nombrePais + " desde " + precio +
+                            " € al día";
+                $(this).parent().parent().append(elementoParrafo);
+                elementoParrafo.text(texto).addClass("encima_fotos_destinos");
+            },
+            function () {
+                $(".encima_fotos_destinos").remove();
+            }
+        );*/
     }
 
 

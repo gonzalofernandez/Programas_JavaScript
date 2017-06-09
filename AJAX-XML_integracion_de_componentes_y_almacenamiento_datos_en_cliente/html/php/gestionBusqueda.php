@@ -1,7 +1,6 @@
 <?php
-    header("Access-Control-Allow-Origin: *");
     $key = $_GET["key"];
-    $libro = "";
+    $libros = "";
     $conexion = mysqli_connect(
         "mysql.hostinger.es",
         "u179580594_tiend",
@@ -9,15 +8,20 @@
         "u179580594_books"
     );
     if ($conexion->connect_errno) {
-        echo "Falló la conexión con MySQL: (" . $conexion->connect_errno . ") " . $conexion->connect_error;
+        echo "Falló la conexión con MySQL: (" . $conexion->connect_errno . ") " .
+            $conexion->connect_error;
     } else {
         $query = mysqli_query(
             $conexion,
-            "SELECT * FROM 'stock_libros' WHERE 'titulo' LIKE '%$key%'"
+            "SELECT * FROM stock_libros WHERE titulo LIKE '%".$key."%'"
         );
         while ($row = $query->fetch_assoc()) {
-          $libro = "<p>{$row['titulo']}</p>";
+            echo "<tr>".
+                "<td data-sinopsis=\"{$row['sinopsis']}\" class=\"sinopsis\" width=\"50%\">{$row['titulo']}</td>".
+                "<td width=\"50%\"><a href=\"producto{$row['id']}.html\">".
+                    "<img src=\"{$row['foto_libro']}\" alt=\"Imagen libro\"".
+                    " width=\"20em\"></a></td></tr>";
         }
-        echo $libro;
+        mysqli_close($conexion);
     }
 ?>

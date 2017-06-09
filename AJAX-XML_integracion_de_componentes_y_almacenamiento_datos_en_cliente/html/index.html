@@ -11,8 +11,13 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="css/formularioStyles.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
     <script type="text/javascript" src="js/main.js"></script>
-    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script type="text/javascript" src="js/geolocalizacion.js"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAk9uFG4rze0UupITuoFlPujwWWmcWc2Z8&callback=initMap"></script>
 </head>
 
 <body>
@@ -204,7 +209,7 @@
                 <a id="buscar" href="error.html"></a>
                 <label for="campo_busqueda" id="busq">buscar</label>
                 <input type="text" id="campo_busqueda" size="50" placeholder="Buscar..." />
-                <div id="resultado_busqueda"></div><br><br>
+                <table id="resultado_busqueda"></table><br>
                 Buscar por categoria:
                 <select id="categoria">
                         <option value="nov">Novedades</option>
@@ -237,7 +242,7 @@
             <div id="libros">
                 <ul>
                     <li class="libro">
-                        <a href="producto.html"><img class="libros" src="img/libros/libro1.png" alt="portada de libro1"></a>
+                        <a href="producto1.html"><img class="libros" src="img/libros/libro1.png" alt="portada de libro1"></a>
                         <p>El secreto de Vesalio</p>
                         <p>Diciembre 2016</p>
                         <p>21.95€</p>
@@ -307,9 +312,7 @@
             </section>
             <section id="geolocalizacion">
                 <h2 class="subapartado mayuscula">dónde estamos</h2>
-                <figure id="geo">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3037.5564519293007!2d-3.7072956850082646!3d40.41867577936493!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd42287c2ee51175%3A0x4e73a8201ed34400!2sCalle+de+Preciados%2C+28013+Madrid!5e0!3m2!1ses!2ses!4v1496743201590" width="400" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
-                </figure>
+                <figure id="geo"></figure>
             </section>
             <section id="legal">
                 <h2 class="subapartado mayuscula">aviso legal</h2>

@@ -242,6 +242,12 @@ address, #copyright {
     line-height: 2em;
 }
 
+#geo {
+    margin: auto;
+    width: 50%;
+    height: 300px;
+}
+
 #legal {
     line-height: 2em;
     clear: both;
@@ -562,4 +568,6 @@ td {
 
 #resultado_busqueda {
     display: none;
+    margin: auto;
+    width: 30%;
 }

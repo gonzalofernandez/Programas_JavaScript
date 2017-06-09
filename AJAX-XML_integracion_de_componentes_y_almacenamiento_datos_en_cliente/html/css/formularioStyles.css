@@ -57,5 +57,6 @@ fieldset > table {
 }
 
 .captcha {
-    margin-left: 14em;
+    width: 30%;
+    margin: auto;
 }

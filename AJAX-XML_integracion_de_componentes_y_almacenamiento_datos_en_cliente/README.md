@@ -1,9 +1,11 @@
-*URL de la interfaz:* daw.hol.es/tiendaDeLibros
+**URL de la interfaz:** 
 
-*Ejemplos de búsquedas en la interfaz:* el, hir, vesalio
+daw.hol.es/tiendaDeLibros/html
 
-*Descripción de los componetes integrados:* captcha y geolocalización de Google
+**Ejemplos de búsquedas en la interfaz:** 
 
-Descripción de los componentes adicionales que utilizan la tecnología Ajax
+Se puede buscar cualquier artículo en base a su nombre o parte de su nombre
 
-Descripción del uso de tecnologías de almacenamiento en el cliente si se han utilizado
+**Descripción de los componetes integrados:**
+
+captcha y geolocalización de Google

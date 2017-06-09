@@ -1,12 +1,9 @@
-/*jslint
-    es6, multivar, browser, this
+/*global
+    window
 */
-//TO_DO
-//por que se duplica el body?
-//hay que crear elemento nuevo?
-//protocolo de la cdn
-//underscorejs
-//coffeescript
+/*jslint
+    es6, multivar, browser, this, devel
+*/
 var miApp = (function () {
         "use strict";
         var CDN_UNDERSCOREJS = "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js",
@@ -27,6 +24,7 @@ var miApp = (function () {
             TEXTO_BOTON_CREAR = "Crear elemento",
             TEXTO_BOTON_OPTION = "Crear opción",
             TEXTO_BOTON_BORRAR = "Borrar elemento",
+            TEXTO_BOTON_ORDENAR = "Ordenar por ID",
             TEXTO_TIPO = "TYPE: ",
             TEXTO_VALOR_OPCION = "VALUE: ",
             TEXTO_COLUMNAS = "COLS: ",
@@ -142,6 +140,13 @@ var miApp = (function () {
                             callbacks.encenderOpcionesRango
                         );
                         break;
+                    case "boton_ordenar_elementos":
+                        agregarEvento.call(
+                            elemento,
+                            evento.mousedown,
+                            callbacks.ordenarElementos
+                        );
+                        break;
                     }
                 });
             },
@@ -158,6 +163,11 @@ var miApp = (function () {
                         ? "inherit"
                         : "none"}`
                 );
+            },
+            borrarElementosCreados = function () {
+                while (this.children.length > 0) {
+                    this.lastElementChild.remove();
+                }
             },
             //CREAMOS ELEMENTOS INICIALES
             scriptUnderscoreJS = crearElemento("script"),
@@ -184,6 +194,7 @@ var miApp = (function () {
             elementoTabla = crearElemento("table"),
             elementoThead = crearElemento("thead"),
             elementoTbody = crearElemento("tbody"),
+            elementoTfoot = crearElemento("tfoot"),
             labelTipoEntrada = crearElemento("label"),
             tipoEntrada = crearElemento("select"),
             labelValor = crearElemento("label"),
@@ -206,6 +217,7 @@ var miApp = (function () {
             labelRangeMaximo = crearElemento("label"),
             minRange = crearElemento("input"),
             maxRange = crearElemento("input"),
+            botonOrdenarElementos = crearElemento("button"),
             //CREAMOS NODOS DE TEXTO
             textoTitle = crearNodoDeTexto(TITULO_DE_PAGINA),
             cabecera = crearNodoDeTexto(NOMBRE_APLICACION),
@@ -229,6 +241,7 @@ var miApp = (function () {
             textoAvisoNombre = crearNodoDeTexto(TEXTO_NOMBRE_REPETIDO),
             textoBorrarId = crearNodoDeTexto(TEXTO_BORRAR_ELEMENTO),
             textoBotonBorrarElemento = crearNodoDeTexto(TEXTO_BOTON_BORRAR),
+            textoOrdenarElementos = crearNodoDeTexto(TEXTO_BOTON_ORDENAR),
             textoMinRange = crearNodoDeTexto(TEXTO_MIN_RANGE),
             textoMaxRange = crearNodoDeTexto(TEXTO_MAX_RANGE),
             elementosConEventos = [
@@ -252,7 +265,8 @@ var miApp = (function () {
                 avisoId,
                 avisoNombre,
                 botonBorrarElemento,
-                idParaBorrar
+                idParaBorrar,
+                botonOrdenarElementos
             ],
             elementosConOpciones = [seleccionTipoElemento, tipoEntrada, tipoBoton],
             elementosApagadosAlInicio = [
@@ -285,7 +299,8 @@ var miApp = (function () {
                 labelRangeMinimo,
                 labelRangeMaximo,
                 minRange,
-                maxRange
+                maxRange,
+                botonOrdenarElementos
             ],
             elementosAVaciar = [
                 idElemento,
@@ -328,6 +343,7 @@ var miApp = (function () {
         insertarNodoHijo.call(botonBorrarElemento, textoBotonBorrarElemento);
         insertarNodoHijo.call(labelRangeMaximo, textoMaxRange);
         insertarNodoHijo.call(labelRangeMinimo, textoMinRange);
+        insertarNodoHijo.call(botonOrdenarElementos, textoOrdenarElementos);
 
 
 
@@ -427,6 +443,12 @@ var miApp = (function () {
             "id",
             "rango_min"
         );
+        asignarPropiedadAElemento.call(
+            botonOrdenarElementos,
+            "id",
+            "boton_ordenar_elementos"
+        );
+        asignarPropiedadAElemento.call(botonOrdenarElementos, "type", "button");
         //Elementos apagados de inicio
         asignarPropiedadAElemento.call(
             elementosApagadosAlInicio,
@@ -493,6 +515,8 @@ var miApp = (function () {
         insertarNodoHijo.call(elementoThead, botonBorrarElemento);
         insertarNodoHijo.call(botonBorrarElemento, textoBotonBorrarElemento);
         insertarNodoHijo.call(elementoTabla, elementoTbody);
+        insertarNodoHijo.call(elementoTabla, elementoTfoot);
+        insertarNodoHijo.call(elementoTfoot, botonOrdenarElementos);
 
 
         //ASIGNAR OPCIONES A LOS ELEMENTOS SELECT
@@ -571,243 +595,10 @@ var miApp = (function () {
         }());
 
 
-        //LOGICA DEL SISTEMA
-        //Definición de la clase Sistema
-        function Sistema() {
-            //Propiedades
-            this.elementos = [];
-            //Métodos
-            this.generarNuevoElemento = function () {
-                var nuevoElemento;
-                switch (seleccionTipoElemento.value) {
-                case "input":
-                    nuevoElemento = new Entrada(
-                        idElemento.value,
-                        nombreElemento.value,
-                        contenidoElemento.value,
-                        tipoEntrada.value,
-                        maxRange.value,
-                        minRange.value
-                    );
-                    break;
-                case "select":
-                    nuevoElemento = new Selector(
-                        idElemento.value,
-                        nombreElemento.value,
-                        nuevasOpciones
-                    );
-                    break;
-                case "textarea":
-                    nuevoElemento = new TextArea(
-                        idElemento.value,
-                        nombreElemento.value,
-                        columnas.value,
-                        filas.value,
-                        maxCaracteres.value
-                    );
-                    break;
-                default:
-                    nuevoElemento = new Boton(
-                        idElemento.value,
-                        nombreElemento.value,
-                        contenidoElemento.value,
-                        tipoBoton.value
-                    );
-                }
-                this.elementos.push(nuevoElemento);
-            };
-
-            this.insertarElementos = function () {
-                var nuevoElemento;
-                while (elementoTbody.children.length > 0) {
-                    elementoTbody.lastElementChild.remove();
-                }
-                _.each(this.elementos, function (elemento) {
-                    var elementoFila,
-                        elementoCelda;
-                    switch (elemento.constructor.name) {
-                    case "Boton":
-                        nuevoElemento = crearElemento("button");
-                        asignarPropiedadAElemento.call(
-                            nuevoElemento,
-                            "id",
-                            elemento.id
-                        );
-                        asignarPropiedadAElemento.call(
-                            nuevoElemento,
-                            "name",
-                            elemento.nombre
-                        );
-                        asignarPropiedadAElemento.call(
-                            nuevoElemento,
-                            "type",
-                            elemento.tipoBoton
-                        );
-                        break;
-                    case "Entrada":
-                        nuevoElemento = crearElemento("input");
-                        asignarPropiedadAElemento.call(
-                            nuevoElemento,
-                            "id",
-                            elemento.id
-                        );
-                        asignarPropiedadAElemento.call(
-                            nuevoElemento,
-                            "name",
-                            elemento.nombre
-                        );
-                        if (elemento.tipoEntrada === "range") {
-                            asignarPropiedadAElemento.call(
-                                nuevoElemento,
-                                "type",
-                                elemento.tipoEntrada
-                            );
-                            asignarPropiedadAElemento.call(
-                                nuevoElemento,
-                                "max",
-                                elemento.max
-                            );
-                            asignarPropiedadAElemento.call(
-                                nuevoElemento,
-                                "min",
-                                elemento.min
-                            );
-                        } else {
-                            asignarPropiedadAElemento.call(
-                                nuevoElemento,
-                                "type",
-                                elemento.tipoEntrada
-                            );
-                        }
-                        break;
-                    case "TextArea":
-                        nuevoElemento = crearElemento("textarea");
-                        asignarPropiedadAElemento.call(
-                            nuevoElemento,
-                            "id",
-                            elemento.id
-                        );
-                        asignarPropiedadAElemento.call(
-                            nuevoElemento,
-                            "name",
-                            elemento.nombre
-                        );
-                        asignarPropiedadAElemento.call(
-                            nuevoElemento,
-                            "cols",
-                            elemento.columnas
-                        );
-                        asignarPropiedadAElemento.call(
-                            nuevoElemento,
-                            "rows",
-                            elemento.filas
-                        );
-                        asignarPropiedadAElemento.call(
-                            nuevoElemento,
-                            "maxlength",
-                            elemento.maxCaracteres
-                        );
-                        break;
-                    default:
-                        nuevoElemento = crearElemento("select");
-                        asignarPropiedadAElemento.call(
-                            nuevoElemento,
-                            "id",
-                            elemento.id
-                        );
-                        asignarPropiedadAElemento.call(
-                            nuevoElemento,
-                            "name",
-                            elemento.nombre
-                        );
-                        _.each(elemento.opciones, function (opcion) {
-                            var elementoOpcion = crearElemento("option"),
-                                nodoTexto = crearNodoDeTexto(opcion.contenido);
-                            asignarPropiedadAElemento.call(
-                                elementoOpcion,
-                                "value",
-                                opcion.valor
-                            );
-                            insertarNodoHijo.call(elementoOpcion, nodoTexto);
-                            insertarNodoHijo.call(nuevoElemento, elementoOpcion);
-                        });
-                    }
-                    elementoFila = crearElemento("tr");
-                    elementoCelda = crearElemento("td");
-                    insertarNodoHijo.call(elementoTbody, elementoFila);
-                    insertarNodoHijo.call(elementoFila, elementoCelda);
-                    insertarNodoHijo.call(elementoCelda, nuevoElemento);
-                    switch (elemento.constructor.name) {
-                    case "Boton":
-                        insertarNodoHijo.call(
-                            nuevoElemento,
-                            crearNodoDeTexto(elemento.contenido)
-                        );
-                        break;
-                    case "Selector":
-                    case "TextArea":
-                        colocarElementoAntesdeHermano.call(
-                            nuevoElemento,
-                            crearNodoDeTexto(elemento.nombre)
-                        );
-                        break;
-                    default:
-                        colocarElementoAntesdeHermano.call(
-                            nuevoElemento,
-                            crearNodoDeTexto(elemento.contenido)
-                        );
-                    }
-                });
-            };
-
-            this.borrarElemento = function (id) {
-                var indiceElemento = this.elementos.findIndex(
-                    function (elemento) {
-                        return elemento.id === id;
-                    }
-                );
-                this.elementos.splice(indiceElemento, 1);
-            };
-
-        }
-        //Definición de la clase Boton
-        function Boton(id, nombre, contenido, tipoBoton) {
-            this.id = id;
-            this.nombre = nombre;
-            this.contenido = contenido;
-            this.tipoBoton = tipoBoton;
-        }
-        //Definición de la clase Entrada
-        function Entrada(id, nombre, contenido, tipoEntrada, max, min) {
-            this.id = id;
-            this.nombre = nombre;
-            this.contenido = contenido;
-            this.tipoEntrada = tipoEntrada;
-            this.max = max;
-            this.min = min;
-        }
-        //Definición de la clase Selector
-        function Selector(id, nombre, nuevasOpciones) {
-            this.id = id;
-            this.nombre = nombre;
-            this.opciones = nuevasOpciones;
-        }
-        //Definición de la clase TextArea
-        function TextArea(id, nombre, columnas, filas, maxCaracteres) {
-            this.id = id;
-            this.nombre = nombre;
-            this.columnas = columnas;
-            this.filas = filas;
-            this.maxCaracteres = maxCaracteres;
-        }
-        //Creación del objeto sistema
-        sistema = new Sistema();
-
-
-
         //MANEJADORES DE EVENTOS
         function incluirElemento() {
             sistema.generarNuevoElemento();
+            borrarElementosCreados.call(elementoTbody);
             sistema.insertarElementos();
             vaciarElementos.call(elementosAVaciar);
             nuevasOpciones = [];
@@ -816,6 +607,11 @@ var miApp = (function () {
                 [botonCrearElemento, botonNuevaOpcion],
                 "style",
                 "display: none"
+            );
+            asignarPropiedadAElemento.call(
+                [botonOrdenarElementos],
+                "style",
+                "display: inherit"
             );
         }
 
@@ -1002,6 +798,7 @@ var miApp = (function () {
             sistema.borrarElemento(
                 e.currentTarget.previousSibling.value
             );
+            borrarElementosCreados.call(elementoTbody);
             sistema.insertarElementos();
             idParaBorrar.value = "";
             asignarPropiedadAElemento.call(
@@ -1032,6 +829,280 @@ var miApp = (function () {
             );
         }
 
+        function apagarNuevoElemento(e) {
+            var elementoDestino = e.target.parentElement.previousSibling;
+            asignarPropiedadAElemento.call(
+                elementoDestino,
+                "style",
+                `display: ${elementoDestino.style.display === "none"
+                    ? "inherit"
+                    : "none"}`
+            );
+        }
+
+        function ordenarElementos() {
+            borrarElementosCreados.call(elementoTbody);
+            sistema.ordenarPorId();
+            sistema.insertarElementos();
+        }
+
+
+        //LOGICA DEL SISTEMA
+        //Definición de la clase Boton
+        function Boton(id, nombre, contenido, tipoBoton) {
+            this.id = id;
+            this.nombre = nombre;
+            this.contenido = contenido;
+            this.tipoBoton = tipoBoton;
+        }
+        //Definición de la clase Entrada
+        function Entrada(id, nombre, contenido, tipoEntrada, max, min) {
+            this.id = id;
+            this.nombre = nombre;
+            this.contenido = contenido;
+            this.tipoEntrada = tipoEntrada;
+            this.max = max;
+            this.min = min;
+        }
+        //Definición de la clase Selector
+        function Selector(id, nombre, nuevasOpciones) {
+            this.id = id;
+            this.nombre = nombre;
+            this.opciones = nuevasOpciones;
+        }
+        //Definición de la clase TextArea
+        function TextArea(id, nombre, columnas, filas, maxCaracteres) {
+            this.id = id;
+            this.nombre = nombre;
+            this.columnas = columnas;
+            this.filas = filas;
+            this.maxCaracteres = maxCaracteres;
+        }
+        //Definición de la clase Sistema
+        function Sistema() {
+            //Propiedades
+            this.elementos = [];
+            //Métodos
+            this.generarNuevoElemento = function () {
+                var nuevoElemento;
+                switch (seleccionTipoElemento.value) {
+                case "input":
+                    nuevoElemento = new Entrada(
+                        idElemento.value,
+                        nombreElemento.value,
+                        contenidoElemento.value,
+                        tipoEntrada.value,
+                        maxRange.value,
+                        minRange.value
+                    );
+                    break;
+                case "select":
+                    nuevoElemento = new Selector(
+                        idElemento.value,
+                        nombreElemento.value,
+                        nuevasOpciones
+                    );
+                    break;
+                case "textarea":
+                    nuevoElemento = new TextArea(
+                        idElemento.value,
+                        nombreElemento.value,
+                        columnas.value,
+                        filas.value,
+                        maxCaracteres.value
+                    );
+                    break;
+                default:
+                    nuevoElemento = new Boton(
+                        idElemento.value,
+                        nombreElemento.value,
+                        contenidoElemento.value,
+                        tipoBoton.value
+                    );
+                }
+                this.elementos.push(nuevoElemento);
+            };
+
+            this.insertarElementos = function () {
+                var nuevoElemento;
+                _.each(this.elementos, function (elemento) {
+                    var elementoFila,
+                        elementoCelda,
+                        elementoCeldaApagar,
+                        botonApagar;
+                    switch (elemento.constructor.name) {
+                    case "Boton":
+                        nuevoElemento = crearElemento("button");
+                        asignarPropiedadAElemento.call(
+                            nuevoElemento,
+                            "id",
+                            elemento.id
+                        );
+                        asignarPropiedadAElemento.call(
+                            nuevoElemento,
+                            "name",
+                            elemento.nombre
+                        );
+                        asignarPropiedadAElemento.call(
+                            nuevoElemento,
+                            "type",
+                            elemento.tipoBoton
+                        );
+                        break;
+                    case "Entrada":
+                        nuevoElemento = crearElemento("input");
+                        asignarPropiedadAElemento.call(
+                            nuevoElemento,
+                            "id",
+                            elemento.id
+                        );
+                        asignarPropiedadAElemento.call(
+                            nuevoElemento,
+                            "name",
+                            elemento.nombre
+                        );
+                        if (elemento.tipoEntrada === "range") {
+                            asignarPropiedadAElemento.call(
+                                nuevoElemento,
+                                "type",
+                                elemento.tipoEntrada
+                            );
+                            asignarPropiedadAElemento.call(
+                                nuevoElemento,
+                                "max",
+                                elemento.max
+                            );
+                            asignarPropiedadAElemento.call(
+                                nuevoElemento,
+                                "min",
+                                elemento.min
+                            );
+                        } else {
+                            asignarPropiedadAElemento.call(
+                                nuevoElemento,
+                                "type",
+                                elemento.tipoEntrada
+                            );
+                        }
+                        break;
+                    case "TextArea":
+                        nuevoElemento = crearElemento("textarea");
+                        asignarPropiedadAElemento.call(
+                            nuevoElemento,
+                            "id",
+                            elemento.id
+                        );
+                        asignarPropiedadAElemento.call(
+                            nuevoElemento,
+                            "name",
+                            elemento.nombre
+                        );
+                        asignarPropiedadAElemento.call(
+                            nuevoElemento,
+                            "cols",
+                            elemento.columnas
+                        );
+                        asignarPropiedadAElemento.call(
+                            nuevoElemento,
+                            "rows",
+                            elemento.filas
+                        );
+                        asignarPropiedadAElemento.call(
+                            nuevoElemento,
+                            "maxlength",
+                            elemento.maxCaracteres
+                        );
+                        break;
+                    default:
+                        nuevoElemento = crearElemento("select");
+                        asignarPropiedadAElemento.call(
+                            nuevoElemento,
+                            "id",
+                            elemento.id
+                        );
+                        asignarPropiedadAElemento.call(
+                            nuevoElemento,
+                            "name",
+                            elemento.nombre
+                        );
+                        _.each(elemento.opciones, function (opcion) {
+                            var elementoOpcion = crearElemento("option"),
+                                nodoTexto = crearNodoDeTexto(opcion.contenido);
+                            asignarPropiedadAElemento.call(
+                                elementoOpcion,
+                                "value",
+                                opcion.valor
+                            );
+                            insertarNodoHijo.call(elementoOpcion, nodoTexto);
+                            insertarNodoHijo.call(nuevoElemento, elementoOpcion);
+                        });
+                    }
+                    elementoFila = crearElemento("tr");
+                    elementoCelda = crearElemento("td");
+                    elementoCeldaApagar = crearElemento("td");
+                    botonApagar = crearElemento("button");
+                    insertarNodoHijo.call(botonApagar, crearNodoDeTexto("Apagar/Encender"));
+                    asignarPropiedadAElemento.call(botonApagar, "id", "boton_apagar_" + nuevoElemento.id);
+                    asignarPropiedadAElemento.call(botonApagar, "type", "button");
+                    agregarEvento.call(
+                        botonApagar,
+                        "mousedown",
+                        apagarNuevoElemento
+                    );
+                    insertarNodoHijo.call(elementoTbody, elementoFila);
+                    insertarNodoHijo.call(elementoFila, elementoCelda);
+                    insertarNodoHijo.call(elementoCelda, nuevoElemento);
+                    insertarNodoHijo.call(elementoFila, elementoCeldaApagar);
+                    insertarNodoHijo.call(elementoCeldaApagar, botonApagar);
+                    switch (elemento.constructor.name) {
+                    case "Boton":
+                        insertarNodoHijo.call(
+                            nuevoElemento,
+                            crearNodoDeTexto(elemento.contenido)
+                        );
+                        break;
+                    case "Selector":
+                    case "TextArea":
+                        colocarElementoAntesdeHermano.call(
+                            nuevoElemento,
+                            crearNodoDeTexto(elemento.nombre)
+                        );
+                        break;
+                    default:
+                        colocarElementoAntesdeHermano.call(
+                            nuevoElemento,
+                            crearNodoDeTexto(elemento.contenido)
+                        );
+                    }
+                });
+            };
+
+            this.borrarElemento = function (id) {
+                var indiceElemento = this.elementos.findIndex(
+                    function (elemento) {
+                        return elemento.id === id;
+                    }
+                );
+                this.elementos.splice(indiceElemento, 1);
+            };
+
+            this.ordenarPorId = function () {
+                this.elementos.sort(function (a, b) {
+                    var resultado;
+                    if (a.id < b.id) {
+                        resultado = -1;
+                    } else if (a.id > b.id) {
+                        resultado = 1;
+                    } else {
+                        resultado = 0;
+                    }
+                    return resultado;
+                });
+            };
+        }
+        //Creación del objeto sistema
+        sistema = new Sistema();
+
 
         //ASIGNACIÓN DE EVENTOS
         agregarEventosAElementos.call(
@@ -1044,10 +1115,10 @@ var miApp = (function () {
                 comprobarIdentificadoresRepetidos,
                 eliminarElemento,
                 encenderBotonBorrar,
-                encenderOpcionesRango
+                encenderOpcionesRango,
+                ordenarElementos
             }
         );
-        return miApp;
     }()),
     MIAPLICACION = miApp || {};
 window.onload = MIAPLICACION.miApp;
